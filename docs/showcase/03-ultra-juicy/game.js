@@ -66,10 +66,14 @@ const badPlatforms = [
 
 // Trail effect for player
 const playerTrail = [];
-const MAX_TRAIL_LENGTH = 10;
+const BASE_TRAIL_LENGTH = 2; // Starts very short
+const MAX_TRAIL_LENGTH = 15; // Can grow to 15 at high scores
 
 // Coin rotation animation
 let coinRotation = 0;
+
+// Player rotation animation
+let playerRotation = 0;
 
 // Chromatic aberration effect
 let chromaticIntensity = 0;
@@ -187,7 +191,16 @@ function drawPlayer() {
   // Draw trail effect with rounded corners
   for (let i = 0; i < playerTrail.length; i++) {
     const trail = playerTrail[i];
+    ctx.save();
     ctx.globalAlpha = trail.alpha;
+
+    // Apply rotation to trail if it has rotation property
+    if (trail.rotation !== undefined) {
+      ctx.translate(trail.x + player.width / 2, trail.y + player.height / 2);
+      ctx.rotate(trail.rotation);
+      ctx.translate(-(trail.x + player.width / 2), -(trail.y + player.height / 2));
+    }
+
     ctx.fillStyle = PLAYER_COLOR;
 
     // Rounded rectangle for trail
@@ -195,11 +208,23 @@ function drawPlayer() {
     ctx.beginPath();
     ctx.roundRect(trail.x, trail.y, player.width, player.height, radius);
     ctx.fill();
+    ctx.restore();
   }
   ctx.globalAlpha = 1.0;
 
-  // Draw player as rounded rectangle with glow
-  ctx.shadowBlur = 15;
+  // Save context for rotation
+  ctx.save();
+
+  // Translate to player center, rotate, then translate back
+  const centerX = player.x + player.width / 2;
+  const centerY = player.y + player.height / 2;
+  ctx.translate(centerX, centerY);
+  ctx.rotate(playerRotation);
+  ctx.translate(-centerX, -centerY);
+
+  // Glow intensity increases with score! Starts minimal, grows to intense
+  const glowIntensity = 0 + Math.min(score / 30, 50); // Starts at 0 (no glow), max 50 glow at high scores
+  ctx.shadowBlur = glowIntensity;
   ctx.shadowColor = PLAYER_COLOR;
   ctx.fillStyle = PLAYER_COLOR;
 
@@ -238,6 +263,8 @@ function drawPlayer() {
   ctx.beginPath();
   ctx.arc(player.x + player.width / 2, player.y + 18, 8, 0.2, Math.PI - 0.2);
   ctx.stroke();
+
+  ctx.restore();
 }
 
 // =============================================
@@ -476,6 +503,10 @@ function onCoinCollected(coin) {
 function onAllCoinsCollected() {
   // 🎆 ULTIMATE VICTORY CELEBRATION! 🎆
 
+  // MASSIVE SCORE BONUS for completing all coins!
+  const completionBonus = 1000;
+  score += completionBonus;
+
   screenShake(30);
 
   // Epic musical fanfare!
@@ -549,6 +580,17 @@ function onAllCoinsCollected() {
     }, wave * 150);
   }
 
+  // HUGE floating bonus popup!
+  scorePopups.push({
+    x: canvas.width / 2,
+    y: canvas.height / 2 - 100,
+    text: `+${completionBonus} BONUS!`,
+    life: 2.0,
+    vy: -1,
+    scale: 2.5,
+    color: '#2ecc71'
+  });
+
   // MEGA score effects
   scorePulse = 3.0;
   scoreWobble = 10;
@@ -559,7 +601,7 @@ function onAllCoinsCollected() {
   // Screen flash
   backgroundPulse = 1.5;
 
-  console.log('🎆🎇🎆 ULTIMATE VICTORY! ALL COINS! 🎆🎇🎆');
+  console.log(`🎆🎇🎆 ULTIMATE VICTORY! ALL COINS! +${completionBonus} BONUS! 🎆🎇🎆`);
 }
 
 function drawCoins() {
@@ -574,8 +616,9 @@ function drawCoins() {
     const scale = 1 + Math.sin(Date.now() / 200 + coin.x) * 0.1;
     ctx.scale(scale, scale);
 
-    // Glow effect
-    ctx.shadowBlur = 15;
+    // Glow effect increases with score! Starts subtle, grows intense
+    const coinGlowIntensity = 0 + Math.min(score / 40, 30); // Starts at 0 (no glow), max 30 at high scores
+    ctx.shadowBlur = coinGlowIntensity;
     ctx.shadowColor = COIN_COLOR;
 
     // Draw coin with gradient
@@ -600,6 +643,31 @@ function drawCoins() {
 
     ctx.restore();
     ctx.shadowBlur = 0;
+  }
+}
+
+function updateCoins() {
+  // Coins randomly emit sparks! Frequency increases with score
+  const baseSparkChance = 0.005; // 0.5% chance per frame per coin at start
+  const scoreBonus = Math.min(score / 2000, 0.045); // Up to +4.5% at high scores
+  const sparkChance = baseSparkChance + scoreBonus;
+
+  for (const coin of coins) {
+    if (Math.random() < sparkChance) {
+      // Emit a small spark!
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 0.5 + Math.random() * 1.5;
+      particles.push({
+        x: coin.x,
+        y: coin.y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 0.5, // Slight upward bias
+        color: Math.random() > 0.5 ? COIN_COLOR : '#f1c40f',
+        life: 0.8,
+        decay: 0.02 + Math.random() * 0.02,
+        size: 2 + Math.random()
+      });
+    }
   }
 }
 
@@ -937,6 +1005,17 @@ function isTooCloseToObject(x, y, objectSize) {
     }
   }
 
+  // Check bad platforms too - don't spawn coins on dangerous areas!
+  for (const badPlatform of badPlatforms) {
+    const buffer = objectSize * 3; // Extra buffer for bad platforms
+    if (x > badPlatform.x - buffer &&
+      x < badPlatform.x + badPlatform.width + buffer &&
+      y > badPlatform.y - buffer &&
+      y < badPlatform.y + badPlatform.height + buffer) {
+      return true;
+    }
+  }
+
   const minDistance = objectSize * 2;
   for (const coin of coins) {
     const distance = Math.hypot(x - coin.x, y - coin.y);
@@ -1051,11 +1130,16 @@ function updateParticles() {
 }
 
 function updateTrail() {
-  // Add current position to trail
+  // Trail length and opacity increase with score!
+  const currentMaxTrail = BASE_TRAIL_LENGTH + Math.floor(Math.min(score / 100, MAX_TRAIL_LENGTH - BASE_TRAIL_LENGTH));
+  const trailOpacity = 0.1 + Math.min(score / 2000, 0.5); // Starts very faint (0.1), max 0.6
+
+  // Add current position to trail with rotation
   playerTrail.unshift({
     x: player.x,
     y: player.y,
-    alpha: 0.5
+    alpha: trailOpacity,
+    rotation: playerRotation
   });
 
   // Fade trail
@@ -1063,8 +1147,8 @@ function updateTrail() {
     playerTrail[i].alpha *= 0.85;
   }
 
-  // Remove old trail
-  while (playerTrail.length > MAX_TRAIL_LENGTH) {
+  // Remove old trail - length increases with score!
+  while (playerTrail.length > currentMaxTrail) {
     playerTrail.pop();
   }
 }
@@ -1115,6 +1199,28 @@ function updateEffects() {
     backgroundPulse *= 0.95;
     if (backgroundPulse < 0.01) backgroundPulse = 0;
   }
+
+  // Update player rotation when in air
+  if (!player.isOnGround) {
+    // Rotation speed increases with score! Starts slow, gets wild
+    const baseRotationSpeed = 0.03; // Much slower starting rotation
+    const scoreBonus = Math.min(score / 800, 0.37); // Max +0.37 at high scores (more dramatic growth)
+    const rotationSpeed = baseRotationSpeed + scoreBonus;
+
+    // Rotate in the direction of movement
+    if (player.velocityX > 0) {
+      playerRotation += rotationSpeed;
+    } else if (player.velocityX < 0) {
+      playerRotation -= rotationSpeed;
+    } else {
+      // Slow forward rotation when no horizontal movement
+      playerRotation += rotationSpeed * 0.5;
+    }
+  } else {
+    // Smoothly return to upright when on ground
+    playerRotation *= 0.8;
+    if (Math.abs(playerRotation) < 0.01) playerRotation = 0;
+  }
 }
 
 let platformTime = 0;
@@ -1151,6 +1257,7 @@ function update() {
   checkCoinCollisions();
   checkBadPlatformCollisions();
   updateParticles();
+  updateCoins();
   updateTrail();
   updateSpeedLines();
   updateScorePopups();

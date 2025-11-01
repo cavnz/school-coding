@@ -446,6 +446,17 @@ function isTooCloseToObject(x, y, objectSize) {
     }
   }
 
+  // Check bad platforms too - don't spawn coins on dangerous areas!
+  for (const badPlatform of badPlatforms) {
+    const buffer = objectSize * 3; // Extra buffer for bad platforms
+    if (x > badPlatform.x - buffer &&
+      x < badPlatform.x + badPlatform.width + buffer &&
+      y > badPlatform.y - buffer &&
+      y < badPlatform.y + badPlatform.height + buffer) {
+      return true;  // Too close to a dangerous platform!
+    }
+  }
+
   // Check other coins (circular collision)
   const minDistance = objectSize * 2;  // Objects should be at least 2 widths apart
   for (const coin of coins) {
