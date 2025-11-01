@@ -133,6 +133,30 @@ Visit **https://cavnz.github.io/school-coding/** to see:
 - Student showcase gallery
 - Links to edit projects on JSFiddle
 
+## 🛠️ Adding Student Projects (For Teachers)
+
+Use the provided bash script to quickly add JSFiddle projects to the showcase:
+
+```bash
+./scripts/add-fiddle.sh <jsfiddle-url> <project-name> <author> <description>
+```
+
+**Example:**
+```bash
+./scripts/add-fiddle.sh \
+  https://jsfiddle.net/abc123/ \
+  rainbow-game \
+  "Sarah & Mike" \
+  "Rainbow particles everywhere with crazy physics!"
+```
+
+The script will:
+- Create a numbered showcase folder (e.g., `03-rainbow-game`)
+- Generate all required files
+- Provide instructions for updating `showcase-data.js`
+
+See [scripts/README.md](scripts/README.md) for full documentation.
+
 ## 📝 Tips
 
 - **Don't worry about breaking things!** You can always undo or refresh
