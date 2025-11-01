@@ -16,12 +16,6 @@ const PLAYER_COLOR = '#3498db';  // Color of player (try '#e74c3c' or '#2ecc71')
 const PLATFORM_COLOR = '#95a5a6'; // Color of platforms (try '#34495e' or '#7f8c8d')
 const BACKGROUND_COLOR = '#34495e'; // Color of background (try '#2c3e50' or '#1a1a1a')
 
-// Coin Settings
-const POINTS_PER_COIN = 100;     // How many points per coin (try 1, 100, 1000!)
-const COIN_SIZE = 20;            // Size of coins
-const NUMBER_OF_COINS = 2;       // How many coins to spawn (try 3, 10, 20!)
-const COIN_COLOR = '#f39c12';    // Color of coins (try '#f1c40f' or '#e67e22')
-
 // Platforms to jump on
 const platforms = [
   { x: 0, y: 550, width: 800, height: 50 },      // Ground
@@ -30,6 +24,30 @@ const platforms = [
   { x: 200, y: 250, width: 100, height: 20 },    // Platform 3
   { x: 600, y: 200, width: 120, height: 20 },    // Platform 4
   { x: 300, y: 150, width: 120, height: 20 }     // Platform 5
+];
+
+
+// Score Display Settings
+const SCORE_SIZE = 48;            // Font size for score (try 36, 64, 80!)
+const SCORE_COLOR = '#ecf0f1';    // Color of score text (try '#f1c40f' or '#2ecc71')
+const SCORE_Y_POSITION = 550 + SCORE_SIZE / 2;     // Y position of score (higher = lower on screen)
+
+// Coin Settings
+const NUMBER_OF_COINS = 0;       // How many coins to spawn (try 3, 10, 20!)
+const POINTS_PER_COIN = 100;     // How many points per coin (try 1, 100, 1000!)
+const COIN_SIZE = 20;            // Size of coins
+const COIN_COLOR = '#f39c12';    // Color of coins (try '#f1c40f' or '#e67e22')
+
+// Death Settings
+const BAD_PLATFORM_COLOR = '#e74c3c';  // Color of dangerous platforms (try '#c0392b' or '#000000')
+const RESPAWN_X = 100;           // Where to respawn horizontally
+const RESPAWN_Y = 100;           // Where to respawn vertically
+
+
+// Dangerous platforms (spikes, lava, etc.) - touching these kills you!
+// You can add more by copying the format: { x: , y: , width: , height: }
+const badPlatforms = [
+   { x: 500, y: 540, width: 100, height: 10 }  // Spikes on the ground
 ];
 
 // =============================================
@@ -45,7 +63,7 @@ function jump() {
     // Try calling: screenShake(3)
     // Try calling: beep(440, 100, 0.2)
     // Try calling: playSound('jump')
-        
+
     console.log('Jump!');
   }
 }
@@ -76,6 +94,53 @@ function bump() {
 function drawPlayer() {
   ctx.fillStyle = PLAYER_COLOR;
   ctx.fillRect(player.x, player.y, player.width, player.height);
+}
+
+// =============================================
+// 🏆 SCORE DISPLAY FUNCTIONS
+// =============================================
+
+function drawScore() {
+  // Draw the score in big letters at the bottom of the screen!
+  // This makes it easy to see and add juice effects to
+
+  // TODO: Try adding juice here! Ideas:
+  // - Make the score pulse when you collect a coin (change size)
+  // - Make it shake when you collect a coin (add to position)
+  // - Change color based on score (use if statements)
+  // - Add a shadow or outline effect
+
+  ctx.fillStyle = SCORE_COLOR;
+  ctx.font = `bold ${SCORE_SIZE}px Arial`;
+  ctx.textAlign = 'center';  // Center the text
+  ctx.textBaseline = 'middle';
+
+  // Draw at center of canvas, near the bottom
+  ctx.fillText(`Score: ${score}`, canvas.width / 2, SCORE_Y_POSITION);
+}
+
+function onDeath() {
+  // This is called when you touch a dangerous platform!
+  // Add effects here to make it feel dramatic
+
+  // TODO: Add juice here! What should happen when you die?
+  // Try calling: screenShake(10)
+  // Try calling: beep(110, 200, 0.4)
+  // Try calling: spawnParticles(player.x + player.width / 2, player.y + player.height / 2, PLAYER_COLOR, 30)
+
+  console.log('You died! Respawning...');
+}
+
+// =============================================
+// ☠️ DANGEROUS PLATFORM FUNCTIONS
+// =============================================
+
+function drawBadPlatforms() {
+  // Draw the dangerous platforms (spikes, lava, etc.)
+  ctx.fillStyle = BAD_PLATFORM_COLOR;
+  for (const platform of badPlatforms) {
+    ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+  }
 }
 
 // =============================================
@@ -315,13 +380,13 @@ function checkPlatformCollisions() {
   for (const platform of platforms) {
     // Check if player is overlapping with platform
     if (player.x < platform.x + platform.width &&
-        player.x + player.width > platform.x &&
-        player.y < platform.y + platform.height &&
-        player.y + player.height > platform.y) {
+      player.x + player.width > platform.x &&
+      player.y < platform.y + platform.height &&
+      player.y + player.height > platform.y) {
 
       // Player is falling and hits platform from above
       if (player.velocityY > 0 &&
-          player.y + player.height - player.velocityY <= platform.y) {
+        player.y + player.height - player.velocityY <= platform.y) {
         player.y = platform.y - player.height;
         player.velocityY = 0;  // Stop falling
 
@@ -334,7 +399,7 @@ function checkPlatformCollisions() {
 
       // Player is rising and hits platform from below (bumps head)
       if (player.velocityY < 0 &&
-          player.y - player.velocityY >= platform.y + platform.height) {
+        player.y - player.velocityY >= platform.y + platform.height) {
         player.y = platform.y + platform.height;
         bump();
       }
@@ -351,9 +416,9 @@ function isTooCloseToObject(x, y, objectSize) {
     // Expand the platform boundaries by half the object size to account for the object's width
     const buffer = objectSize / 2;
     if (x > platform.x - buffer &&
-        x < platform.x + platform.width + buffer &&
-        y > platform.y - buffer &&
-        y < platform.y + platform.height + buffer) {
+      x < platform.x + platform.width + buffer &&
+      y > platform.y - buffer &&
+      y < platform.y + platform.height + buffer) {
       return true;  // Too close to a platform!
     }
   }
@@ -442,6 +507,33 @@ function checkCoinCollisions() {
   }
 }
 
+function checkBadPlatformCollisions() {
+  // Check if player touches any dangerous platforms
+  for (const platform of badPlatforms) {
+    // Simple AABB (box) collision detection
+    if (player.x < platform.x + platform.width &&
+      player.x + player.width > platform.x &&
+      player.y < platform.y + platform.height &&
+      player.y + player.height > platform.y) {
+      respawnPlayer();
+      return;
+    }
+  }
+}
+
+function respawnPlayer() {
+  // System function that handles respawn mechanics
+  onDeath(); // Call the juice function first
+
+  // Reset player position
+  player.x = RESPAWN_X;
+  player.y = RESPAWN_Y;
+  player.velocityX = 0;
+  player.velocityY = 0;
+  player.isOnGround = false;
+  player.wasOnGround = false;
+}
+
 function updateParticles() {
   // Update all particles (called every frame)
   for (let i = particles.length - 1; i >= 0; i--) {
@@ -469,6 +561,7 @@ function update() {
   applyPhysics();
   checkPlatformCollisions();
   checkCoinCollisions();
+  checkBadPlatformCollisions();
   updateParticles();
 }
 
@@ -497,13 +590,20 @@ function render() {
     ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
   }
 
+  // Draw dangerous platforms
+  drawBadPlatforms();
+
   // Draw game elements
   drawCoins();
   drawParticles();
   drawPlayer();
 
-  // Restore the canvas state
+  // Restore the canvas state (ends screen shake effect)
   ctx.restore();
+
+  // Draw score AFTER restore so it doesn't shake
+  // (unless you want the score to shake too - then move this up!)
+  drawScore();
 }
 
 // =============================================

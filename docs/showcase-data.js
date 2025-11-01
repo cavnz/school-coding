@@ -12,14 +12,14 @@
 const projects = [
   {
     title: "Starter Version",
-    author: "Teacher Demo",
+    author: "Jimmy",
     description: "The basic starting point with no effects added yet. This is where everyone begins!",
     folder: "showcase/01-starter",
     jsfiddle: null  // TODO: Add JSFiddle link
   },
   {
     title: "Super Juicy Edition",
-    author: "Teacher Demo - Ultimate Version",
+    author: "Jimmy",
     description: "EVERY effect enabled and cranked to 11! Rainbow particles, screen shake, glowing coins, animated background, epic victory fanfare. This is what's possible!",
     folder: "showcase/02-super-juicy",
     jsfiddle: null  // TODO: Add JSFiddle link
