@@ -27,5 +27,17 @@ const projects = [
     author: "Jimmy",
     description: "An over-the-top version packed with intense effects! Dramatic screen shakes, explosive particles, and booming sounds for an adrenaline-pumping experience!",
     folder: "showcase/03-ultra-juicy"
+  },
+  {
+    title: "🚀 Space Mission Theme",
+    author: "Jimmy",
+    description: "A galactic adventure! Features a spaceship player, twinkling stars, energy crystals, laser beams, and space physics with lower gravity. Colors and simple drawing show how theming transforms the game.",
+    folder: "showcase/03-space-theme"
+  },
+  {
+    title: "✨💖 Superstar Theme",
+    author: "Jimmy",
+    description: "A vibrant superstar inspired world! Cute character with headphones, pink hearts to collect, rainbow sparkles, lightning bolts, and pulsing effects. Shows how color gradients and CSS animations create personality.",
+    folder: "showcase/04-kpop-theme"
   }
 ];

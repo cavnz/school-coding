@@ -1,0 +1,45 @@
+/*
+  🎨 STYLES - CSS defines how things LOOK
+  Try changing colors, sizes, fonts!
+*/
+
+body {
+  margin: 0;
+  padding: 20px;
+  background: rgb(5, 5, 20);
+  font-family: 'Courier New', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgb(100, 200, 255);
+}
+
+h1 {
+  margin: 0 0 10px 0;
+  font-size: 24px;
+  color: rgb(255, 255, 100);
+  text-shadow: 0 0 10px rgba(255, 255, 100, 0.5);
+  letter-spacing: 2px;
+}
+
+#gameCanvas {
+  border: 3px solid rgb(100, 200, 255);
+  background: rgb(10, 10, 30);
+  display: block;
+  box-shadow: 0 0 30px rgba(100, 200, 255, 0.5);
+}
+
+.info {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+  color: rgb(150, 200, 255);
+}
+
+.score {
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(243, 156, 18);
+  /* Try adding animation or effects here! */
+}
