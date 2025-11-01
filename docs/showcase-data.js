@@ -18,10 +18,17 @@ const projects = [
     jsfiddle: null  // TODO: Add JSFiddle link
   },
   {
-    title: "Super Juicy Edition",
+    title: "Juicy Edition",
     author: "Jimmy",
-    description: "EVERY effect enabled and cranked to 11! Rainbow particles, screen shake, glowing coins, animated background, epic victory fanfare. This is what's possible!",
-    folder: "showcase/02-super-juicy",
+    description: "A slightly juicier version with added effects! Enjoy screen shakes, particle effects, and sound effects to make the game more satisfying.",
+    folder: "showcase/02-little-juicy",
+    jsfiddle: null  // TODO: Add JSFiddle link
+  },
+  {
+    title: "Ultra Juicy Edition",
+    author: "Jimmy",
+    description: "An over-the-top version packed with intense effects! Dramatic screen shakes, explosive particles, and booming sounds for an adrenaline-pumping experience!",
+    folder: "showcase/03-ultra-juicy",
     jsfiddle: null  // TODO: Add JSFiddle link
   }
 ];
