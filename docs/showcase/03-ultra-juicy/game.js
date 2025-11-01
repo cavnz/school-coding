@@ -22,9 +22,10 @@ const FRICTION = 0.8;          // How slippery the ground is (0.9 = ice, 0.5 = s
 
 // Visual Settings
 const PLAYER_SIZE = 30;          // Size of your character (try 20 or 50)
-const PLAYER_COLOR = '#3498db';  // Color of player (try '#e74c3c' or '#2ecc71')
-const PLATFORM_COLOR = '#95a5a6'; // Color of platforms (try '#34495e' or '#7f8c8d')
-const BACKGROUND_COLOR = '#34495e'; // Color of background (try '#2c3e50' or '#1a1a1a')
+const PLAYER_COLOR = '#ff6b9d';  // Color of player (try '#e74c3c' or '#2ecc71')
+const PLATFORM_COLOR_START = '#6b7278'; // Starting gray color for platforms - BORING!
+const PLATFORM_COLOR_END = '#4ecdc4';   // Bright turquoise at high scores - EXCITING!
+const BACKGROUND_COLOR = '#0f0f23'; // Color of background (try '#2c3e50' or '#1a1a1a')
 
 // Platforms to jump on
 // Added originalX and moveSpeed for animation
@@ -40,17 +41,17 @@ const platforms = [
 
 // Score Display Settings
 const SCORE_SIZE = 48;            // Font size for score (try 36, 64, 80!)
-const SCORE_COLOR = '#ecf0f1';    // Color of score text (try '#f1c40f' or '#2ecc71')
+const SCORE_COLOR = '#ffeb3b';    // Color of score text (try '#f1c40f' or '#2ecc71')
 const SCORE_Y_POSITION = 550 + SCORE_SIZE / 2;     // Y position of score (higher = lower on screen)
 
 // Coin Settings
 const NUMBER_OF_COINS = 15;      // LOTS of coins for maximum juice!
 const POINTS_PER_COIN = 100;     // How many points per coin
 const COIN_SIZE = 20;            // Size of coins
-const COIN_COLOR = '#f39c12';    // Color of coins
+const COIN_COLOR = '#ffd93d';    // Color of coins
 
 // Death Settings
-const BAD_PLATFORM_COLOR = '#e74c3c';  // Color of dangerous platforms
+const BAD_PLATFORM_COLOR = '#ff3366';  // Color of dangerous platforms
 const RESPAWN_X = 100;           // Where to respawn horizontally
 const RESPAWN_Y = 100;           // Where to respawn vertically
 
@@ -66,8 +67,8 @@ const badPlatforms = [
 
 // Trail effect for player
 const playerTrail = [];
-const BASE_TRAIL_LENGTH = 2; // Starts very short
-const MAX_TRAIL_LENGTH = 15; // Can grow to 15 at high scores
+const BASE_TRAIL_LENGTH = 0; // Starts with NO TRAIL - boring!
+const MAX_TRAIL_LENGTH = 18; // Can grow to 18 at high scores - exciting!
 
 // Coin rotation animation
 let coinRotation = 0;
@@ -92,6 +93,27 @@ let comboCount = 0;
 let comboTimer = 0;
 const COMBO_TIMEOUT = 120; // frames
 
+const SCORE_PROGRESS_TOTAL = NUMBER_OF_COINS * POINTS_PER_COIN * 1.5; // Score at which maximum juice is reached
+
+// Helper function to interpolate between two colors based on score
+function getPlatformColor() {
+  // Gradually transitions from gray to turquoise as score increases
+  // 0 points = fully gray, total+ points = fully colorful
+  const progress = Math.min(score / SCORE_PROGRESS_TOTAL, 1.0);
+
+  // Parse start color (gray)
+  const r1 = 107, g1 = 114, b1 = 120; // #6b7278
+  // Parse end color (turquoise)
+  const r2 = 78, g2 = 205, b2 = 196;  // #4ecdc4
+
+  // Interpolate
+  const r = Math.round(r1 + (r2 - r1) * progress);
+  const g = Math.round(g1 + (g2 - g1) * progress);
+  const b = Math.round(b1 + (b2 - b1) * progress);
+
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
 // =============================================
 // 👤 PLAYER FUNCTIONS
 // =============================================
@@ -101,15 +123,17 @@ function jump() {
     player.velocityY = -JUMP_POWER;
     player.isOnGround = false;
 
-    // ULTRA JUICY JUMP!
-    screenShake(5);
+    // ULTRA JUICY JUMP! Particles grow with score
+    const jumpParticles = 5 + Math.floor(score / 100); // Start at 5, grows to 20+ at high scores
+    screenShake(3 + Math.min(score / 200, 5));
     beep(440, 100, 0.3);
     beep(554, 100, 0.2); // Add harmony!
-    spawnParticles(player.x + player.width / 2, player.y + player.height, PLAYER_COLOR, 15);
-    spawnParticles(player.x + player.width / 2, player.y + player.height, '#5dade2', 10);
+    spawnParticles(player.x + player.width / 2, player.y + player.height, PLAYER_COLOR, jumpParticles);
+    spawnParticles(player.x + player.width / 2, player.y + player.height, '#ff8ac1', Math.floor(jumpParticles * 0.6));
 
-    // Add speed lines!
-    for (let i = 0; i < 5; i++) {
+    // Add speed lines! Grow with score
+    const numSpeedLines = Math.max(0, Math.floor(score / 200)); // Start with 0, gain more at high scores
+    for (let i = 0; i < numSpeedLines; i++) {
       speedLines.push({
         x: player.x + player.width / 2,
         y: player.y + player.height,
@@ -128,15 +152,17 @@ function jump() {
 }
 
 function land() {
-  // ULTRA JUICY LANDING!
+  // ULTRA JUICY LANDING! Particles grow with score
   const landingForce = Math.abs(player.velocityY) / 2;
-  screenShake(Math.min(landingForce, 10));
+  const landParticles = 8 + Math.floor(score / 80); // Start at 8, grows to 30+ at high scores
+  screenShake(Math.min(landingForce + score / 150, 12));
   beep(220, 80, 0.4);
   beep(165, 80, 0.3); // Lower harmony
 
-  // Massive dust cloud!
-  spawnParticles(player.x + player.width / 2, player.y + player.height, PLATFORM_COLOR, 25);
-  spawnParticles(player.x + player.width / 2, player.y + player.height, '#bdc3c7', 15);
+  // Dust cloud grows with score!
+  const platformColor = getPlatformColor();
+  spawnParticles(player.x + player.width / 2, player.y + player.height, platformColor, landParticles);
+  spawnParticles(player.x + player.width / 2, player.y + player.height, '#6ee7df', Math.floor(landParticles * 0.6));
 
   // Landing shockwave effect
   for (let i = 0; i < 8; i++) {
@@ -160,12 +186,14 @@ function land() {
 function bump() {
   player.velocityY = 0;
 
-  // ULTRA JUICY HEAD BUMP!
-  screenShake(4);
+  // ULTRA JUICY HEAD BUMP! Particles grow with score
+  const bumpParticles = 5 + Math.floor(score / 120); // Start at 5, grows with score
+  screenShake(2 + Math.min(score / 250, 4));
   beep(880, 100, 0.2);
   beep(1100, 100, 0.15);
-  spawnParticles(player.x + player.width / 2, player.y, '#95a5a6', 15);
-  spawnParticles(player.x + player.width / 2, player.y, '#ecf0f1', 10);
+  const platformColor = getPlatformColor();
+  spawnParticles(player.x + player.width / 2, player.y, platformColor, bumpParticles);
+  spawnParticles(player.x + player.width / 2, player.y, '#6ee7df', Math.floor(bumpParticles * 0.6));
 
   // Stars circling the head!
   for (let i = 0; i < 5; i++) {
@@ -175,7 +203,7 @@ function bump() {
       y: player.y,
       vx: Math.cos(angle) * 3,
       vy: Math.sin(angle) * 3 - 2,
-      color: '#f1c40f',
+      color: '#ffeb3b',
       life: 1.5,
       decay: 0.015,
       size: 5
@@ -223,7 +251,7 @@ function drawPlayer() {
   ctx.translate(-centerX, -centerY);
 
   // Glow intensity increases with score! Starts minimal, grows to intense
-  const glowIntensity = 0 + Math.min(score / 30, 50); // Starts at 0 (no glow), max 50 glow at high scores
+  const glowIntensity = 0 + Math.min(score / 40, 40); // Starts at 0 (no glow), max 40 glow at high scores
   ctx.shadowBlur = glowIntensity;
   ctx.shadowColor = PLAYER_COLOR;
   ctx.fillStyle = PLAYER_COLOR;
@@ -236,7 +264,7 @@ function drawPlayer() {
 
   // Add a lighter color on top for depth
   const gradient = ctx.createLinearGradient(player.x, player.y, player.x, player.y + player.height);
-  gradient.addColorStop(0, '#5dade2');
+  gradient.addColorStop(0, '#ff8ac1');
   gradient.addColorStop(1, PLAYER_COLOR);
   ctx.fillStyle = gradient;
   ctx.beginPath();
@@ -293,13 +321,18 @@ function drawScore() {
   const pulsingSize = SCORE_SIZE * scorePulse;
   const wobbleX = Math.sin(scoreWobble) * 10;
 
-  // Rainbow color based on score!
+  // Rainbow color based on score! Gets wilder as score increases!
   let scoreColor = SCORE_COLOR;
-  const hue = (score / 10) % 360;
-  if (score >= 500) {
-    scoreColor = `hsl(${hue}, 80%, 60%)`;
+  const hue = (score / 5) % 360; // Faster color cycling!
+  if (score >= 1000) {
+    // ULTRA RAINBOW at high scores - super saturated!
+    scoreColor = `hsl(${hue}, 100%, 65%)`;
+  } else if (score >= 500) {
+    // Vibrant rainbow
+    scoreColor = `hsl(${hue}, 85%, 60%)`;
   } else if (score >= 200) {
-    scoreColor = '#f39c12';
+    // Purple glow
+    scoreColor = '#a78bfa';
   }
 
   ctx.save();
@@ -361,8 +394,8 @@ function onDeath() {
 
   // MASSIVE particle explosion
   spawnParticles(player.x + player.width / 2, player.y + player.height / 2, PLAYER_COLOR, 100);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#e74c3c', 80);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#ecf0f1', 60);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#ff3366', 80);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#ffeb3b', 60);
 
   // Explosion rings
   for (let ring = 0; ring < 3; ring++) {
@@ -414,8 +447,8 @@ function drawBadPlatforms() {
 
       // Gradient for spikes
       const gradient = ctx.createLinearGradient(x, y, x, y + platform.height);
-      gradient.addColorStop(0, '#e74c3c');
-      gradient.addColorStop(1, '#c0392b');
+      gradient.addColorStop(0, '#ff3366');
+      gradient.addColorStop(1, '#ff1a4d');
       ctx.fillStyle = gradient;
 
       // Draw triangle spike
@@ -428,7 +461,7 @@ function drawBadPlatforms() {
 
       // Add glow
       ctx.shadowBlur = 10;
-      ctx.shadowColor = '#e74c3c';
+      ctx.shadowColor = '#ff3366';
       ctx.fill();
       ctx.shadowBlur = 0;
     }
@@ -456,11 +489,12 @@ function onCoinCollected(coin) {
   const noteFreq = baseFreq * Math.pow(1.06, comboCount % 12);
   beep(noteFreq, 100, 0.3);
 
-  // MASSIVE particle explosion with multiple colors
-  spawnParticles(coin.x, coin.y, COIN_COLOR, 30);
-  spawnParticles(coin.x, coin.y, '#f1c40f', 20);
-  spawnParticles(coin.x, coin.y, '#e67e22', 15);
-  spawnParticles(coin.x, coin.y, '#ecf0f1', 10);
+  // Particle explosion grows with score!
+  const coinParticles = 10 + Math.floor(score / 60); // Start at 10, grows to 40+ at high scores
+  spawnParticles(coin.x, coin.y, COIN_COLOR, coinParticles);
+  spawnParticles(coin.x, coin.y, '#ffeb3b', Math.floor(coinParticles * 0.65));
+  spawnParticles(coin.x, coin.y, '#ffa726', Math.floor(coinParticles * 0.5));
+  spawnParticles(coin.x, coin.y, '#fff9c4', Math.floor(coinParticles * 0.3));
 
   // Shockwave
   for (let i = 0; i < 12; i++) {
@@ -475,7 +509,11 @@ function onCoinCollected(coin) {
     });
   }
 
-  // Floating score popup
+  // Floating score popup - more colors based on combo!
+  let popupColor = COIN_COLOR;
+  if (comboCount > 10) popupColor = '#ff3366';
+  else if (comboCount > 5) popupColor = '#a78bfa';
+
   scorePopups.push({
     x: coin.x,
     y: coin.y,
@@ -483,7 +521,7 @@ function onCoinCollected(coin) {
     life: 1.0,
     vy: -2,
     scale: 1.5,
-    color: comboCount > 5 ? '#e74c3c' : COIN_COLOR
+    color: popupColor
   });
 
   // HUGE score pulse for combos
@@ -516,7 +554,7 @@ function onAllCoinsCollected() {
   setTimeout(() => beep(1760, 400, 0.6), 450);
 
   // Rainbow fireworks!
-  const colors = ['#e74c3c', '#f39c12', '#f1c40f', '#2ecc71', '#3498db', '#9b59b6', '#e91e63'];
+  const colors = ['#ff3366', '#ffa726', '#ffd93d', '#4ecdc4', '#ff6b9d', '#a78bfa', '#ffeb3b'];
 
   for (let burst = 0; burst < 5; burst++) {
     setTimeout(() => {
@@ -557,11 +595,11 @@ function onAllCoinsCollected() {
   }
 
   // Player celebration explosion
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#2ecc71', 100);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#3498db', 80);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#f39c12', 80);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#e74c3c', 60);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#9b59b6', 60);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#4ecdc4', 100);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#ff6b9d', 80);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#ffd93d', 80);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#ff3366', 60);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#a78bfa', 60);
 
   // Radial shockwaves
   for (let wave = 0; wave < 3; wave++) {
@@ -588,7 +626,7 @@ function onAllCoinsCollected() {
     life: 2.0,
     vy: -1,
     scale: 2.5,
-    color: '#2ecc71'
+    color: '#4ecdc4'
   });
 
   // MEGA score effects
@@ -617,15 +655,15 @@ function drawCoins() {
     ctx.scale(scale, scale);
 
     // Glow effect increases with score! Starts subtle, grows intense
-    const coinGlowIntensity = 0 + Math.min(score / 40, 30); // Starts at 0 (no glow), max 30 at high scores
+    const coinGlowIntensity = 0 + Math.min(score / 50, 25); // Starts at 0 (no glow), max 25 at high scores
     ctx.shadowBlur = coinGlowIntensity;
     ctx.shadowColor = COIN_COLOR;
 
     // Draw coin with gradient
     const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, coin.size / 2);
-    gradient.addColorStop(0, '#f1c40f');
+    gradient.addColorStop(0, '#ffeb3b');
     gradient.addColorStop(0.5, COIN_COLOR);
-    gradient.addColorStop(1, '#e67e22');
+    gradient.addColorStop(1, '#ffa726');
     ctx.fillStyle = gradient;
 
     ctx.beginPath();
@@ -662,7 +700,7 @@ function updateCoins() {
         y: coin.y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed - 0.5, // Slight upward bias
-        color: Math.random() > 0.5 ? COIN_COLOR : '#f1c40f',
+        color: Math.random() > 0.5 ? COIN_COLOR : '#ffeb3b',
         life: 0.8,
         decay: 0.02 + Math.random() * 0.02,
         size: 2 + Math.random()
@@ -1131,8 +1169,8 @@ function updateParticles() {
 
 function updateTrail() {
   // Trail length and opacity increase with score!
-  const currentMaxTrail = BASE_TRAIL_LENGTH + Math.floor(Math.min(score / 100, MAX_TRAIL_LENGTH - BASE_TRAIL_LENGTH));
-  const trailOpacity = 0.1 + Math.min(score / 2000, 0.5); // Starts very faint (0.1), max 0.6
+  const currentMaxTrail = BASE_TRAIL_LENGTH + Math.floor(Math.min(score / 80, MAX_TRAIL_LENGTH - BASE_TRAIL_LENGTH));
+  const trailOpacity = 0 + Math.min(score / 1200, 0.6); // Starts invisible (0), max 0.6 at high scores
 
   // Add current position to trail with rotation
   playerTrail.unshift({
@@ -1204,7 +1242,7 @@ function updateEffects() {
   if (!player.isOnGround) {
     // Rotation speed increases with score! Starts slow, gets wild
     const baseRotationSpeed = 0.03; // Much slower starting rotation
-    const scoreBonus = Math.min(score / 800, 0.37); // Max +0.37 at high scores (more dramatic growth)
+    const scoreBonus = Math.min(score / SCORE_PROGRESS_TOTAL, 0.37); // Max +0.37 at high scores (more dramatic growth)
     const rotationSpeed = baseRotationSpeed + scoreBonus;
 
     // Rotate in the direction of movement
@@ -1233,7 +1271,10 @@ function updatePlatforms() {
     const platform = platforms[i];
     if (platform.moveSpeed > 0) {
       // Use sine wave for smooth back-and-forth motion
-      const offset = Math.sin(platformTime * platform.moveSpeed) * 30;
+
+      const progress = 1 + Math.min(score / SCORE_PROGRESS_TOTAL, 1.0);
+
+      const offset = Math.sin(platformTime * platform.moveSpeed * progress) * 30;
       platform.x = platform.originalX + offset;
 
       // Move player with platform if standing on it
@@ -1337,12 +1378,28 @@ function initBackground() {
 function drawAnimatedBackground() {
   backgroundTime += 0.02;
 
-  // Base background color
+  // Background color changes with score! Gets more colorful at high scores
   let bgColor = BACKGROUND_COLOR;
-  if (backgroundPulse > 0) {
+
+  if (score >= SCORE_PROGRESS_TOTAL) {
+    // ULTRA RAINBOW background at very high scores!
+    const hue = (score / 10 + backgroundTime * 20) % 360;
+    const pulseAmount = backgroundPulse * 30;
+    bgColor = `hsl(${hue}, 70%, ${15 + pulseAmount}%)`;
+  } else if (score >= SCORE_PROGRESS_TOTAL * 0.75) {
+    // Purple/pink tint at high scores
+    const pulseAmount = backgroundPulse * 50;
+    bgColor = `rgb(${30 + pulseAmount}, ${15 + pulseAmount}, ${60 + pulseAmount})`;
+  } else if (score >= SCORE_PROGRESS_TOTAL * 0.5) {
+    // Slight purple tint at medium scores
+    const pulseAmount = backgroundPulse * 50;
+    bgColor = `rgb(${20 + pulseAmount}, ${15 + pulseAmount}, ${45 + pulseAmount})`;
+  } else if (backgroundPulse > 0) {
+    // Just pulse on impacts
     const pulseAmount = Math.floor(backgroundPulse * 100);
-    bgColor = `rgb(${52 + pulseAmount}, ${73 + pulseAmount}, ${94 + pulseAmount})`;
+    bgColor = `rgb(${15 + pulseAmount}, ${15 + pulseAmount}, ${35 + pulseAmount})`;
   }
+
   ctx.fillStyle = bgColor;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -1416,10 +1473,24 @@ function render() {
   // Draw animated background
   drawAnimatedBackground();
 
-  // Draw platforms with glow
-  ctx.shadowBlur = 5;
-  ctx.shadowColor = PLATFORM_COLOR;
-  ctx.fillStyle = PLATFORM_COLOR;
+  // Draw platforms with glow - color changes with score!
+  // Starts gray and boring, gets colorful and exciting!
+  let platformColor = getPlatformColor();
+  let platformGlow = 2 + Math.min(score / 100, 8); // Starts at 2, grows to 10
+
+  if (score >= SCORE_PROGRESS_TOTAL) {
+    // Rainbow platforms at very high scores!
+    const hue = (score / 8 + backgroundTime * 15) % 360;
+    platformColor = `hsl(${hue}, 75%, 65%)`;
+    platformGlow = 15;
+  } else if (score >= SCORE_PROGRESS_TOTAL * 0.5) {
+    // Full turquoise achieved!
+    platformColor = PLATFORM_COLOR_END;
+  }
+
+  ctx.shadowBlur = platformGlow;
+  ctx.shadowColor = platformColor;
+  ctx.fillStyle = platformColor;
   for (const platform of platforms) {
     ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
   }
