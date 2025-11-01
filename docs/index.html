@@ -24,8 +24,18 @@
 
       <section class="quick-start">
         <h2>🚀 Getting Started with JSFiddle</h2>
-        <p>Follow these steps to start coding:</p>
+        <p>Choose your method:</p>
 
+        <div style="text-align: center; margin: 30px 0;">
+          <button onclick="openInJSFiddle()" class="copy-btn" style="font-size: 1.2em; padding: 15px 30px; background: #2ecc71;">
+            🚀 Open Starter Code in JSFiddle (Easy!)
+          </button>
+          <p style="margin-top: 10px; color: #7f8c8d;">Auto-creates a JSFiddle with all the code ready to go!</p>
+        </div>
+
+        <p style="text-align: center; margin: 20px 0;"><strong>OR</strong></p>
+
+        <p>Manual setup:</p>
         <ol>
           <li>Go to <a href="https://jsfiddle.net/" target="_blank">jsfiddle.net</a> (no login needed!)</li>
           <li>Copy the code from each section below into the matching JSFiddle panel</li>
@@ -157,6 +167,55 @@
       }).catch(err => {
         alert('Failed to copy. Please select and copy manually.');
       });
+    }
+
+    async function openInJSFiddle() {
+      try {
+        // Fetch the starter code files
+        const [htmlRes, cssRes, jsRes] = await Promise.all([
+          fetch('showcase/01-starter/index.html'),
+          fetch('showcase/01-starter/style.css'),
+          fetch('showcase/01-starter/game.js')
+        ]);
+
+        const htmlFull = await htmlRes.text();
+        const css = await cssRes.text();
+        const js = await jsRes.text();
+
+        // Extract just the body content from HTML (JSFiddle doesn't need full HTML structure)
+        const bodyMatch = htmlFull.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+        const html = bodyMatch ? bodyMatch[1].replace(/<script[^>]*>.*?<\/script>/gi, '').trim() : htmlFull;
+
+        // Create a form and POST to JSFiddle
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'https://jsfiddle.net/api/post/library/pure/';
+        form.target = '_blank';
+
+        // Add form fields
+        const fields = {
+          html: html,
+          css: css,
+          js: js,
+          title: 'Juicy Platformer - Year 8 Coding Session',
+          wrap: 'b'  // Wrap JS at bottom of body
+        };
+
+        for (const [key, value] of Object.entries(fields)) {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = value;
+          form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+      } catch (error) {
+        console.error('Error creating JSFiddle:', error);
+        alert('Failed to create JSFiddle. Please try the manual setup below.');
+      }
     }
   </script>
 </body>

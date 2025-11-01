@@ -246,7 +246,7 @@
 
         const editLink = project.jsfiddle
           ? `<a href="${project.jsfiddle}" target="_blank" class="project-link" style="background: #f39c12; margin-left: 10px;">Edit on JSFiddle →</a>`
-          : '';
+          : (project.folder ? `<button onclick="openProjectInJSFiddle('${project.folder}')" class="project-link" style="background: #2ecc71; margin-left: 10px; border: none; cursor: pointer;">🚀 Open in JSFiddle</button>` : '');
 
         card.innerHTML = `
           ${preview}
@@ -266,6 +266,55 @@
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
+    }
+
+    async function openProjectInJSFiddle(folderPath) {
+      try {
+        // Fetch the project files
+        const [htmlRes, cssRes, jsRes] = await Promise.all([
+          fetch(`${folderPath}/index.html`),
+          fetch(`${folderPath}/style.css`),
+          fetch(`${folderPath}/game.js`)
+        ]);
+
+        const htmlFull = await htmlRes.text();
+        const css = await cssRes.text();
+        const js = await jsRes.text();
+
+        // Extract just the body content from HTML
+        const bodyMatch = htmlFull.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+        const html = bodyMatch ? bodyMatch[1].replace(/<script[^>]*>.*?<\/script>/gi, '').trim() : htmlFull;
+
+        // Create a form and POST to JSFiddle
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'https://jsfiddle.net/api/post/library/pure/';
+        form.target = '_blank';
+
+        // Add form fields
+        const fields = {
+          html: html,
+          css: css,
+          js: js,
+          title: 'Juicy Platformer - Year 8 Coding Session',
+          wrap: 'b'
+        };
+
+        for (const [key, value] of Object.entries(fields)) {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = value;
+          form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+      } catch (error) {
+        console.error('Error creating JSFiddle:', error);
+        alert('Failed to create JSFiddle. Please try again.');
+      }
     }
 
     // Load projects when page loads
