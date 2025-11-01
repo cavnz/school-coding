@@ -1,4 +1,15 @@
 // =============================================
+// 🛟 ERROR HANDLING (You can ignore this!)
+// =============================================
+// Catches mistakes and shows helpful error messages
+
+window.addEventListener('error', (e) => {
+  alert(`⚠️ Oops! ${e.message}\n\nCheck the console (F12) for details, or refresh to try again.`);
+  console.error('Game Error:', e.error);
+});
+
+
+// =============================================
 // 🎮 GAME CONFIGURATION
 // =============================================
 // EXPERIMENT WITH THESE VALUES!
@@ -62,7 +73,6 @@ function jump() {
     // TODO: Add juice here! What should happen when you jump?
     // Try calling: screenShake(3)
     // Try calling: beep(440, 100, 0.2)
-    // Try calling: playSound('jump')
 
     console.log('Jump!');
   }
@@ -75,7 +85,6 @@ function land() {
   // TODO: Add juice here! What should happen when you land?
   // Try calling: screenShake(5)
   // Try calling: beep(220, 50, 0.3)
-  // Try calling: playSound('land')
 
   console.log('Landed!');
 }
@@ -86,7 +95,6 @@ function bump() {
   // TODO: Add juice here! What should happen when you bump your head?
   // Try calling: screenShake(2)
   // Try calling: beep(880, 80, 0.15)
-  // Try calling: playSound('bump')
 
   console.log('Bump!');
 }
@@ -462,7 +470,10 @@ function addRandomCoin() {
 
 function spawnCoins() {
   // Create all the coins
-  coins.length = 0;
+  if (coins.length > 0) {
+    coins.length = 0; // Clear existing coins
+  }
+
   for (let i = 0; i < NUMBER_OF_COINS; i++) {
     addRandomCoin();
   }
@@ -475,11 +486,7 @@ function collectCoin(coin) {
   // Remove from array
   const index = coins.indexOf(coin);
   if (index > -1) coins.splice(index, 1);
-
-  // Update score display
-  const scoreElement = document.getElementById('score');
-  if (scoreElement) scoreElement.textContent = score;
-
+ 
   // Call the juice function
   onCoinCollected(coin);
 
@@ -532,6 +539,10 @@ function respawnPlayer() {
   player.velocityY = 0;
   player.isOnGround = false;
   player.wasOnGround = false;
+
+  score = 0; // Reset score on death
+
+  spawnCoins(); // Respawn coins
 }
 
 function updateParticles() {
@@ -637,12 +648,4 @@ function gameLoop() {
 spawnCoins();  // Create coins when game starts
 gameLoop();
 
-// =============================================
-// 🛟 ERROR HANDLING (You can ignore this!)
-// =============================================
-// Catches mistakes and shows helpful error messages
 
-window.addEventListener('error', (e) => {
-  alert(`⚠️ Oops! ${e.message}\n\nCheck the console (F12) for details, or refresh to try again.`);
-  console.error('Game Error:', e.error);
-});
