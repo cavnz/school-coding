@@ -7,6 +7,7 @@ This folder contains the GitHub Pages website for the Juicy Platformer coding se
 - **index.html** - Main landing page with instructions and CodePen setup
 - **showcase.html** - Student project gallery
 - **showcase-data.js** - Student project data (edit this to add submissions)
+- **showcase/** - Folder containing all student project submissions
 - **style.css** - Styling for the site
 - **game.js** - Copy of the game code for students to reference
 - **game-style.css** - Original game styling
@@ -16,7 +17,7 @@ This folder contains the GitHub Pages website for the Juicy Platformer coding se
 
 To add a student's project to the showcase:
 
-1. Create a new folder in `../showcase/` with a numbered prefix (e.g., `03-student-name`)
+1. Create a new folder in `showcase/` with a numbered prefix (e.g., `03-student-name`)
 2. Add the student's three files to that folder:
    - `index.html`
    - `style.css`
@@ -29,7 +30,7 @@ To add a student's project to the showcase:
   title: "Project Name",
   author: "Student Name or Team Name",
   description: "Brief description of what makes it special",
-  folder: "../showcase/03-student-name"
+  folder: "showcase/03-student-name"
 }
 ```
 
