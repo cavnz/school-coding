@@ -164,9 +164,10 @@ function land() {
   spawnParticles(player.x + player.width / 2, player.y + player.height, platformColor, landParticles);
   spawnParticles(player.x + player.width / 2, player.y + player.height, '#6ee7df', Math.floor(landParticles * 0.6));
 
-  // Landing shockwave effect
-  for (let i = 0; i < 8; i++) {
-    const angle = (i / 8) * Math.PI * 2;
+  // Landing shockwave effect - grows with score
+  const shockwaveLines = Math.max(0, Math.floor(score / 150)); // Start with 0, gain more at high scores
+  for (let i = 0; i < shockwaveLines; i++) {
+    const angle = (i / Math.max(shockwaveLines, 1)) * Math.PI * 2;
     speedLines.push({
       x: player.x + player.width / 2,
       y: player.y + player.height,
@@ -195,9 +196,10 @@ function bump() {
   spawnParticles(player.x + player.width / 2, player.y, platformColor, bumpParticles);
   spawnParticles(player.x + player.width / 2, player.y, '#6ee7df', Math.floor(bumpParticles * 0.6));
 
-  // Stars circling the head!
-  for (let i = 0; i < 5; i++) {
-    const angle = (i / 5) * Math.PI * 2;
+  // Stars circling the head! Grow with score
+  const numStars = Math.max(0, Math.floor(score / 200)); // Start with 0, gain more at high scores
+  for (let i = 0; i < numStars; i++) {
+    const angle = (i / Math.max(numStars, 1)) * Math.PI * 2;
     particles.push({
       x: player.x + player.width / 2,
       y: player.y,
@@ -496,9 +498,10 @@ function onCoinCollected(coin) {
   spawnParticles(coin.x, coin.y, '#ffa726', Math.floor(coinParticles * 0.5));
   spawnParticles(coin.x, coin.y, '#fff9c4', Math.floor(coinParticles * 0.3));
 
-  // Shockwave
-  for (let i = 0; i < 12; i++) {
-    const angle = (i / 12) * Math.PI * 2;
+  // Shockwave grows with score!
+  const shockwaveCount = 4 + Math.floor(score / 100); // Start at 4, grows to 16+ at high scores
+  for (let i = 0; i < shockwaveCount; i++) {
+    const angle = (i / shockwaveCount) * Math.PI * 2;
     speedLines.push({
       x: coin.x,
       y: coin.y,
