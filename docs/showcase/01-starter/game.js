@@ -66,21 +66,14 @@ const badPlatforms = [
 // =============================================
 
 function jump() {
-  if (player.isOnGround) {
-    player.velocityY = -JUMP_POWER;
-    player.isOnGround = false;
 
     // TODO: Add juice here! What should happen when you jump?
     // Try calling: screenShake(3)
     // Try calling: beep(440, 100, 0.2)
-
     console.log('Jump!');
-  }
 }
 
 function land() {
-  // This is called ONCE when the player first touches the ground
-  // (not every frame while on the ground)
 
   // TODO: Add juice here! What should happen when you land?
   // Try calling: screenShake(5)
@@ -90,7 +83,6 @@ function land() {
 }
 
 function bump() {
-  player.velocityY = 0;
 
   // TODO: Add juice here! What should happen when you bump your head?
   // Try calling: screenShake(2)
@@ -100,8 +92,18 @@ function bump() {
 }
 
 function drawPlayer() {
+  // Draw the player's body as a rectangle
   ctx.fillStyle = PLAYER_COLOR;
   ctx.fillRect(player.x, player.y, player.width, player.height);
+
+  // TODO: Try drawing eyes! Eyes are circles
+  // ctx.fillStyle = 'white';
+  // ctx.beginPath();
+  // ctx.arc(player.x + 10, player.y + 10, 4, 0, Math.PI * 2);  // Left eye
+  // ctx.fill();
+  // ctx.beginPath();
+  // ctx.arc(player.x + 20, player.y + 10, 4, 0, Math.PI * 2);  // Right eye
+  // ctx.fill();
 }
 
 // =============================================
@@ -178,7 +180,6 @@ function onCoinCollected(coin) {
   // Try calling: screenShake(3)
   // Try calling: beep(660, 80, 0.3)
   // Try calling: spawnParticles(coin.x, coin.y, COIN_COLOR, 15)
-  // Try calling: playSound('coin')
 
   console.log('Coin collected! Score:', score, '- Coins left:', coins.length);
 }
@@ -258,37 +259,6 @@ function screenShake(intensity) {
   console.log('Screen shake!', intensity);
 }
 
-// Sound system for loading sound files
-const sounds = {
-  // You can add sound files here later!
-  // Format: 'soundName': 'path/to/sound.mp3'
-  // Example:
-  // 'jump': 'sounds/jump.wav',
-  // 'coin': 'sounds/coin.wav',
-  // 'land': 'sounds/land.wav'
-};
-
-function playSound(soundName, volume = 0.5, pitch = 1.0) {
-  // Plays a sound effect
-  // soundName: the name of the sound (must be in sounds object above)
-  // volume: how loud (0.0 to 1.0)
-  // pitch: how high/low (1.0 = normal, 0.5 = lower, 2.0 = higher)
-
-  if (sounds[soundName]) {
-    try {
-      const audio = new Audio(sounds[soundName]);
-      audio.volume = volume;
-      audio.playbackRate = pitch;
-      audio.play();
-      console.log('Playing sound:', soundName);
-    } catch (e) {
-      console.warn('Could not play sound:', soundName, e);
-    }
-  } else {
-    // Sound not found - that's okay, just log it
-    console.log('Sound not loaded yet:', soundName, '(add it to the sounds object!)');
-  }
-}
 
 // Simple beep sounds using Web Audio API (no files needed!)
 let audioContext = null;
@@ -364,7 +334,14 @@ function handleInput() {
 
   // Jumping
   if (keys['ArrowUp'] || keys['w'] || keys['W'] || keys[' ']) {
-    jump();
+    
+    if (player.isOnGround) {
+      player.velocityY = -JUMP_POWER;
+      player.isOnGround = false;
+      jump();
+    }
+  
+  
   }
 }
 
@@ -424,6 +401,7 @@ function checkPlatformCollisions() {
       if (player.velocityY < 0 &&
         player.y - player.velocityY >= platform.y + platform.height) {
         player.y = platform.y + platform.height;
+        player.velocityY = 0;
         bump();
       }
     }
