@@ -144,10 +144,25 @@ function onDeath() {
 // =============================================
 
 function drawBadPlatforms() {
-  // Draw the dangerous platforms (spikes, lava, etc.)
+  // Draw the dangerous platforms as spikes!
   ctx.fillStyle = BAD_PLATFORM_COLOR;
   for (const platform of badPlatforms) {
-    ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+    // Draw spikes across the width of the platform
+    const spikeWidth = 20;  // How wide each spike is
+    const numSpikes = Math.ceil(platform.width / spikeWidth);
+
+    for (let i = 0; i < numSpikes; i++) {
+      const x = platform.x + i * spikeWidth;
+      const y = platform.y;
+
+      // Draw triangle spike
+      ctx.beginPath();
+      ctx.moveTo(x, y + platform.height);  // Bottom left
+      ctx.lineTo(x + spikeWidth / 2, y);   // Top point
+      ctx.lineTo(x + spikeWidth, y + platform.height);  // Bottom right
+      ctx.closePath();
+      ctx.fill();
+    }
   }
 }
 
