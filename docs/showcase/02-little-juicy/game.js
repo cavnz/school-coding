@@ -23,9 +23,9 @@ const FRICTION = 0.8;          // How slippery the ground is (0.9 = ice, 0.5 = s
 
 // Visual Settings
 const PLAYER_SIZE = 30;          // Size of your character (try 20 or 50)
-const PLAYER_COLOR = '#ff6b9d';  // Color of player (try '#e74c3c' or '#2ecc71')
-const PLATFORM_COLOR = '#4ecdc4'; // Color of platforms (try '#34495e' or '#7f8c8d')
-const BACKGROUND_COLOR = '#1a1a2e'; // Color of background (try '#2c3e50' or '#1a1a1a')
+const PLAYER_COLOR = 'rgb(255, 107, 157)';  // Color of player (try 'rgb(231, 76, 60)' or 'rgb(46, 204, 113)')
+const PLATFORM_COLOR = 'rgb(78, 205, 196)'; // Color of platforms (try 'rgb(52, 73, 94)' or 'rgb(127, 140, 141)')
+const BACKGROUND_COLOR = 'rgb(26, 26, 46)'; // Color of background (try 'rgb(44, 62, 80)' or 'rgb(26, 26, 26)')
 
 // Platforms to jump on
 const platforms = [
@@ -40,17 +40,17 @@ const platforms = [
 
 // Score Display Settings
 const SCORE_SIZE = 48;            // Font size for score (try 36, 64, 80!)
-const SCORE_COLOR = '#ffeb3b';    // Color of score text (try '#f1c40f' or '#2ecc71')
+const SCORE_COLOR = 'rgb(255, 235, 59)';    // Color of score text (try 'rgb(241, 196, 15)' or 'rgb(46, 204, 113)')
 const SCORE_Y_POSITION = 550 + SCORE_SIZE / 2;     // Y position of score (higher = lower on screen)
 
 // Coin Settings
 const NUMBER_OF_COINS = 10;      // How many coins to spawn (try 3, 10, 20!)
 const POINTS_PER_COIN = 100;     // How many points per coin (try 1, 100, 1000!)
 const COIN_SIZE = 20;            // Size of coins
-const COIN_COLOR = '#ffd93d';    // Color of coins (try '#f1c40f' or '#e67e22')
+const COIN_COLOR = 'rgb(255, 217, 61)';    // Color of coins (try 'rgb(241, 196, 15)' or 'rgb(230, 126, 34)')
 
 // Death Settings
-const BAD_PLATFORM_COLOR = '#ff3366';  // Color of dangerous platforms (try '#c0392b' or '#000000')
+const BAD_PLATFORM_COLOR = 'rgb(255, 51, 102)';  // Color of dangerous platforms (try 'rgb(192, 57, 43)' or 'rgb(0, 0, 0)')
 const RESPAWN_X = 100;           // Where to respawn horizontally
 const RESPAWN_Y = 100;           // Where to respawn vertically
 
@@ -97,7 +97,7 @@ function bump() {
   // Head bump effects - short and high-pitched
   screenShake(2);
   beep(880, 80, 0.15);
-  spawnParticles(player.x + player.width / 2, player.y, '#95a5a6', 8);
+  spawnParticles(player.x + player.width / 2, player.y, 'rgb(149, 165, 166)', 8);
 
   console.log('Bump!');
 }
@@ -155,8 +155,8 @@ function drawScore() {
 
   // Change color based on score!
   let scoreColor = SCORE_COLOR;
-  if (score >= 1000) scoreColor = '#ff6b9d';  // Pink for high scores!
-  else if (score >= 500) scoreColor = '#a78bfa';  // Purple for medium scores
+  if (score >= 1000) scoreColor = 'rgb(255, 107, 157)';  // Pink for high scores!
+  else if (score >= 500) scoreColor = 'rgb(167, 139, 250)';  // Purple for medium scores
 
   ctx.fillStyle = scoreColor;
   ctx.font = `bold ${pulsingSize}px Arial`;
@@ -175,7 +175,7 @@ function onDeath() {
   screenShake(15);
   beep(110, 300, 0.4);
   spawnParticles(player.x + player.width / 2, player.y + player.height / 2, PLAYER_COLOR, 50);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#ff3366', 30);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(255, 51, 102)', 30);
 
   console.log('You died! Respawning...');
 }
@@ -219,7 +219,7 @@ function onCoinCollected(coin) {
   screenShake(3);
   beep(660, 80, 0.3);
   spawnParticles(coin.x, coin.y, COIN_COLOR, 20);
-  spawnParticles(coin.x, coin.y, '#ffeb3b', 10);
+  spawnParticles(coin.x, coin.y, 'rgb(255, 235, 59)', 10);
 
   // Make the score pulse bigger!
   scorePulse = 1.3;
@@ -238,10 +238,10 @@ function onAllCoinsCollected() {
   setTimeout(() => beep(1320, 300, 0.5), 300);
 
   // Explosion of colorful particles from the player!
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#4ecdc4', 50);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#ff6b9d', 40);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#ffd93d', 40);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#a78bfa', 30);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(78, 205, 196)', 50);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(255, 107, 157)', 40);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(255, 217, 61)', 40);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(167, 139, 250)', 30);
 
   // MASSIVE score pulse!
   scorePulse = 2.0;
@@ -253,7 +253,7 @@ function drawCoins() {
   // Draw coins with a simple glow effect!
   for (const coin of coins) {
     // Draw outer glow (try changing the color or size!)
-    ctx.fillStyle = '#ffeb3b';  // Lighter yellow for glow
+    ctx.fillStyle = 'rgb(255, 235, 59)';  // Lighter yellow for glow
     ctx.beginPath();
     ctx.arc(coin.x, coin.y, coin.size / 2 + 2, 0, Math.PI * 2);
     ctx.fill();
@@ -278,7 +278,7 @@ function drawCoins() {
 
 function spawnParticles(x, y, color, count = 10) {
   // Create particle explosion at position (x, y)
-  // color: particle color (try '#f39c12', '#e74c3c', '#3498db')
+  // color: particle color (try 'rgb(243, 156, 18)', 'rgb(231, 76, 60)', 'rgb(52, 152, 219)')
   // count: how many particles (try 5, 20, 50)
 
   for (let i = 0; i < count; i++) {

@@ -30,7 +30,7 @@ const JUMP_POWER = 12;         // Try: 8 (low), 20 (super jump)
 const PLAYER_SPEED = 5;        // Try: 2 (slow), 10 (fast)
 const FRICTION = 0.8;          // Try: 0.95 (ice), 0.5 (sticky)
 const PLAYER_SIZE = 30;        // Try: 15 (tiny), 60 (huge)
-const PLAYER_COLOR = '#3498db'; // Try: '#e74c3c' (red), '#2ecc71' (green)
+const PLAYER_COLOR = 'rgb(52, 152, 219)'; // Try: 'rgb(231, 76, 60)' (red), 'rgb(46, 204, 113)' (green)
 ```
 
 **Questions to explore:**

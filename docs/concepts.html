@@ -153,6 +153,219 @@
       <section class="intro">
         <h2>What You'll Learn</h2>
         <p>These are the key concepts that make our platformer game work. Understanding these will help you customize the game and create your own awesome effects!</p>
+        <p><strong>Start with the basics:</strong> Configuration and Functions are the foundation of everything!</p>
+      </section>
+
+      <!-- Configuration -->
+      <section class="concept-section">
+        <h2>⚙️ Configuration: Setting Up Values</h2>
+
+        <h3>What is Configuration?</h3>
+        <p>Configuration means <strong>setting up values at the top of your code</strong> that control how everything else works. Instead of using random numbers scattered everywhere, you give each number a clear name and put them all in one place.</p>
+
+        <p><strong>Why is this important?</strong></p>
+        <ul>
+          <li><strong>Easy to find:</strong> All the numbers you might want to change are at the top</li>
+          <li><strong>Easy to understand:</strong> <code>GRAVITY = 0.5</code> is clearer than just seeing <code>0.5</code> somewhere in the code</li>
+          <li><strong>Easy to experiment:</strong> Change one value and see how it affects the whole game!</li>
+          <li><strong>No mistakes:</strong> If you want to change gravity, you change it once, not 10 times in different places</li>
+        </ul>
+
+        <h3>Configuration in Our Game</h3>
+        <p>At the very top of the game code, you'll see constants like these:</p>
+
+        <pre class="code-example"><span class="comment">// === GAME CONFIGURATION ===</span>
+<span class="comment">// Physics - how the game world behaves</span>
+<span class="keyword">const</span> GRAVITY = <span class="number">0.5</span>;              <span class="comment">// How fast things fall</span>
+<span class="keyword">const</span> JUMP_POWER = <span class="number">12</span>;           <span class="comment">// How high you jump</span>
+<span class="keyword">const</span> PLAYER_SPEED = <span class="number">5</span>;          <span class="comment">// How fast you move left/right</span>
+<span class="keyword">const</span> FRICTION = <span class="number">0.8</span>;            <span class="comment">// How slippery the ground is</span>
+
+<span class="comment">// Visual settings - how things look</span>
+<span class="keyword">const</span> BACKGROUND_COLOR = <span class="string">'#34495e'</span>;
+<span class="keyword">const</span> PLAYER_COLOR = <span class="string">'#3498db'</span>;
+<span class="keyword">const</span> PLATFORM_COLOR = <span class="string">'#2c3e50'</span>;
+
+<span class="comment">// Coin settings</span>
+<span class="keyword">const</span> NUMBER_OF_COINS = <span class="number">5</span>;        <span class="comment">// How many coins spawn</span>
+<span class="keyword">const</span> POINTS_PER_COIN = <span class="number">10</span>;      <span class="comment">// Points for each coin</span>
+<span class="keyword">const</span> COIN_SIZE = <span class="number">15</span>;             <span class="comment">// How big coins are</span></pre>
+
+        <h3>How the Rest of the Code Uses These</h3>
+        <p>Once you set these values at the top, the rest of the game uses them automatically:</p>
+
+        <pre class="code-example"><span class="comment">// Later in the code, when making the player fall:</span>
+<span class="keyword">function</span> applyPhysics() {
+  player.velocityY += GRAVITY;  <span class="comment">// Use the GRAVITY value from the top!</span>
+  player.x += player.velocityX * FRICTION;  <span class="comment">// Use FRICTION too!</span>
+}
+
+<span class="comment">// When the player jumps:</span>
+<span class="keyword">function</span> jump() {
+  player.velocityY = -JUMP_POWER;  <span class="comment">// Use JUMP_POWER from config</span>
+}
+
+<span class="comment">// When drawing the background:</span>
+<span class="keyword">function</span> render() {
+  ctx.fillStyle = BACKGROUND_COLOR;  <span class="comment">// Use the color from config</span>
+  ctx.fillRect(<span class="number">0</span>, <span class="number">0</span>, canvas.width, canvas.height);
+}</pre>
+
+        <h3>The Power of Configuration</h3>
+        <p>Watch what happens when you change just ONE value at the top:</p>
+
+        <pre class="code-example"><span class="comment">// Change this at the top:</span>
+<span class="keyword">const</span> GRAVITY = <span class="number">0.2</span>;  <span class="comment">// Changed from 0.5 to 0.2</span>
+
+<span class="comment">// Now EVERYWHERE in the code that uses GRAVITY automatically changes!</span>
+<span class="comment">// The player falls slower</span>
+<span class="comment">// Particles float down gently</span>
+<span class="comment">// The whole game feels like you're on the moon!</span>
+<span class="comment">// And you only changed ONE number!</span></pre>
+
+        <h3>Try This!</h3>
+        <p>Experiment with these configuration changes at the top of the game code:</p>
+        <ul>
+          <li><strong>Moon gravity:</strong> <code>GRAVITY = 0.2</code></li>
+          <li><strong>Super jump:</strong> <code>JUMP_POWER = 20</code></li>
+          <li><strong>Ice mode:</strong> <code>FRICTION = 0.95</code></li>
+          <li><strong>Speed demon:</strong> <code>PLAYER_SPEED = 10</code></li>
+          <li><strong>Coin party:</strong> <code>NUMBER_OF_COINS = 20</code></li>
+        </ul>
+
+        <p><strong>Pro Tip:</strong> This is why constants use UPPERCASE_NAMES - it makes them easy to spot and tells you "this is a setting you can change!"</p>
+      </section>
+
+      <!-- Functions -->
+      <section class="concept-section">
+        <h2>🎯 Functions: Instructions to the Computer</h2>
+
+        <h3>What is a Function?</h3>
+        <p>A function is like a <strong>recipe</strong> or a <strong>set of instructions</strong> that you give to the computer. You give the recipe a name, and whenever you "call" that name, the computer follows those instructions.</p>
+
+        <p>Think of it like teaching a robot a dance move:</p>
+        <ul>
+          <li><strong>Define the function:</strong> You teach the robot: "When I say 'spin', do a 360° turn"</li>
+          <li><strong>Call the function:</strong> Later you shout "spin!" and the robot does it</li>
+          <li><strong>Reuse it:</strong> You can say "spin" as many times as you want, and the robot remembers what to do</li>
+        </ul>
+
+        <h3>Writing a Function</h3>
+        <p>Here's how you create a function in JavaScript:</p>
+
+        <pre class="code-example"><span class="comment">// Define a function called "sayHello"</span>
+<span class="keyword">function</span> sayHello() {
+  console.log(<span class="string">'Hello, world!'</span>);
+  console.log(<span class="string">'Welcome to coding!'</span>);
+}
+
+<span class="comment">// Now you can "call" the function - run those instructions</span>
+sayHello();  <span class="comment">// This will print both messages</span>
+
+<span class="comment">// Call it again!</span>
+sayHello();  <span class="comment">// Prints the messages again</span></pre>
+
+        <h3>Functions Can Accept Information</h3>
+        <p>Functions can receive <strong>parameters</strong> (inputs) to work with:</p>
+
+        <pre class="code-example"><span class="comment">// Function that takes a name as input</span>
+<span class="keyword">function</span> greet(name) {
+  console.log(<span class="string">'Hello, '</span> + name + <span class="string">'!'</span>);
+}
+
+<span class="comment">// Call it with different names</span>
+greet(<span class="string">'Alice'</span>);   <span class="comment">// Prints: Hello, Alice!</span>
+greet(<span class="string">'Bob'</span>);     <span class="comment">// Prints: Hello, Bob!</span>
+
+<span class="comment">// Functions can take multiple parameters</span>
+<span class="keyword">function</span> addNumbers(a, b) {
+  <span class="keyword">const</span> sum = a + b;
+  console.log(sum);
+}
+
+addNumbers(<span class="number">5</span>, <span class="number">3</span>);   <span class="comment">// Prints: 8</span>
+addNumbers(<span class="number">10</span>, <span class="number">20</span>); <span class="comment">// Prints: 30</span></pre>
+
+        <h3>Functions in Our Game</h3>
+        <p>Our platformer game is built from many functions that work together:</p>
+
+        <pre class="code-example"><span class="comment">// A function that makes the player jump</span>
+<span class="keyword">function</span> jump() {
+  player.velocityY = -JUMP_POWER;   <span class="comment">// Change velocity</span>
+  screenShake(<span class="number">3</span>);                   <span class="comment">// Call another function!</span>
+  beep(<span class="number">440</span>, <span class="number">100</span>, <span class="number">0.2</span>);             <span class="comment">// Call another function!</span>
+}
+
+<span class="comment">// A function that spawns particles</span>
+<span class="keyword">function</span> spawnParticles(x, y, color, count) {
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < count; i++) {
+    <span class="comment">// Create particles at position (x, y) with the given color</span>
+    particles.push({
+      x: x,
+      y: y,
+      color: color,
+      velocityX: Math.random() * <span class="number">6</span> - <span class="number">3</span>,
+      velocityY: Math.random() * <span class="number">-8</span>
+    });
+  }
+}
+
+<span class="comment">// Later in the code, we can call these functions:</span>
+<span class="keyword">if</span> (spacePressed) {
+  jump();  <span class="comment">// Call the jump function</span>
+}
+
+<span class="comment">// When a coin is collected:</span>
+spawnParticles(coin.x, coin.y, <span class="string">'#FFD700'</span>, <span class="number">15</span>);  <span class="comment">// Gold particles!</span></pre>
+
+        <h3>Chain Reactions: Functions Calling Functions</h3>
+        <p>This is where it gets really cool! One function can call other functions, creating <strong>chain reactions</strong>:</p>
+
+        <pre class="code-example"><span class="comment">// When a coin is collected, this function runs:</span>
+<span class="keyword">function</span> onCoinCollected(coin) {
+  <span class="comment">// This ONE function calls multiple other functions!</span>
+  spawnParticles(coin.x, coin.y, <span class="string">'#FFD700'</span>, <span class="number">20</span>);  <span class="comment">// Makes particles</span>
+  screenShake(<span class="number">5</span>);                              <span class="comment">// Shakes screen</span>
+  beep(<span class="number">660</span>, <span class="number">100</span>, <span class="number">0.3</span>);                       <span class="comment">// Makes sound</span>
+}
+
+<span class="comment">// The game loop checks for coin collision and calls this:</span>
+<span class="keyword">if</span> (playerTouchingCoin) {
+  collectCoin(coin);  <span class="comment">// This system function...</span>
+}
+
+<span class="keyword">function</span> collectCoin(coin) {
+  score += POINTS_PER_COIN;
+  onCoinCollected(coin);  <span class="comment">// ...calls YOUR juice function!</span>
+}
+
+<span class="comment">// ONE coin collection triggers a CHAIN REACTION:
+// 1. collectCoin runs
+// 2. onCoinCollected runs
+// 3. spawnParticles runs
+// 4. screenShake runs
+// 5. beep runs
+// All from one event!</span></pre>
+
+        <h3>Why Functions Are Amazing</h3>
+        <ul>
+          <li><strong>Reusable:</strong> Write the code once, use it many times</li>
+          <li><strong>Organized:</strong> Each function has a clear purpose (jump, draw, shake, etc.)</li>
+          <li><strong>Easier to read:</strong> <code>jump()</code> is clearer than copy-pasting 10 lines of code</li>
+          <li><strong>Easy to change:</strong> Update one function and it changes everywhere it's used</li>
+          <li><strong>Chain reactions:</strong> Create complex effects by combining simple functions</li>
+        </ul>
+
+        <h3>Try This!</h3>
+        <p>In the game code, find these student-friendly functions and experiment:</p>
+        <ul>
+          <li><strong>jump():</strong> Add effects when the player jumps</li>
+          <li><strong>land():</strong> Add effects when the player lands on a platform</li>
+          <li><strong>onCoinCollected():</strong> Make coin collection more exciting</li>
+          <li><strong>onAllCoinsCollected():</strong> Create an epic victory celebration</li>
+        </ul>
+
+        <p><strong>Pro Tip:</strong> Look for the <code>TODO</code> comments in these functions - they suggest which other functions you can call to add juice!</p>
       </section>
 
       <!-- RGB and Hex Colors -->

@@ -23,9 +23,9 @@ const FRICTION = 0.8;          // How slippery the ground is (0.9 = ice, 0.5 = s
 
 // Visual Settings
 const PLAYER_SIZE = 30;          // Size of your character (try 20 or 50)
-const PLAYER_COLOR = '#3498db';  // Color of player (try '#e74c3c' or '#2ecc71')
-const PLATFORM_COLOR = '#95a5a6'; // Color of platforms (try '#34495e' or '#7f8c8d')
-const BACKGROUND_COLOR = '#34495e'; // Color of background (try '#2c3e50' or '#1a1a1a')
+const PLAYER_COLOR = 'rgb(52, 152, 219)';  // Color of player (try 'rgb(231, 76, 60)' or 'rgb(46, 204, 113)')
+const PLATFORM_COLOR = 'rgb(149, 165, 166)'; // Color of platforms (try 'rgb(52, 73, 94)' or 'rgb(127, 140, 141)')
+const BACKGROUND_COLOR = 'rgb(52, 73, 94)'; // Color of background (try 'rgb(44, 62, 80)' or 'rgb(26, 26, 26)')
 
 // Platforms to jump on
 const platforms = [
@@ -40,17 +40,17 @@ const platforms = [
 
 // Score Display Settings
 const SCORE_SIZE = 48;            // Font size for score (try 36, 64, 80!)
-const SCORE_COLOR = '#ecf0f1';    // Color of score text (try '#f1c40f' or '#2ecc71')
+const SCORE_COLOR = 'rgb(236, 240, 241)';    // Color of score text (try 'rgb(241, 196, 15)' or 'rgb(46, 204, 113)')
 const SCORE_Y_POSITION = 550 + SCORE_SIZE / 2;     // Y position of score (higher = lower on screen)
 
 // Coin Settings
 const NUMBER_OF_COINS = 0;       // How many coins to spawn (try 3, 10, 20!)
 const POINTS_PER_COIN = 100;     // How many points per coin (try 1, 100, 1000!)
 const COIN_SIZE = 20;            // Size of coins
-const COIN_COLOR = '#f39c12';    // Color of coins (try '#f1c40f' or '#e67e22')
+const COIN_COLOR = 'rgb(243, 156, 18)';    // Color of coins (try 'rgb(241, 196, 15)' or 'rgb(230, 126, 34)')
 
 // Death Settings
-const BAD_PLATFORM_COLOR = '#e74c3c';  // Color of dangerous platforms (try '#c0392b' or '#000000')
+const BAD_PLATFORM_COLOR = 'rgb(231, 76, 60)';  // Color of dangerous platforms (try 'rgb(192, 57, 43)' or 'rgb(0, 0, 0)')
 const RESPAWN_X = 100;           // Where to respawn horizontally
 const RESPAWN_Y = 100;           // Where to respawn vertically
 
@@ -188,7 +188,7 @@ function onAllCoinsCollected() {
   // Add a victory celebration here
 
   // TODO: Make it epic! Try:
-  // spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#2ecc71', 100);
+  // spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(46, 204, 113)', 100);
   // screenShake(10);
   // beep(880, 200, 0.5);
 
@@ -210,7 +210,7 @@ function drawCoins() {
 
 function spawnParticles(x, y, color, count = 10) {
   // Create particle explosion at position (x, y)
-  // color: particle color (try '#f39c12', '#e74c3c', '#3498db')
+  // color: particle color (try 'rgb(243, 156, 18)', 'rgb(231, 76, 60)', 'rgb(52, 152, 219)')
   // count: how many particles (try 5, 20, 50)
 
   for (let i = 0; i < count; i++) {
