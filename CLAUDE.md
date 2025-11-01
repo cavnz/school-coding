@@ -77,21 +77,6 @@ This pattern is used for player actions too:
   - Checks other coins with minimum distance (2x object size)
   - Returns true if too close, false if valid spawn position
 
-### Chain Reaction Example
-
-When a coin is collected, this cascade occurs:
-```
-checkCoinCollisions() → collectCoin(coin)
-  ├── Update score
-  ├── Remove coin from array
-  ├── Update DOM score display
-  ├── Call onCoinCollected(coin) [students add effects here]
-  └── If all coins gone:
-      ├── Call onAllCoinsCollected() [students add celebration]
-      └── Call spawnCoins()
-```
-
-This is the core teaching concept - showing how functions trigger other functions.
 
 ## Development Commands
 
@@ -100,7 +85,7 @@ This is the core teaching concept - showing how functions trigger other function
 npm start  # Start server
 ```
 
-**CodePen deployment (for students):**
+**JSFiddle deployment:**
 - HTML tab: Copy `index.html` body content only (no doctype/html/head/body tags)
 - CSS tab: Copy entire `style.css`
 - JS tab: Copy entire `game.js`
