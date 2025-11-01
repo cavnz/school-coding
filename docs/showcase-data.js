@@ -5,21 +5,20 @@
 //   title: "Project Name",
 //   author: "Student Name or Team Name",
 //   description: "What makes this version special",
-//   codepenUrl: "https://codepen.io/username/pen/xxxxx"
+//   folder: "showcase/folder-name"  // Path to the project folder
 // }
 
 const projects = [
-  // Example (remove this when you have real submissions):
-  // {
-  //   title: "Moon Gravity Madness",
-  //   author: "Team Awesome",
-  //   description: "We set gravity to 0.1 and made the coins huge! Added tons of particles when you collect all coins.",
-  //   codepenUrl: "https://codepen.io/username/pen/xxxxx"
-  // },
-  // {
-  //   title: "Rainbow Explosion",
-  //   author: "Sarah & Mike",
-  //   description: "Changed all the colors and made particles spawn with random colors. Super satisfying!",
-  //   codepenUrl: "https://codepen.io/username/pen/yyyyy"
-  // }
+  {
+    title: "Starter Version",
+    author: "Teacher Demo",
+    description: "The basic starting point with no effects added yet. This is where everyone begins!",
+    folder: "../showcase/01-starter"
+  },
+  {
+    title: "Super Juicy Edition",
+    author: "Teacher Demo - Ultimate Version",
+    description: "EVERY effect enabled and cranked to 11! Rainbow particles, screen shake, glowing coins, animated background, epic victory fanfare. This is what's possible!",
+    folder: "../showcase/02-super-juicy"
+  }
 ];

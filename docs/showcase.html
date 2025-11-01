@@ -180,18 +180,18 @@
         <div class="submit-form">
           <p><strong>How to submit:</strong></p>
           <ol>
-            <li>Save your CodePen project (you'll need a free account)</li>
-            <li>Copy the URL from your browser (e.g., https://codepen.io/username/pen/xxxxx)</li>
+            <li>Save your HTML, CSS, and JavaScript files from CodePen</li>
             <li>Contact your teacher with:
               <ul>
                 <li>Your name (or team name)</li>
-                <li>Your CodePen URL</li>
+                <li>Your three files (index.html, style.css, game.js)</li>
                 <li>A brief description of what makes your version special</li>
               </ul>
             </li>
+            <li>Your teacher will create a folder for your project in the showcase!</li>
           </ol>
 
-          <p style="margin-top: 20px;"><em>Your teacher will add your project to this showcase!</em></p>
+          <p style="margin-top: 20px;"><em>Your project will appear here alongside everyone else's creations!</em></p>
         </div>
       </section>
 
@@ -232,8 +232,8 @@
         const card = document.createElement('div');
         card.className = 'project-card';
 
-        const preview = project.codepenUrl
-          ? `<iframe src="${project.codepenUrl}/embed/preview" loading="lazy" allowfullscreen></iframe>`
+        const preview = project.folder
+          ? `<iframe src="${project.folder}/index.html" loading="lazy" allowfullscreen></iframe>`
           : `<div class="project-preview">Preview Coming Soon</div>`;
 
         card.innerHTML = `
@@ -242,7 +242,7 @@
             <div class="project-title">${escapeHtml(project.title)}</div>
             <div class="project-author">by ${escapeHtml(project.author)}</div>
             <div class="project-description">${escapeHtml(project.description)}</div>
-            ${project.codepenUrl ? `<a href="${project.codepenUrl}" target="_blank" class="project-link">View on CodePen →</a>` : ''}
+            ${project.folder ? `<a href="${project.folder}/index.html" target="_blank" class="project-link">Play Full Screen →</a>` : ''}
           </div>
         `;
 

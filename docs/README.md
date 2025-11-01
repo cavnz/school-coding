@@ -16,20 +16,25 @@ This folder contains the GitHub Pages website for the Juicy Platformer coding se
 
 To add a student's project to the showcase:
 
-1. Edit `showcase-data.js`
-2. Add a new entry to the `projects` array:
+1. Create a new folder in `../showcase/` with a numbered prefix (e.g., `03-student-name`)
+2. Add the student's three files to that folder:
+   - `index.html`
+   - `style.css`
+   - `game.js`
+3. Create a `README.md` in the folder describing the project
+4. Edit `showcase-data.js` and add a new entry to the `projects` array:
 
 ```javascript
 {
   title: "Project Name",
   author: "Student Name or Team Name",
   description: "Brief description of what makes it special",
-  codepenUrl: "https://codepen.io/username/pen/xxxxx"
+  folder: "../showcase/03-student-name"
 }
 ```
 
-3. Commit and push the changes
-4. The showcase will automatically update!
+5. Commit and push the changes
+6. The showcase will automatically update with an embedded preview!
 
 ## GitHub Pages Setup
 
