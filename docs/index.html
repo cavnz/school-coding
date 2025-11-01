@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juicy Platformer - Year 8 Coding Session</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎮 Juicy Platformer</h1>
+      <p class="subtitle">Year 8 Coding Session - Making Games Feel Awesome!</p>
+    </header>
+
+    <main>
+      <section class="intro">
+        <h2>Welcome!</h2>
+        <p>Today we're learning about <strong>chain reactions in code</strong> and how to make games feel satisfying by adding "juice" - screen shake, particles, sounds, and other special effects!</p>
+      </section>
+
+      <section class="quick-start">
+        <h2>🚀 Getting Started with CodePen</h2>
+        <p>Follow these steps to start coding:</p>
+
+        <ol>
+          <li>Go to <a href="https://codepen.io/pen/" target="_blank">codepen.io/pen</a> (create a free account if needed)</li>
+          <li>Copy the code from each section below into the matching CodePen tab</li>
+          <li>Start experimenting!</li>
+        </ol>
+
+        <div class="code-boxes">
+          <div class="code-box">
+            <h3>HTML Tab</h3>
+            <p>Copy this into the HTML section:</p>
+            <button class="copy-btn" onclick="copyCode('html-code')">📋 Copy HTML</button>
+            <pre><code id="html-code">&lt;h1&gt;Juicy Platformer&lt;/h1&gt;
+&lt;canvas id="gameCanvas" width="800" height="600"&gt;&lt;/canvas&gt;
+&lt;div class="info"&gt;Use Arrow Keys or WASD to move • Space to jump&lt;/div&gt;
+
+&lt;!-- TODO: Uncomment below to show score when you add coins! --&gt;
+&lt;!--
+&lt;div id="scoreDisplay" class="score"&gt;
+  Score: &lt;span id="score"&gt;0&lt;/span&gt;
+&lt;/div&gt;
+--&gt;</code></pre>
+          </div>
+
+          <div class="code-box">
+            <h3>CSS Tab</h3>
+            <p>Copy this into the CSS section:</p>
+            <button class="copy-btn" onclick="copyCode('css-code')">📋 Copy CSS</button>
+            <div class="link-box">
+              <a href="style.css" target="_blank" class="view-link">View CSS File →</a>
+            </div>
+          </div>
+
+          <div class="code-box">
+            <h3>JS Tab</h3>
+            <p>Copy this into the JavaScript section:</p>
+            <button class="copy-btn" onclick="copyCode('js-code')">📋 Copy JavaScript</button>
+            <div class="link-box">
+              <a href="game.js" target="_blank" class="view-link">View JS File →</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="activities">
+        <h2>🎯 Your Mission</h2>
+
+        <div class="activity">
+          <h3>Part 1: Experiment with Physics (5-10 min)</h3>
+          <p>At the top of the JavaScript, try changing these values:</p>
+          <ul>
+            <li><code>GRAVITY = 0.5</code> → Try 0.2 (moon) or 1.5 (heavy)</li>
+            <li><code>JUMP_POWER = 12</code> → Try 8 (low) or 20 (super jump)</li>
+            <li><code>PLAYER_SPEED = 5</code> → Try 2 (slow) or 10 (fast)</li>
+            <li><code>FRICTION = 0.8</code> → Try 0.95 (ice) or 0.5 (sticky)</li>
+          </ul>
+        </div>
+
+        <div class="activity">
+          <h3>Part 2: Add Coins & Scoring (10 min)</h3>
+          <ol>
+            <li>In the HTML tab, uncomment the score display</li>
+            <li>Change <code>NUMBER_OF_COINS</code> to see more/fewer coins</li>
+            <li>Experiment with <code>POINTS_PER_COIN</code> and <code>COIN_SIZE</code></li>
+          </ol>
+        </div>
+
+        <div class="activity">
+          <h3>Part 3: Make It Juicy! (15-20 min)</h3>
+          <p>Find the <code>TODO</code> comments in the code and uncomment the suggested effects:</p>
+          <ul>
+            <li><strong>Jump effects:</strong> <code>screenShake(3)</code> and <code>beep(440, 100, 0.2)</code></li>
+            <li><strong>Land effects:</strong> <code>screenShake(5)</code> and <code>beep(220, 50, 0.3)</code></li>
+            <li><strong>Coin collection:</strong> <code>spawnParticles()</code>, <code>screenShake()</code>, and <code>beep()</code></li>
+            <li><strong>All coins collected:</strong> Make an epic celebration!</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="chain-reaction">
+        <h2>🔄 The Chain Reaction</h2>
+        <p>When you collect a coin, watch how one action triggers many functions:</p>
+        <div class="flow">
+          <code>checkCoinCollisions()</code> →
+          <code>collectCoin()</code> →
+          <code>onCoinCollected()</code> →
+          <code>screenShake()</code> + <code>beep()</code> + <code>spawnParticles()</code>
+        </div>
+        <p>This is the power of chain reactions in code!</p>
+      </section>
+
+      <section class="showcase">
+        <h2>🌟 Student Showcase</h2>
+        <p>Check out what others have created! <a href="showcase.html">View the Showcase →</a></p>
+        <p class="coming-soon">(Showcase coming soon - keep an eye out for your classmates' awesome creations!)</p>
+      </section>
+
+      <section class="resources">
+        <h2>📚 Resources</h2>
+        <ul>
+          <li><a href="https://github.com/cavnz/school-coding" target="_blank">View Source Code on GitHub</a></li>
+          <li><a href="https://github.com/cavnz/school-coding/blob/main/README.md" target="_blank">Full README</a></li>
+          <li><a href="demo.html" target="_blank">Play the Demo</a></li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <p>Have fun! The best way to learn coding is to experiment and break things! 🚀</p>
+    </footer>
+  </div>
+
+  <script>
+    function copyCode(elementId) {
+      const element = document.getElementById(elementId);
+      const text = element.textContent;
+
+      navigator.clipboard.writeText(text).then(() => {
+        // Show feedback
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = '✅ Copied!';
+        btn.style.background = '#2ecc71';
+
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '';
+        }, 2000);
+      }).catch(err => {
+        alert('Failed to copy. Please select and copy manually.');
+      });
+    }
+  </script>
+</body>
+</html>

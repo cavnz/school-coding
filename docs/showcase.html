@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Showcase - Juicy Platformer</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .project-card {
+      background: white;
+      border: 2px solid #e1e4e8;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .project-preview {
+      width: 100%;
+      height: 200px;
+      background: #34495e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ecf0f1;
+      font-size: 1.2em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-preview iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .project-info {
+      padding: 20px;
+    }
+
+    .project-title {
+      font-size: 1.3em;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .project-author {
+      color: #7f8c8d;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+
+    .project-description {
+      color: #34495e;
+      margin-bottom: 15px;
+      font-size: 0.95em;
+    }
+
+    .project-link {
+      display: inline-block;
+      background: #3498db;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .project-link:hover {
+      background: #2980b9;
+      text-decoration: none;
+    }
+
+    .submit-section {
+      background: #e8f4f8;
+      padding: 30px;
+      border-radius: 10px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .submit-form {
+      max-width: 600px;
+      margin: 20px auto;
+      text-align: left;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #bdc3c7;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 1em;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .submit-btn {
+      background: #2ecc71;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1em;
+      transition: background 0.3s;
+    }
+
+    .submit-btn:hover {
+      background: #27ae60;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #7f8c8d;
+    }
+
+    .empty-state h3 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌟 Student Showcase</h1>
+      <p class="subtitle">Amazing Games Created by Year 8 Students!</p>
+    </header>
+
+    <main>
+      <section>
+        <a href="index.html">← Back to Instructions</a>
+
+        <h2>Gallery</h2>
+
+        <div id="gallery" class="gallery">
+          <!-- Projects will be loaded here -->
+          <div class="empty-state">
+            <h3>🎨</h3>
+            <p>No projects yet! Be the first to submit your creation.</p>
+            <p>Once you've finished your game on CodePen, scroll down to submit it!</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="submit-section">
+        <h2>Submit Your Game!</h2>
+        <p>Finished your juicy platformer? Share it with the class!</p>
+
+        <div class="submit-form">
+          <p><strong>How to submit:</strong></p>
+          <ol>
+            <li>Save your CodePen project (you'll need a free account)</li>
+            <li>Copy the URL from your browser (e.g., https://codepen.io/username/pen/xxxxx)</li>
+            <li>Contact your teacher with:
+              <ul>
+                <li>Your name (or team name)</li>
+                <li>Your CodePen URL</li>
+                <li>A brief description of what makes your version special</li>
+              </ul>
+            </li>
+          </ol>
+
+          <p style="margin-top: 20px;"><em>Your teacher will add your project to this showcase!</em></p>
+        </div>
+      </section>
+
+      <section>
+        <h2>💡 Tips for Making Your Game Stand Out</h2>
+        <ul>
+          <li>Experiment with crazy physics (negative gravity, super speed!)</li>
+          <li>Add tons of particles and screen shake for epic effects</li>
+          <li>Try different colors and visual styles</li>
+          <li>Create challenging platform layouts</li>
+          <li>Combine multiple effects for coin collection</li>
+          <li>Make the "all coins collected" celebration amazing!</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <p>Keep experimenting and have fun! 🚀</p>
+    </footer>
+  </div>
+
+  <script src="showcase-data.js"></script>
+  <script>
+    // Load and display projects
+    function loadProjects() {
+      const gallery = document.getElementById('gallery');
+
+      // Check if projects are available
+      if (typeof projects === 'undefined' || projects.length === 0) {
+        return; // Keep empty state
+      }
+
+      // Clear empty state
+      gallery.innerHTML = '';
+
+      // Create cards for each project
+      projects.forEach(project => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+
+        const preview = project.codepenUrl
+          ? `<iframe src="${project.codepenUrl}/embed/preview" loading="lazy" allowfullscreen></iframe>`
+          : `<div class="project-preview">Preview Coming Soon</div>`;
+
+        card.innerHTML = `
+          ${preview}
+          <div class="project-info">
+            <div class="project-title">${escapeHtml(project.title)}</div>
+            <div class="project-author">by ${escapeHtml(project.author)}</div>
+            <div class="project-description">${escapeHtml(project.description)}</div>
+            ${project.codepenUrl ? `<a href="${project.codepenUrl}" target="_blank" class="project-link">View on CodePen →</a>` : ''}
+          </div>
+        `;
+
+        gallery.appendChild(card);
+      });
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Load projects when page loads
+    loadProjects();
+  </script>
+</body>
+</html>
