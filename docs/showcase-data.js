@@ -14,21 +14,18 @@ const projects = [
     title: "Starter Version",
     author: "Jimmy",
     description: "The basic starting point with no effects added yet. This is where everyone begins!",
-    folder: "showcase/01-starter",
-    jsfiddle: null  // TODO: Add JSFiddle link
+    folder: "showcase/01-starter"
   },
   {
     title: "Juicy Edition",
     author: "Jimmy",
     description: "A slightly juicier version with added effects! Enjoy screen shakes, particle effects, and sound effects to make the game more satisfying.",
-    folder: "showcase/02-little-juicy",
-    jsfiddle: null  // TODO: Add JSFiddle link
+    folder: "showcase/02-little-juicy"
   },
   {
     title: "Ultra Juicy Edition",
     author: "Jimmy",
     description: "An over-the-top version packed with intense effects! Dramatic screen shakes, explosive particles, and booming sounds for an adrenaline-pumping experience!",
-    folder: "showcase/03-ultra-juicy",
-    jsfiddle: null  // TODO: Add JSFiddle link
+    folder: "showcase/03-ultra-juicy"
   }
 ];

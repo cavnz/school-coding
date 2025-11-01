@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coding Concepts - Juicy Platformer</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Extra styles specific to concepts page */
+    .concept-section {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      border-left: 5px solid #3498db;
+    }
+
+    .color-demo {
+      display: inline-block;
+      width: 60px;
+      height: 60px;
+      border: 2px solid #2c3e50;
+      border-radius: 5px;
+      margin: 5px;
+      vertical-align: middle;
+    }
+
+    .color-row {
+      margin: 15px 0;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .color-label {
+      font-family: 'Courier New', monospace;
+      background: #e8f4f8;
+      padding: 8px 12px;
+      border-radius: 5px;
+      min-width: 200px;
+    }
+
+    .game-loop-diagram {
+      background: #2c3e50;
+      color: white;
+      padding: 25px;
+      border-radius: 10px;
+      margin: 20px 0;
+      font-family: 'Courier New', monospace;
+    }
+
+    .loop-step {
+      background: #34495e;
+      padding: 15px;
+      margin: 10px 0;
+      border-left: 4px solid #3498db;
+      border-radius: 5px;
+    }
+
+    .loop-arrow {
+      text-align: center;
+      font-size: 2em;
+      color: #3498db;
+      margin: 10px 0;
+    }
+
+    .code-example {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+    }
+
+    .comment {
+      color: #95a5a6;
+    }
+
+    .keyword {
+      color: #e74c3c;
+    }
+
+    .string {
+      color: #2ecc71;
+    }
+
+    .number {
+      color: #f39c12;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      font-size: 1.1em;
+    }
+
+    .interactive-demo {
+      background: white;
+      padding: 20px;
+      border: 2px solid #3498db;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .position-demo {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: #ecf0f1;
+      border: 2px solid #2c3e50;
+      border-radius: 5px;
+      margin: 15px 0;
+    }
+
+    .demo-player {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: #e74c3c;
+      border-radius: 50%;
+      transition: all 0.3s;
+    }
+
+    .demo-controls {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .demo-info {
+      font-family: 'Courier New', monospace;
+      background: #2c3e50;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💡 Coding Concepts</h1>
+      <p class="subtitle">Understanding the Building Blocks</p>
+    </header>
+
+    <main>
+      <a href="index.html" class="back-link">← Back to Home</a>
+
+      <section class="intro">
+        <h2>What You'll Learn</h2>
+        <p>These are the key concepts that make our platformer game work. Understanding these will help you customize the game and create your own awesome effects!</p>
+      </section>
+
+      <!-- RGB and Hex Colors -->
+      <section class="concept-section">
+        <h2>🎨 Colors: RGB and Hex</h2>
+
+        <h3>What Are RGB Colors?</h3>
+        <p>RGB stands for <strong>Red, Green, Blue</strong>. Every color on a screen is made by mixing these three colors of light!</p>
+        <p>Each color uses a number from <strong>0 to 255</strong>:</p>
+        <ul>
+          <li><strong>0</strong> = none of that color</li>
+          <li><strong>255</strong> = maximum amount of that color</li>
+        </ul>
+
+        <div class="color-row">
+          <div class="color-demo" style="background: rgb(255, 0, 0);"></div>
+          <span class="color-label">rgb(255, 0, 0) = Red</span>
+        </div>
+
+        <div class="color-row">
+          <div class="color-demo" style="background: rgb(0, 255, 0);"></div>
+          <span class="color-label">rgb(0, 255, 0) = Green</span>
+        </div>
+
+        <div class="color-row">
+          <div class="color-demo" style="background: rgb(0, 0, 255);"></div>
+          <span class="color-label">rgb(0, 0, 255) = Blue</span>
+        </div>
+
+        <div class="color-row">
+          <div class="color-demo" style="background: rgb(255, 255, 0);"></div>
+          <span class="color-label">rgb(255, 255, 0) = Yellow (Red + Green)</span>
+        </div>
+
+        <div class="color-row">
+          <div class="color-demo" style="background: rgb(255, 0, 255);"></div>
+          <span class="color-label">rgb(255, 0, 255) = Magenta (Red + Blue)</span>
+        </div>
+
+        <div class="color-row">
+          <div class="color-demo" style="background: rgb(0, 255, 255);"></div>
+          <span class="color-label">rgb(0, 255, 255) = Cyan (Green + Blue)</span>
+        </div>
+
+        <h3 style="margin-top: 30px;">What Are Hex Colors?</h3>
+        <p>Hex is just another way to write the same colors! It's shorter and often used in web design.</p>
+        <p>Format: <code>#RRGGBB</code> where each pair is a number in hexadecimal (0-9, A-F)</p>
+
+        <div class="color-row">
+          <div class="color-demo" style="background: #FF0000;"></div>
+          <span class="color-label">#FF0000 = Red</span>
+        </div>
+
+        <div class="color-row">
+          <div class="color-demo" style="background: #00FF00;"></div>
+          <span class="color-label">#00FF00 = Green</span>
+        </div>
+
+        <div class="color-row">
+          <div class="color-demo" style="background: #0000FF;"></div>
+          <span class="color-label">#0000FF = Blue</span>
+        </div>
+
+        <div class="color-row">
+          <div class="color-demo" style="background: #FFD700;"></div>
+          <span class="color-label">#FFD700 = Gold</span>
+        </div>
+
+        <pre class="code-example"><span class="comment">// Both of these are the same color!</span>
+<span class="keyword">const</span> color1 = <span class="string">'rgb(255, 0, 0)'</span>;  <span class="comment">// Red using RGB</span>
+<span class="keyword">const</span> color2 = <span class="string">'#FF0000'</span>;        <span class="comment">// Red using Hex</span>
+
+<span class="comment">// In our game, you can use either:</span>
+spawnParticles(x, y, <span class="string">'rgb(255, 215, 0)'</span>, <span class="number">20</span>);  <span class="comment">// Gold particles</span>
+spawnParticles(x, y, <span class="string">'#FFD700'</span>, <span class="number">20</span>);         <span class="comment">// Same gold particles!</span></pre>
+
+        <p><strong>Try it!</strong> In the game code, change particle colors to make rainbow effects when you collect coins!</p>
+      </section>
+
+      <!-- Comments -->
+      <section class="concept-section">
+        <h2>💬 Comments: Notes to Yourself</h2>
+
+        <p>Comments are lines in your code that the computer <strong>completely ignores</strong>. They're notes for humans to read!</p>
+
+        <h3>Why Use Comments?</h3>
+        <ul>
+          <li><strong>Explain what code does:</strong> "This makes the player jump"</li>
+          <li><strong>Leave yourself reminders:</strong> "TODO: Add sound effect here"</li>
+          <li><strong>Turn code off temporarily:</strong> Comment it out instead of deleting</li>
+          <li><strong>Help others understand:</strong> Future you will thank present you!</li>
+        </ul>
+
+        <h3>Two Ways to Comment</h3>
+
+        <pre class="code-example"><span class="comment">// Single line comment - everything after // is ignored</span>
+<span class="keyword">const</span> GRAVITY = <span class="number">0.5</span>;  <span class="comment">// You can also put comments at the end of lines</span>
+
+<span class="comment">/*
+  Multi-line comment
+  Everything between /* and */ is ignored
+  Great for longer explanations!
+*/</span>
+
+<span class="keyword">function</span> jump() {
+  <span class="comment">// TODO: Add a sound effect here!</span>
+  <span class="comment">// screenShake(3);  ← This line is "commented out" - it won't run</span>
+  player.velocityY = -JUMP_POWER;
+}</pre>
+
+        <h3>Comments in Our Game</h3>
+        <p>Look for <code>TODO</code> comments in the game code - they suggest experiments you can try!</p>
+
+        <pre class="code-example"><span class="keyword">function</span> onCoinCollected(coin) {
+  <span class="comment">// TODO: Make collecting coins feel awesome!</span>
+  <span class="comment">// Try: spawnParticles(coin.x, coin.y, '#FFD700', 20);</span>
+  <span class="comment">// Try: screenShake(3);</span>
+  <span class="comment">// Try: beep(660, 100, 0.3);</span>
+  console.log(<span class="string">'Coin collected!'</span>);
+}</pre>
+
+        <p><strong>Pro Tip:</strong> To activate an effect, just remove the <code>//</code> from the start of the line!</p>
+      </section>
+
+      <!-- Game Loop -->
+      <section class="concept-section">
+        <h2>🔄 The Game Loop: How Games Work</h2>
+
+        <p>Games don't just sit still - they're constantly updating and redrawing, usually <strong>60 times per second</strong>!</p>
+
+        <h3>The Magic Loop</h3>
+        <p>Think of it like a flipbook animation. Each "page" is one frame:</p>
+
+        <div class="game-loop-diagram">
+          <div class="loop-step">
+            <strong>1. UPDATE</strong> - Change positions, check for collisions, handle input
+          </div>
+          <div class="loop-arrow">↓</div>
+          <div class="loop-step">
+            <strong>2. DRAW</strong> - Clear the screen and draw everything in new positions
+          </div>
+          <div class="loop-arrow">↓</div>
+          <div class="loop-step">
+            <strong>3. REPEAT</strong> - Do it all again! (60 times per second)
+          </div>
+        </div>
+
+        <h3>Position and Speed: The Core Concept</h3>
+        <p>Everything moving in a game uses these two ideas:</p>
+
+        <ul>
+          <li><strong>Position (x, y):</strong> Where something IS right now</li>
+          <li><strong>Velocity (speedX, speedY):</strong> How fast it's MOVING</li>
+        </ul>
+
+        <div class="interactive-demo">
+          <h3>Interactive Demo: Position & Speed</h3>
+          <p>Watch how position and velocity work together:</p>
+
+          <div class="position-demo" id="positionDemo">
+            <div class="demo-player" id="demoPlayer"></div>
+          </div>
+
+          <div class="demo-controls">
+            <button class="copy-btn" onclick="moveRight()">Move Right →</button>
+            <button class="copy-btn" onclick="moveLeft()">← Move Left</button>
+            <button class="copy-btn" onclick="resetDemo()">Reset</button>
+          </div>
+
+          <div class="demo-info" id="demoInfo">
+            Position X: 0 | Velocity X: 0
+          </div>
+        </div>
+
+        <h3>How It Works in Code</h3>
+
+        <pre class="code-example"><span class="comment">// Game state - keeping track of where things are</span>
+<span class="keyword">const</span> player = {
+  x: <span class="number">100</span>,           <span class="comment">// Position (where the player is)</span>
+  y: <span class="number">300</span>,
+  velocityX: <span class="number">0</span>,     <span class="comment">// Speed (how fast they're moving)</span>
+  velocityY: <span class="number">0</span>
+};
+
+<span class="comment">// Every frame (60 times per second):</span>
+<span class="keyword">function</span> gameLoop() {
+  <span class="comment">// 1. UPDATE - Add velocity to position</span>
+  player.x += player.velocityX;  <span class="comment">// Move horizontally</span>
+  player.y += player.velocityY;  <span class="comment">// Move vertically</span>
+
+  <span class="comment">// 2. Apply gravity (makes velocity increase)</span>
+  player.velocityY += GRAVITY;   <span class="comment">// Speed up falling</span>
+
+  <span class="comment">// 3. DRAW - Show everything in new positions</span>
+  drawPlayer(player.x, player.y);
+
+  <span class="comment">// 4. REPEAT - Call this function again next frame</span>
+  requestAnimationFrame(gameLoop);
+}</pre>
+
+        <h3>Real Example: Jumping</h3>
+        <p>When you jump, here's what happens frame-by-frame:</p>
+
+        <pre class="code-example"><span class="comment">// Frame 0: Player presses space</span>
+player.velocityY = -<span class="number">12</span>;  <span class="comment">// Negative = up! Start moving upward fast</span>
+
+<span class="comment">// Frame 1: (1/60th second later)</span>
+player.y += player.velocityY;     <span class="comment">// y = 300 + (-12) = 288 (moved up!)</span>
+player.velocityY += GRAVITY;      <span class="comment">// velocityY = -12 + 0.5 = -11.5 (slowing down)</span>
+
+<span class="comment">// Frame 2:</span>
+player.y += player.velocityY;     <span class="comment">// y = 288 + (-11.5) = 276.5 (still going up)</span>
+player.velocityY += GRAVITY;      <span class="comment">// velocityY = -11.5 + 0.5 = -11 (slower)</span>
+
+<span class="comment">// ... many frames later ...</span>
+
+<span class="comment">// Eventually velocityY becomes positive and player falls!</span>
+player.velocityY += GRAVITY;      <span class="comment">// velocityY = 0.5 (now falling)</span>
+player.y += player.velocityY;     <span class="comment">// Moving down now!</span></pre>
+
+        <h3>Why This Matters</h3>
+        <p>Understanding position + velocity lets you:</p>
+        <ul>
+          <li>Change <code>GRAVITY</code> to make the game feel floaty or heavy</li>
+          <li>Change <code>JUMP_POWER</code> to jump higher or lower</li>
+          <li>Add particles that fly out and fall down (they use the same system!)</li>
+          <li>Make screen shake by changing the camera position quickly</li>
+        </ul>
+
+        <p><strong>Try it!</strong> In the game code, find where <code>player.velocityY</code> changes. That's where jumping happens!</p>
+      </section>
+
+      <!-- Canvas Drawing -->
+      <section class="concept-section">
+        <h2>🎨 Drawing Shapes: Beyond fillRect</h2>
+
+        <p>Our game uses <code>ctx.fillRect()</code> to draw squares, but the canvas can draw many other shapes! Here are some fun alternatives to try.</p>
+
+        <h3>The Basics: fillRect</h3>
+        <p>This is what our game currently uses for platforms and the player:</p>
+
+        <pre class="code-example"><span class="comment">// Draw a rectangle (our current method)</span>
+ctx.fillStyle = <span class="string">'#3498db'</span>;           <span class="comment">// Set the color</span>
+ctx.fillRect(x, y, width, height);  <span class="comment">// Draw it!</span>
+
+<span class="comment">// Example: Draw a 50x50 blue square at position (100, 200)</span>
+ctx.fillStyle = <span class="string">'#3498db'</span>;
+ctx.fillRect(<span class="number">100</span>, <span class="number">200</span>, <span class="number">50</span>, <span class="number">50</span>);</pre>
+
+        <h3>Drawing Circles</h3>
+        <p>Make your player or coins circular instead of square!</p>
+
+        <pre class="code-example"><span class="comment">// Draw a circle using arc</span>
+ctx.fillStyle = <span class="string">'#e74c3c'</span>;              <span class="comment">// Color</span>
+ctx.beginPath();                       <span class="comment">// Start drawing</span>
+ctx.arc(x, y, radius, <span class="number">0</span>, Math.PI * <span class="number">2</span>); <span class="comment">// Draw circle</span>
+ctx.fill();                            <span class="comment">// Fill it in</span>
+
+<span class="comment">// Example: Draw a red circle with radius 25 at position (150, 150)</span>
+ctx.fillStyle = <span class="string">'#e74c3c'</span>;
+ctx.beginPath();
+ctx.arc(<span class="number">150</span>, <span class="number">150</span>, <span class="number">25</span>, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
+ctx.fill();</pre>
+
+        <h3>Drawing Lines and Outlines</h3>
+        <p>Create platforms with just an outline, or draw trails behind the player!</p>
+
+        <pre class="code-example"><span class="comment">// Draw a rectangle outline (no fill)</span>
+ctx.strokeStyle = <span class="string">'#2ecc71'</span>;         <span class="comment">// Outline color</span>
+ctx.lineWidth = <span class="number">3</span>;                     <span class="comment">// How thick the line is</span>
+ctx.strokeRect(x, y, width, height);  <span class="comment">// Draw outline</span>
+
+<span class="comment">// Draw a circle outline</span>
+ctx.strokeStyle = <span class="string">'#f39c12'</span>;
+ctx.lineWidth = <span class="number">2</span>;
+ctx.beginPath();
+ctx.arc(x, y, radius, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
+ctx.stroke();  <span class="comment">// Draw the outline (not fill!)</span></pre>
+
+        <h3>Drawing Triangles and Custom Shapes</h3>
+        <p>You can draw ANY shape by connecting points together!</p>
+
+        <pre class="code-example"><span class="comment">// Draw a triangle (3 connected points)</span>
+ctx.fillStyle = <span class="string">'#9b59b6'</span>;
+ctx.beginPath();              <span class="comment">// Start drawing</span>
+ctx.moveTo(x, y);             <span class="comment">// Move to first point (top)</span>
+ctx.lineTo(x - <span class="number">25</span>, y + <span class="number">50</span>);   <span class="comment">// Draw line to bottom-left</span>
+ctx.lineTo(x + <span class="number">25</span>, y + <span class="number">50</span>);   <span class="comment">// Draw line to bottom-right</span>
+ctx.closePath();              <span class="comment">// Connect back to start</span>
+ctx.fill();                   <span class="comment">// Fill the triangle</span>
+
+<span class="comment">// Draw a star or any custom shape the same way!</span>
+ctx.fillStyle = <span class="string">'#f1c40f'</span>;
+ctx.beginPath();
+ctx.moveTo(x, y - <span class="number">20</span>);       <span class="comment">// Top point</span>
+ctx.lineTo(x + <span class="number">5</span>, y - <span class="number">5</span>);   <span class="comment">// Draw each point...</span>
+ctx.lineTo(x + <span class="number">20</span>, y);       <span class="comment">// Keep connecting points</span>
+<span class="comment">// ... add more points to make a star!</span>
+ctx.closePath();
+ctx.fill();</pre>
+
+        <h3>Combining Shapes for Cool Effects</h3>
+        <p>Layer multiple shapes to create interesting characters or platforms!</p>
+
+        <pre class="code-example"><span class="comment">// Draw a simple face (circle + eyes + smile)</span>
+<span class="keyword">function</span> drawFace(x, y) {
+  <span class="comment">// Face (yellow circle)</span>
+  ctx.fillStyle = <span class="string">'#f1c40f'</span>;
+  ctx.beginPath();
+  ctx.arc(x, y, <span class="number">30</span>, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
+  ctx.fill();
+
+  <span class="comment">// Left eye (black circle)</span>
+  ctx.fillStyle = <span class="string">'#000000'</span>;
+  ctx.beginPath();
+  ctx.arc(x - <span class="number">10</span>, y - <span class="number">8</span>, <span class="number">4</span>, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
+  ctx.fill();
+
+  <span class="comment">// Right eye</span>
+  ctx.beginPath();
+  ctx.arc(x + <span class="number">10</span>, y - <span class="number">8</span>, <span class="number">4</span>, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
+  ctx.fill();
+
+  <span class="comment">// Smile (arc for mouth)</span>
+  ctx.strokeStyle = <span class="string">'#000000'</span>;
+  ctx.lineWidth = <span class="number">2</span>;
+  ctx.beginPath();
+  ctx.arc(x, y + <span class="number">5</span>, <span class="number">15</span>, <span class="number">0</span>, Math.PI); <span class="comment">// Half circle (smile)</span>
+  ctx.stroke();
+}</pre>
+
+        <h3>Using This in Our Game</h3>
+        <p>Here are some ideas to modify the platformer:</p>
+
+        <div class="activity" style="margin-top: 20px;">
+          <h4>Try These Experiments:</h4>
+          <ul>
+            <li><strong>Make the player circular:</strong> In <code>drawPlayer()</code>, replace <code>ctx.fillRect()</code> with <code>ctx.arc()</code></li>
+            <li><strong>Draw triangle platforms:</strong> Use the triangle code above instead of rectangles for spiky platforms!</li>
+            <li><strong>Add glowing outlines:</strong> Draw a <code>strokeRect</code> around platforms with a bright color</li>
+            <li><strong>Make particles different shapes:</strong> Mix circles, squares, and triangles in the particle system</li>
+            <li><strong>Create a face for the player:</strong> Use the face example above to make a smiley character!</li>
+          </ul>
+        </div>
+
+        <h3>Quick Reference: Common Shapes</h3>
+        <pre class="code-example"><span class="comment">// Rectangle (filled)</span>
+ctx.fillRect(x, y, width, height);
+
+<span class="comment">// Rectangle (outline)</span>
+ctx.strokeRect(x, y, width, height);
+
+<span class="comment">// Circle (filled)</span>
+ctx.beginPath();
+ctx.arc(x, y, radius, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
+ctx.fill();
+
+<span class="comment">// Circle (outline)</span>
+ctx.beginPath();
+ctx.arc(x, y, radius, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
+ctx.stroke();
+
+<span class="comment">// Line from point A to point B</span>
+ctx.beginPath();
+ctx.moveTo(x1, y1);
+ctx.lineTo(x2, y2);
+ctx.stroke();</pre>
+
+        <p><strong>Pro Tip:</strong> Always set <code>fillStyle</code> or <code>strokeStyle</code> BEFORE drawing! The color applies to everything you draw after setting it.</p>
+      </section>
+
+      <section class="resources">
+        <h2>🚀 Ready to Experiment?</h2>
+        <p>Now that you understand these concepts, head back to the game and try:</p>
+        <ul>
+          <li>Changing particle colors to make rainbow effects</li>
+          <li>Uncommenting TODO lines to see what they do</li>
+          <li>Adjusting GRAVITY and JUMP_POWER to change how the game feels</li>
+          <li>Adding your own comments to explain what you've changed</li>
+        </ul>
+        <p style="text-align: center; margin-top: 30px;">
+          <a href="index.html" class="copy-btn" style="display: inline-block; text-decoration: none;">← Back to Home</a>
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Understanding these concepts will help you create amazing games! 🎮</p>
+    </footer>
+  </div>
+
+  <script>
+    // Interactive demo for position and velocity
+    let demoX = 0;
+    let demoVelocityX = 0;
+    let animationRunning = false;
+
+    function updateDemo() {
+      const player = document.getElementById('demoPlayer');
+      const info = document.getElementById('demoInfo');
+
+      // Update position based on velocity
+      demoX += demoVelocityX;
+
+      // Keep within bounds
+      const maxX = document.getElementById('positionDemo').clientWidth - 30;
+      if (demoX < 0) {
+        demoX = 0;
+        demoVelocityX = 0;
+      }
+      if (demoX > maxX) {
+        demoX = maxX;
+        demoVelocityX = 0;
+      }
+
+      // Apply friction (slow down)
+      demoVelocityX *= 0.95;
+
+      // Stop if moving very slowly
+      if (Math.abs(demoVelocityX) < 0.1) {
+        demoVelocityX = 0;
+        animationRunning = false;
+      }
+
+      // Update display
+      player.style.left = demoX + 'px';
+      player.style.top = '85px'; // Center vertically
+      info.textContent = `Position X: ${Math.round(demoX)} | Velocity X: ${demoVelocityX.toFixed(1)}`;
+
+      // Continue animation if moving
+      if (animationRunning) {
+        requestAnimationFrame(updateDemo);
+      }
+    }
+
+    function moveRight() {
+      demoVelocityX = 5; // Add speed to the right
+      if (!animationRunning) {
+        animationRunning = true;
+        updateDemo();
+      }
+    }
+
+    function moveLeft() {
+      demoVelocityX = -5; // Add speed to the left
+      if (!animationRunning) {
+        animationRunning = true;
+        updateDemo();
+      }
+    }
+
+    function resetDemo() {
+      demoX = 0;
+      demoVelocityX = 0;
+      animationRunning = false;
+      updateDemo();
+    }
+
+    // Initialize
+    resetDemo();
+  </script>
+</body>
+</html>
