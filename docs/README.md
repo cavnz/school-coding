@@ -8,10 +8,10 @@ This folder contains the GitHub Pages website for the Juicy Platformer coding se
 - **showcase.html** - Student project gallery
 - **showcase-data.js** - Student project data (edit this to add submissions)
 - **showcase/** - Folder containing all student project submissions
-- **style.css** - Styling for the site
-- **game.js** - Copy of the game code for students to reference
-- **game-style.css** - Original game styling
-- **demo.html** - Playable demo of the game
+  - **01-starter/** - Basic starting version (source of truth for game files)
+  - **02-super-juicy/** - Fully juiced demonstration version
+- **style.css** - Styling for the documentation site
+- **demo.html** - Playable demo (links to 01-starter files)
 
 ## Adding Student Projects
 
