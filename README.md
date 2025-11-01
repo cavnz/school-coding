@@ -95,9 +95,8 @@ One action triggers many functions - that's a **chain reaction**!
 
 **Quick start:**
 ```bash
-cd school-coding
-npm start
-# OR just run: python3 -m http.server 8000
+cd school-coding/docs
+python3 -m http.server 8000
 ```
 
 Then open http://localhost:8000 in your browser.
@@ -108,35 +107,31 @@ Then open http://localhost:8000 in your browser.
 - Use browser dev tools for debugging
 - Test before sharing with students
 
-**File structure:**
-```
-school-coding/
-├── index.html    (Structure - the bones)
-├── style.css     (Style - the skin)
-├── game.js       (Behavior - the brain)
-└── README.md     (This file!)
-```
+### Option 2: JSFiddle (For Students!)
 
-### Option 2: CodePen (For Students!)
-
-**To create a CodePen version:**
-1. Go to https://codepen.io/pen/
-2. In the **HTML** tab: Copy everything from `index.html` EXCEPT the `<!DOCTYPE>`, `<html>`, `<head>`, and `<body>` tags
-   - Just copy from `<h1>Juicy Platformer</h1>` down to `<script src="game.js"></script>` (but remove the `<script>` tag)
-3. In the **CSS** tab: Copy all of `style.css`
-4. In the **JS** tab: Copy all of `game.js`
-5. Save it (create free account if needed)
-6. Share the URL with students - they can fork it!
-
-**CodePen advantages for students:**
+**JSFiddle advantages:**
+- **No login required!** Students can start coding immediately
+- Easy to fork and share with a unique URL
 - Instant preview - no setup needed
-- Clear separation of HTML/CSS/JS
-- Easy to fork and share their versions
+- Clear separation of HTML/CSS/JS panels
 - Can't break the original
 
-### Option 3: Cloudflare Pages (Coming Soon!)
+**To create a JSFiddle version:**
+1. Go to https://jsfiddle.net/
+2. Copy the code from `docs/showcase/01-starter/` into the panels:
+   - **HTML panel:** Body content from `index.html` (without `<html>`, `<head>`, `<body>` tags)
+   - **CSS panel:** All of `style.css`
+   - **JavaScript panel:** All of `game.js`
+3. Click "Run" to test it
+4. Click "Fork" to save your own copy
+5. Share the URL - others can fork it too!
 
-Students will be able to submit their code and see it live on a real website!
+### Option 3: GitHub Pages (Live Website!)
+
+Visit **https://cavnz.github.io/school-coding/** to see:
+- Instructions and setup guide
+- Student showcase gallery
+- Links to edit projects on JSFiddle
 
 ## 📝 Tips
 

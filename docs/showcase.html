@@ -183,15 +183,16 @@
         <div class="submit-form">
           <p><strong>How to submit:</strong></p>
           <ol>
-            <li>Save your HTML, CSS, and JavaScript files from CodePen</li>
+            <li>Click "Fork" in JSFiddle to save your version</li>
+            <li>Copy your JSFiddle URL (e.g., https://jsfiddle.net/abc123/)</li>
             <li>Contact your teacher with:
               <ul>
                 <li>Your name (or team name)</li>
-                <li>Your three files (index.html, style.css, game.js)</li>
+                <li>Your JSFiddle URL</li>
                 <li>A brief description of what makes your version special</li>
               </ul>
             </li>
-            <li>Your teacher will create a folder for your project in the showcase!</li>
+            <li>Your teacher will add it to the showcase with a link to edit!</li>
           </ol>
 
           <p style="margin-top: 20px;"><em>Your project will appear here alongside everyone else's creations!</em></p>
@@ -239,13 +240,21 @@
           ? `<iframe src="${project.folder}/index.html" loading="lazy" allowfullscreen></iframe>`
           : `<div class="project-preview">Preview Coming Soon</div>`;
 
+        const playLink = project.folder
+          ? `<a href="${project.folder}/index.html" target="_blank" class="project-link">Play Full Screen →</a>`
+          : '';
+
+        const editLink = project.jsfiddle
+          ? `<a href="${project.jsfiddle}" target="_blank" class="project-link" style="background: #f39c12; margin-left: 10px;">Edit on JSFiddle →</a>`
+          : '';
+
         card.innerHTML = `
           ${preview}
           <div class="project-info">
             <div class="project-title">${escapeHtml(project.title)}</div>
             <div class="project-author">by ${escapeHtml(project.author)}</div>
             <div class="project-description">${escapeHtml(project.description)}</div>
-            ${project.folder ? `<a href="${project.folder}/index.html" target="_blank" class="project-link">Play Full Screen →</a>` : ''}
+            <div>${playLink}${editLink}</div>
           </div>
         `;
 
