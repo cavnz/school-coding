@@ -69,7 +69,7 @@ const RESPAWN_Y = 100;           // Where to respawn vertically
 // 📋 TODO: Make it juicy!
 const SHAKE_ON_LAND = false
 const PARTICLES_ON_COIN = false
-const SOUNDS_ON = true
+const SOUNDS_ON = false
 
 // Dangerous platforms (spikes, lava, etc.) - touching these kills you!
 // You can add more by copying the format: { x: , y: , width: , height: }
