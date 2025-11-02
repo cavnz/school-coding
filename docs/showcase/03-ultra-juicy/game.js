@@ -28,15 +28,15 @@ const PLATFORM_COLOR_END = 'rgb(78, 205, 196)';   // Bright turquoise at high sc
 const BACKGROUND_COLOR = 'rgb(15, 15, 35)'; // Color of background (try 'rgb(44, 62, 80)' or 'rgb(26, 26, 26)')
 
 // Platforms to jump on
-// Added originalX and moveSpeed for animation
 const platforms = [
-  { x: 0, y: 550, width: 800, height: 50, originalX: 0, moveSpeed: 0 },      // Ground (doesn't move)
-  { x: 250, y: 450, width: 150, height: 20, originalX: 250, moveSpeed: 0.5 },    // Platform 1
-  { x: 450, y: 350, width: 150, height: 20, originalX: 450, moveSpeed: 0.7 },    // Platform 2
-  { x: 200, y: 250, width: 100, height: 20, originalX: 200, moveSpeed: 0.6 },    // Platform 3
-  { x: 600, y: 200, width: 120, height: 20, originalX: 600, moveSpeed: 0.8 },    // Platform 4
-  { x: 300, y: 150, width: 120, height: 20, originalX: 300, moveSpeed: 0.9 }     // Platform 5
+  { x: 0, y: 450, width: 650, height: 50 },      // Ground
+  { x: 150, y: 350, width: 150, height: 20 },    // Platform 1
+  { x: 350, y: 250, width: 150, height: 20 },    // Platform 2
+  { x: 50, y: 200, width: 100, height: 20 },    // Platform 3
+  { x: 450, y: 100, width: 120, height: 20 },    // Platform 4
+  { x: 200, y: 150, width: 120, height: 20 }     // Platform 5
 ];
+
 
 
 // Score Display Settings
@@ -58,7 +58,7 @@ const RESPAWN_Y = 100;           // Where to respawn vertically
 
 // Dangerous platforms (spikes, lava, etc.) - touching these kills you!
 const badPlatforms = [
-   { x: 500, y: 540, width: 100, height: 10 }  // Spikes on the ground
+   { x: 400, y: 440, width: 100, height: 10 }  // Spikes on the ground
 ];
 
 // =============================================
@@ -1274,6 +1274,14 @@ function updatePlatforms() {
     const platform = platforms[i];
     if (platform.moveSpeed > 0) {
       // Use sine wave for smooth back-and-forth motion
+
+      // Keep track of the original position
+      if (platform.originalX === undefined) {
+        platform.originalX = platform.x;
+      }
+      if (platform.originalY === undefined) {
+        platform.originalY = platform.y;
+      }
 
       const progress = 1 + Math.min(score / SCORE_PROGRESS_TOTAL, 1.0);
 

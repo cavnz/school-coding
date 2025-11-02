@@ -30,12 +30,12 @@ const STAR_COLOR = 'white';  // Stars in background!
 
 // Platforms to jump on
 const platforms = [
-  { x: 0, y: 550, width: 800, height: 50 },      // Ground
-  { x: 250, y: 450, width: 150, height: 20 },    // Platform 1
-  { x: 450, y: 350, width: 150, height: 20 },    // Platform 2
-  { x: 200, y: 250, width: 100, height: 20 },    // Platform 3
-  { x: 600, y: 200, width: 120, height: 20 },    // Platform 4
-  { x: 300, y: 150, width: 120, height: 20 }     // Platform 5
+  { x: 0, y: 450, width: 650, height: 50 },      // Ground
+  { x: 150, y: 350, width: 150, height: 20 },    // Platform 1
+  { x: 350, y: 250, width: 150, height: 20 },    // Platform 2
+  { x: 50, y: 200, width: 100, height: 20 },    // Platform 3
+  { x: 450, y: 100, width: 120, height: 20 },    // Platform 4
+  { x: 200, y: 150, width: 120, height: 20 }     // Platform 5
 ];
 
 
@@ -59,9 +59,8 @@ const RESPAWN_Y = 100;           // Where to respawn vertically
 // Dangerous platforms (laser beams!) - touching these kills you!
 // You can add more by copying the format: { x: , y: , width: , height: }
 const badPlatforms = [
-   { x: 500, y: 540, width: 100, height: 10 }  // Laser beam on the ground
+   { x: 400, y: 440, width: 100, height: 10 }  // Spikes on the ground
 ];
-
 // Stars for background!
 const stars = [];
 for (let i = 0; i < 100; i++) {

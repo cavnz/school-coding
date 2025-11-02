@@ -28,37 +28,43 @@ const PLATFORM_COLOR = 'rgb(149, 165, 166)'; // Color of platforms (try 'rgb(52,
 const BACKGROUND_COLOR = 'rgb(52, 73, 94)'; // Color of background (try 'rgb(44, 62, 80)' or 'rgb(26, 26, 26)')
 
 // Platforms to jump on
+const PLATFORMS_ON = true      // Whether platforms should be shown. Try setting to 'true'
 const platforms = [
-  { x: 0, y: 550, width: 800, height: 50 },      // Ground
-  { x: 250, y: 450, width: 150, height: 20 },    // Platform 1
-  { x: 450, y: 350, width: 150, height: 20 },    // Platform 2
-  { x: 200, y: 250, width: 100, height: 20 },    // Platform 3
-  { x: 600, y: 200, width: 120, height: 20 },    // Platform 4
-  { x: 300, y: 150, width: 120, height: 20 }     // Platform 5
+  { x: 0, y: 450, width: 650, height: 50 },      // Ground
+  { x: 150, y: 350, width: 150, height: 20 },    // Platform 1
+  { x: 350, y: 250, width: 150, height: 20 },    // Platform 2
+  { x: 50, y: 200, width: 100, height: 20 },    // Platform 3
+  { x: 450, y: 100, width: 120, height: 20 },    // Platform 4
+  { x: 200, y: 150, width: 120, height: 20 }     // Platform 5
 ];
 
 
 // Score Display Settings
 const SCORE_SIZE = 48;            // Font size for score (try 36, 64, 80!)
 const SCORE_COLOR = 'rgb(236, 240, 241)';    // Color of score text (try 'rgb(241, 196, 15)' or 'rgb(46, 204, 113)')
-const SCORE_Y_POSITION = 550 + SCORE_SIZE / 2;     // Y position of score (higher = lower on screen)
+const SCORE_Y_POSITION = 450 + SCORE_SIZE / 2;     // Y position of score (higher = lower on screen)
 
 // Coin Settings
-const NUMBER_OF_COINS = 0;       // How many coins to spawn (try 3, 10, 20!)
+const NUMBER_OF_COINS = 5;       // How many coins to spawn (try 3, 10, 20!)
 const POINTS_PER_COIN = 100;     // How many points per coin (try 1, 100, 1000!)
 const COIN_SIZE = 20;            // Size of coins
 const COIN_COLOR = 'rgb(243, 156, 18)';    // Color of coins (try 'rgb(241, 196, 15)' or 'rgb(230, 126, 34)')
 
 // Death Settings
+const DEATH_ON = true          // whether you can die (and spawn bad platforms). Try setting to 'true'
 const BAD_PLATFORM_COLOR = 'rgb(231, 76, 60)';  // Color of dangerous platforms (try 'rgb(192, 57, 43)' or 'rgb(0, 0, 0)')
 const RESPAWN_X = 100;           // Where to respawn horizontally
 const RESPAWN_Y = 100;           // Where to respawn vertically
 
+// Juice Settings
+const SHAKE_ON_LAND = true
+const PARTICLES_ON_COIN = true
+const SOUNDS_ON = true
 
 // Dangerous platforms (spikes, lava, etc.) - touching these kills you!
 // You can add more by copying the format: { x: , y: , width: , height: }
 const badPlatforms = [
-   { x: 500, y: 540, width: 100, height: 10 }  // Spikes on the ground
+   { x: 400, y: 440, width: 100, height: 10 }  // Spikes on the ground
 ];
 
 // =============================================
@@ -67,28 +73,46 @@ const badPlatforms = [
 
 function jump() {
 
+  if (SOUNDS_ON) {
+    beep(440, 100, 0.2)
+  }
+
     // TODO: Add juice here! What should happen when you jump?
     // Try calling: screenShake(3)
     // Try calling: beep(440, 100, 0.2)
-    console.log('Jump!');
+    
+    // END jump() Put your code above this line!
 }
 
 function land() {
+
+  if (SHAKE_ON_LAND) {
+    screenShake(5)
+  }
+
+  if (SOUNDS_ON) {
+    beep(220, 50, 0.3)
+  }
 
   // TODO: Add juice here! What should happen when you land?
   // Try calling: screenShake(5)
   // Try calling: beep(220, 50, 0.3)
 
-  console.log('Landed!');
+  // END land() Put your code above this line!
 }
 
 function bump() {
+
+  if (SOUNDS_ON) {
+    beep(880, 80, 0.15)
+  }
 
   // TODO: Add juice here! What should happen when you bump your head?
   // Try calling: screenShake(2)
   // Try calling: beep(880, 80, 0.15)
 
-  console.log('Bump!');
+  
+  // END bump() Put your code above this line!
 }
 
 function drawPlayer() {
@@ -104,6 +128,8 @@ function drawPlayer() {
   // ctx.beginPath();
   // ctx.arc(player.x + 20, player.y + 10, 4, 0, Math.PI * 2);  // Right eye
   // ctx.fill();
+
+  // END drawPlayer() Put your code above this line!
 }
 
 // =============================================
@@ -145,7 +171,7 @@ function onDeath() {
 // ☠️ DANGEROUS PLATFORM FUNCTIONS
 // =============================================
 
-function drawBadPlatforms() {
+function drawBadPlatforms() {  
   // Draw the dangerous platforms as spikes!
   ctx.fillStyle = BAD_PLATFORM_COLOR;
   for (const platform of badPlatforms) {
@@ -175,6 +201,14 @@ function drawBadPlatforms() {
 function onCoinCollected(coin) {
   // This is called when you collect a coin!
   // Add effects and sounds here to make it feel awesome
+
+  if (PARTICLES_ON_COIN) {
+    spawnParticles(coin.x, coin.y, COIN_COLOR, 15)
+  }
+
+  if (SOUNDS_ON) {
+    beep(660, 80, 0.3)
+  }
 
   // TODO: Add juice here! What should happen when you collect a coin?
   // Try calling: screenShake(3)
@@ -519,6 +553,7 @@ function checkCoinCollisions() {
 }
 
 function checkBadPlatformCollisions() {
+  
   // Check if player touches any dangerous platforms
   for (const platform of badPlatforms) {
     // Simple AABB (box) collision detection
@@ -529,6 +564,16 @@ function checkBadPlatformCollisions() {
       respawnPlayer();
       return;
     }
+  }
+}
+
+function checkPlatformsOn() {
+  if (!PLATFORMS_ON) {
+    platforms.length = 1; // Clear all but the ground
+  }
+
+  if (!DEATH_ON) { 
+    badPlatforms.length = 0; // Clear all dangerous platforms
   }
 }
 
@@ -649,6 +694,7 @@ function gameLoop() {
 // 🚀 START THE GAME!
 // =============================================
 
+checkPlatformsOn()
 spawnCoins();  // Create coins when game starts
 gameLoop();
 
