@@ -42,7 +42,7 @@ const platforms = [
 // Score Display Settings
 const SCORE_SIZE = 48;            // Font size for score (try 36, 64, 80!)
 const SCORE_COLOR = 'rgb(255, 255, 100)';    // Bright yellow for sci-fi feel
-const SCORE_Y_POSITION = 550 + SCORE_SIZE / 2;     // Y position of score (higher = lower on screen)
+const SCORE_Y_POSITION = 450 + SCORE_SIZE / 2;     // Y position of score (higher = lower on screen)
 
 // Coin Settings - ENERGY CRYSTALS!
 const NUMBER_OF_COINS = 5;       // How many coins to spawn (try 3, 10, 20!)
