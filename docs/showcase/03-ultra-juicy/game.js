@@ -12,7 +12,7 @@ window.addEventListener('error', (e) => {
 // =============================================
 // 🎮 GAME CONFIGURATION
 // =============================================
-// ULTRA JUICY VERSION - EVERYTHING MAXED OUT!
+
 
 // Physics Settings
 const GRAVITY = 0.5;           // How fast things fall (try 0.3 or 1.0)
@@ -65,6 +65,8 @@ const badPlatforms = [
 // 💫 ULTRA JUICE VARIABLES
 // =============================================
 
+const MAX_PARTICLES = 250; // Hard cap on total particles for performance
+
 // Trail effect for player
 const playerTrail = [];
 const BASE_TRAIL_LENGTH = 0; // Starts with NO TRAIL - boring!
@@ -75,9 +77,6 @@ let coinRotation = 0;
 
 // Player rotation animation
 let playerRotation = 0;
-
-// Chromatic aberration effect
-let chromaticIntensity = 0;
 
 // Speed lines for fast movement
 const speedLines = [];
@@ -132,7 +131,7 @@ function jump() {
     spawnParticles(player.x + player.width / 2, player.y + player.height, 'rgb(255, 138, 193)', Math.floor(jumpParticles * 0.6));
 
     // Add speed lines! Grow with score
-    const numSpeedLines = Math.max(0, Math.floor(score / 200)); // Start with 0, gain more at high scores
+    const numSpeedLines = Math.max(0, Math.floor(score / 300)); 
     for (let i = 0; i < numSpeedLines; i++) {
       speedLines.push({
         x: player.x + player.width / 2,
@@ -143,9 +142,6 @@ function jump() {
         width: 2
       });
     }
-
-    // Chromatic aberration burst!
-    chromaticIntensity = 5;
 
     console.log('💨 SUPER JUMP!');
   }
@@ -165,7 +161,7 @@ function land() {
   spawnParticles(player.x + player.width / 2, player.y + player.height, 'rgb(110, 231, 223)', Math.floor(landParticles * 0.6));
 
   // Landing shockwave effect - grows with score
-  const shockwaveLines = Math.max(0, Math.floor(score / 150)); // Start with 0, gain more at high scores
+  const shockwaveLines = Math.max(0, Math.floor(score / 250));
   for (let i = 0; i < shockwaveLines; i++) {
     const angle = (i / Math.max(shockwaveLines, 1)) * Math.PI * 2;
     speedLines.push({
@@ -196,8 +192,8 @@ function bump() {
   spawnParticles(player.x + player.width / 2, player.y, platformColor, bumpParticles);
   spawnParticles(player.x + player.width / 2, player.y, 'rgb(110, 231, 223)', Math.floor(bumpParticles * 0.6));
 
-  // Stars circling the head! Grow with score
-  const numStars = Math.max(0, Math.floor(score / 200)); // Start with 0, gain more at high scores
+  // Stars circling the head! Grow with score (reduced from score/200 to score/300)
+  const numStars = Math.max(0, Math.floor(score / 300)); // Fewer stars for performance
   for (let i = 0; i < numStars; i++) {
     const angle = (i / Math.max(numStars, 1)) * Math.PI * 2;
     particles.push({
@@ -211,8 +207,6 @@ function bump() {
       size: 5
     });
   }
-
-  chromaticIntensity = 3;
 
   console.log('⭐ BONK!');
 }
@@ -252,8 +246,8 @@ function drawPlayer() {
   ctx.rotate(playerRotation);
   ctx.translate(-centerX, -centerY);
 
-  // Glow intensity increases with score! Starts minimal, grows to intense
-  const glowIntensity = 0 + Math.min(score / 40, 40); // Starts at 0 (no glow), max 40 glow at high scores
+  // Glow intensity increases with score!
+  const glowIntensity = 0 + Math.min(score / 60, 20); // Starts at 0 (no glow), max 20 glow
   ctx.shadowBlur = glowIntensity;
   ctx.shadowColor = PLAYER_COLOR;
   ctx.fillStyle = PLAYER_COLOR;
@@ -341,8 +335,8 @@ function drawScore() {
   ctx.translate(canvas.width / 2 + wobbleX, SCORE_Y_POSITION);
   ctx.rotate(scoreRotation);
 
-  // Glow effect
-  ctx.shadowBlur = 20;
+  // Glow effect (reduced from 20 to 10 for performance)
+  ctx.shadowBlur = 10;
   ctx.shadowColor = scoreColor;
 
   ctx.fillStyle = scoreColor;
@@ -384,7 +378,7 @@ function drawScore() {
 }
 
 function onDeath() {
-  // ULTRA DRAMATIC DEATH!
+  // ULTRA DRAMATIC DEATH! (Optimized for performance)
   screenShake(25);
 
   // Death sound sequence
@@ -402,8 +396,8 @@ function onDeath() {
   // Explosion rings
   for (let ring = 0; ring < 3; ring++) {
     setTimeout(() => {
-      for (let i = 0; i < 16; i++) {
-        const angle = (i / 16) * Math.PI * 2;
+      for (let i = 0; i < 12; i++) {
+        const angle = (i / 12) * Math.PI * 2;
         speedLines.push({
           x: player.x + player.width / 2,
           y: player.y + player.height / 2,
@@ -415,9 +409,6 @@ function onDeath() {
       }
     }, ring * 100);
   }
-
-  // Maximum chromatic aberration
-  chromaticIntensity = 20;
 
   // Screen flash
   backgroundPulse = 1.0;
@@ -460,12 +451,6 @@ function drawBadPlatforms() {
       ctx.lineTo(x + spikeWidth, y + platform.height);
       ctx.closePath();
       ctx.fill();
-
-      // Add glow
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = 'rgb(255, 51, 102)';
-      ctx.fill();
-      ctx.shadowBlur = 0;
     }
   }
 }
@@ -492,14 +477,12 @@ function onCoinCollected(coin) {
   beep(noteFreq, 100, 0.3);
 
   // Particle explosion grows with score!
-  const coinParticles = 10 + Math.floor(score / 60); // Start at 10, grows to 40+ at high scores
+  const coinParticles = 8 + Math.floor(score / 100); // Start at 8, max 20
   spawnParticles(coin.x, coin.y, COIN_COLOR, coinParticles);
-  spawnParticles(coin.x, coin.y, 'rgb(255, 235, 59)', Math.floor(coinParticles * 0.65));
-  spawnParticles(coin.x, coin.y, 'rgb(255, 167, 38)', Math.floor(coinParticles * 0.5));
-  spawnParticles(coin.x, coin.y, 'rgb(255, 249, 196)', Math.floor(coinParticles * 0.3));
+  spawnParticles(coin.x, coin.y, 'rgb(255, 235, 59)', Math.floor(coinParticles * 0.5));
 
-  // Shockwave grows with score!
-  const shockwaveCount = 4 + Math.floor(score / 100); // Start at 4, grows to 16+ at high scores
+  // Shockwave grows with score! (Reduced for performance)
+  const shockwaveCount = 4 + Math.floor(score / 200); // Start at 4, max 12
   for (let i = 0; i < shockwaveCount; i++) {
     const angle = (i / shockwaveCount) * Math.PI * 2;
     speedLines.push({
@@ -532,8 +515,6 @@ function onCoinCollected(coin) {
   scoreWobble = comboCount * 0.5;
   scoreRotation = (Math.random() - 0.5) * 0.2;
 
-  // Chromatic aberration
-  chromaticIntensity = 5 + comboCount;
 
   // Background pulse
   backgroundPulse = 0.2;
@@ -564,7 +545,7 @@ function onAllCoinsCollected() {
       const burstX = 200 + Math.random() * 400;
       const burstY = 100 + Math.random() * 300;
 
-      for (let i = 0; i < 60; i++) {
+      for (let i = 0; i < 25; i++) {
         const angle = Math.random() * Math.PI * 2;
         const speed = 3 + Math.random() * 5;
         particles.push({
@@ -580,7 +561,7 @@ function onAllCoinsCollected() {
       }
 
       // Add sparkles
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 10; i++) {
         const angle = Math.random() * Math.PI * 2;
         const speed = 2 + Math.random() * 3;
         particles.push({
@@ -598,17 +579,16 @@ function onAllCoinsCollected() {
   }
 
   // Player celebration explosion
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(78, 205, 196)', 100);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(255, 107, 157)', 80);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(255, 217, 61)', 80);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(255, 51, 102)', 60);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(167, 139, 250)', 60);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(78, 205, 196)', 40);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(255, 107, 157)', 30);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(255, 217, 61)', 30);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(255, 51, 102)', 20);
 
   // Radial shockwaves
   for (let wave = 0; wave < 3; wave++) {
     setTimeout(() => {
-      for (let i = 0; i < 24; i++) {
-        const angle = (i / 24) * Math.PI * 2;
+      for (let i = 0; i < 16; i++) {
+        const angle = (i / 16) * Math.PI * 2;
         speedLines.push({
           x: canvas.width / 2,
           y: canvas.height / 2,
@@ -636,9 +616,6 @@ function onAllCoinsCollected() {
   scorePulse = 3.0;
   scoreWobble = 10;
 
-  // Maximum chromatic aberration
-  chromaticIntensity = 30;
-
   // Screen flash
   backgroundPulse = 1.5;
 
@@ -657,8 +634,8 @@ function drawCoins() {
     const scale = 1 + Math.sin(Date.now() / 200 + coin.x) * 0.1;
     ctx.scale(scale, scale);
 
-    // Glow effect increases with score! Starts subtle, grows intense
-    const coinGlowIntensity = 0 + Math.min(score / 50, 25); // Starts at 0 (no glow), max 25 at high scores
+    // Glow effect increases with score! (Reduced for performance)
+    const coinGlowIntensity = 0 + Math.min(score / 80, 12); // Starts at 0, max 12 (reduced from 25)
     ctx.shadowBlur = coinGlowIntensity;
     ctx.shadowColor = COIN_COLOR;
 
@@ -737,20 +714,16 @@ function spawnParticles(x, y, color, count = 10) {
 }
 
 function drawParticles() {
+
   for (const p of particles) {
     ctx.globalAlpha = p.life;
     ctx.fillStyle = p.color;
-
-    // Add glow to particles
-    ctx.shadowBlur = 8;
-    ctx.shadowColor = p.color;
 
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.size || 3, 0, Math.PI * 2);
     ctx.fill();
   }
   ctx.globalAlpha = 1.0;
-  ctx.shadowBlur = 0;
 }
 
 // =============================================
@@ -1168,6 +1141,12 @@ function updateParticles() {
       particles.splice(i, 1);
     }
   }
+
+  // 🚀 PERFORMANCE: Enforce particle limit for Chromebooks
+  // If we have too many particles, remove the oldest ones
+  while (particles.length > MAX_PARTICLES) {
+    particles.shift(); // Remove oldest particle
+  }
 }
 
 function updateTrail() {
@@ -1231,11 +1210,6 @@ function updateCombo() {
 
 function updateEffects() {
   // Decay effects
-  if (chromaticIntensity > 0) {
-    chromaticIntensity *= 0.9;
-    if (chromaticIntensity < 0.1) chromaticIntensity = 0;
-  }
-
   if (backgroundPulse > 0) {
     backgroundPulse *= 0.95;
     if (backgroundPulse < 0.01) backgroundPulse = 0;
@@ -1358,16 +1332,8 @@ function drawScorePopups() {
   ctx.globalAlpha = 1.0;
 }
 
-function applyChromatic() {
-  if (chromaticIntensity > 0.5) {
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const offset = Math.floor(chromaticIntensity);
-
-    // This creates the chromatic aberration effect by offsetting color channels
-    // (simplified version - full implementation would be more complex)
-    ctx.globalAlpha = 0.7;
-  }
-}
+// 🚀 PERFORMANCE: Chromatic aberration removed - too expensive for Chromebooks
+// (Used ctx.getImageData which is very slow)
 
 // Background animation variables
 let backgroundStars = [];
@@ -1466,7 +1432,7 @@ function render() {
   ctx.save();
 
   // CONTINUOUS background shake based on score!
-  const continuousShake = Math.min(score / 300, 3); // Max 3px shake at high scores
+  const continuousShake = Math.min(score / 300, 15); // Max 3px shake at high scores
   let totalShakeX = (Math.random() - 0.5) * continuousShake;
   let totalShakeY = (Math.random() - 0.5) * continuousShake;
 
@@ -1515,9 +1481,6 @@ function render() {
   drawScorePopups();
 
   ctx.restore();
-
-  // Chromatic aberration (drawn outside save/restore)
-  applyChromatic();
 
   // Draw score (no shake)
   drawScore();
