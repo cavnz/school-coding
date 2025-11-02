@@ -15,20 +15,29 @@ window.addEventListener('error', (e) => {
 // EXPERIMENT WITH THESE VALUES!
 // Try changing them to see what happens
 
-// Physics Settings
+// ==== Physics Settings ====
+// 📋 TODO: play with these!
+
 const GRAVITY = 0.5;           // How fast things fall (try 0.3 or 1.0)
 const JUMP_POWER = 12;         // How high you jump (try 8 or 15)
 const PLAYER_SPEED = 5;        // How fast you move left/right (try 3 or 8)
 const FRICTION = 0.8;          // How slippery the ground is (0.9 = ice, 0.5 = sticky)
-
-// Visual Settings
 const PLAYER_SIZE = 30;          // Size of your character (try 20 or 50)
+
+
+// ==== Visual Settings ====
+// 📋 TODO: change the colors
+
 const PLAYER_COLOR = 'rgb(52, 152, 219)';  // Color of player (try 'rgb(231, 76, 60)' or 'rgb(46, 204, 113)')
 const PLATFORM_COLOR = 'rgb(149, 165, 166)'; // Color of platforms (try 'rgb(52, 73, 94)' or 'rgb(127, 140, 141)')
 const BACKGROUND_COLOR = 'rgb(52, 73, 94)'; // Color of background (try 'rgb(44, 62, 80)' or 'rgb(26, 26, 26)')
 
+// ==== Platform Settings ====
+// 📋 TODO: turn this on!!
+
+const PLATFORMS_ON = false      // Whether platforms should be shown. Try setting to 'true'
+
 // Platforms to jump on
-const PLATFORMS_ON = true      // Whether platforms should be shown. Try setting to 'true'
 const platforms = [
   { x: 0, y: 450, width: 650, height: 50 },      // Ground
   { x: 150, y: 350, width: 150, height: 20 },    // Platform 1
@@ -38,27 +47,28 @@ const platforms = [
   { x: 200, y: 150, width: 120, height: 20 }     // Platform 5
 ];
 
+// ==== Coin Settings ====
+// 📋 TODO: Add more coins!!
 
-// Score Display Settings
-const SCORE_SIZE = 48;            // Font size for score (try 36, 64, 80!)
-const SCORE_COLOR = 'rgb(236, 240, 241)';    // Color of score text (try 'rgb(241, 196, 15)' or 'rgb(46, 204, 113)')
-const SCORE_Y_POSITION = 450 + SCORE_SIZE / 2;     // Y position of score (higher = lower on screen)
-
-// Coin Settings
-const NUMBER_OF_COINS = 5;       // How many coins to spawn (try 3, 10, 20!)
+const NUMBER_OF_COINS = 0;       // How many coins to spawn (try 3, 10, 20!)
 const POINTS_PER_COIN = 100;     // How many points per coin (try 1, 100, 1000!)
 const COIN_SIZE = 20;            // Size of coins
 const COIN_COLOR = 'rgb(243, 156, 18)';    // Color of coins (try 'rgb(241, 196, 15)' or 'rgb(230, 126, 34)')
 
-// Death Settings
-const DEATH_ON = true          // whether you can die (and spawn bad platforms). Try setting to 'true'
+// ==== Death Settings ====
+
+// 📋 TODO: Turn on dying!!
+const DEATH_ON = false          // whether you can die (and spawn bad platforms). Try setting to 'true'
+
 const BAD_PLATFORM_COLOR = 'rgb(231, 76, 60)';  // Color of dangerous platforms (try 'rgb(192, 57, 43)' or 'rgb(0, 0, 0)')
 const RESPAWN_X = 100;           // Where to respawn horizontally
 const RESPAWN_Y = 100;           // Where to respawn vertically
 
 // Juice Settings
-const SHAKE_ON_LAND = true
-const PARTICLES_ON_COIN = true
+
+// 📋 TODO: Make it juicy!
+const SHAKE_ON_LAND = false
+const PARTICLES_ON_COIN = false
 const SOUNDS_ON = true
 
 // Dangerous platforms (spikes, lava, etc.) - touching these kills you!
@@ -66,6 +76,12 @@ const SOUNDS_ON = true
 const badPlatforms = [
    { x: 400, y: 440, width: 100, height: 10 }  // Spikes on the ground
 ];
+
+// Score Display Settings
+const SCORE_SIZE = 48;            // Font size for score (try 36, 64, 80!)
+const SCORE_COLOR = 'rgb(236, 240, 241)';    // Color of score text (try 'rgb(241, 196, 15)' or 'rgb(46, 204, 113)')
+const SCORE_Y_POSITION = 450 + SCORE_SIZE / 2;     // Y position of score (higher = lower on screen)
+
 
 // =============================================
 // 👤 PLAYER FUNCTIONS
@@ -77,7 +93,7 @@ function jump() {
     beep(440, 100, 0.2)
   }
 
-    // TODO: Add juice here! What should happen when you jump?
+    // 📋 TODO: Add juice here! What should happen when you jump?
     // Try calling: screenShake(3)
     // Try calling: beep(440, 100, 0.2)
     
@@ -94,7 +110,7 @@ function land() {
     beep(220, 50, 0.3)
   }
 
-  // TODO: Add juice here! What should happen when you land?
+  // 📋 TODO: Add juice here! What should happen when you land?
   // Try calling: screenShake(5)
   // Try calling: beep(220, 50, 0.3)
 
@@ -107,7 +123,7 @@ function bump() {
     beep(880, 80, 0.15)
   }
 
-  // TODO: Add juice here! What should happen when you bump your head?
+  // 📋 TODO: Add juice here! What should happen when you bump your head?
   // Try calling: screenShake(2)
   // Try calling: beep(880, 80, 0.15)
 
@@ -115,49 +131,13 @@ function bump() {
   // END bump() Put your code above this line!
 }
 
-function drawPlayer() {
-  // Draw the player's body as a rectangle
-  ctx.fillStyle = PLAYER_COLOR;
-  ctx.fillRect(player.x, player.y, player.width, player.height);
-
-  // TODO: Try drawing eyes! Eyes are circles
-  // ctx.fillStyle = 'white';
-  // ctx.beginPath();
-  // ctx.arc(player.x + 10, player.y + 10, 4, 0, Math.PI * 2);  // Left eye
-  // ctx.fill();
-  // ctx.beginPath();
-  // ctx.arc(player.x + 20, player.y + 10, 4, 0, Math.PI * 2);  // Right eye
-  // ctx.fill();
-
-  // END drawPlayer() Put your code above this line!
-}
-
-// =============================================
-// 🏆 SCORE DISPLAY FUNCTIONS
-// =============================================
-
-function drawScore() {
-  // Draw the score in big letters at the bottom of the screen!
-  // This makes it easy to see and add juice effects to
-
-  // TODO: Try adding juice here! Ideas:
-  // - Make the score pulse when you collect a coin (change size)
-  // - Make it shake when you collect a coin (add to position)
-  // - Change color based on score (use if statements)
-  // - Add a shadow or outline effect
-
-  ctx.fillStyle = SCORE_COLOR;
-  ctx.font = `bold ${SCORE_SIZE}px Arial`;
-  ctx.textAlign = 'center';  // Center the text
-  ctx.textBaseline = 'middle';
-
-  // Draw at center of canvas, near the bottom
-  ctx.fillText(`Score: ${score}`, canvas.width / 2, SCORE_Y_POSITION);
-}
-
 function onDeath() {
   // This is called when you touch a dangerous platform!
   // Add effects here to make it feel dramatic
+
+  if (SOUNDS_ON) {
+    beep(110, 200, 0.4)
+  }
 
   // TODO: Add juice here! What should happen when you die?
   // Try calling: screenShake(10)
@@ -167,32 +147,27 @@ function onDeath() {
   console.log('You died! Respawning...');
 }
 
-// =============================================
-// ☠️ DANGEROUS PLATFORM FUNCTIONS
-// =============================================
+function drawPlayer() {
+  // Draw the player's body as a rectangle
+  ctx.fillStyle = PLAYER_COLOR;
+  ctx.fillRect(player.x, player.y, player.width, player.height);
 
-function drawBadPlatforms() {  
-  // Draw the dangerous platforms as spikes!
-  ctx.fillStyle = BAD_PLATFORM_COLOR;
-  for (const platform of badPlatforms) {
-    // Draw spikes across the width of the platform
-    const spikeWidth = 20;  // How wide each spike is
-    const numSpikes = Math.ceil(platform.width / spikeWidth);
+  // 📋 TODO: Try drawing eyes! Eyes are circles
 
-    for (let i = 0; i < numSpikes; i++) {
-      const x = platform.x + i * spikeWidth;
-      const y = platform.y;
+  // ctx.fillStyle = 'white';
+  // ctx.beginPath();
+  // ctx.arc(player.x + 10, player.y + 10, 4, 0, Math.PI * 2);  // Left eye
+  // ctx.fill();
+  // ctx.beginPath();
+  // ctx.arc(player.x + 20, player.y + 10, 4, 0, Math.PI * 2);  // Right eye
+  // ctx.fill();
 
-      // Draw triangle spike
-      ctx.beginPath();
-      ctx.moveTo(x, y + platform.height);  // Bottom left
-      ctx.lineTo(x + spikeWidth / 2, y);   // Top point
-      ctx.lineTo(x + spikeWidth, y + platform.height);  // Bottom right
-      ctx.closePath();
-      ctx.fill();
-    }
-  }
+  // 📋 TODO: Try a more complicated shape... 
+  // (don't forget to remove the bits above you don't need)
+
+  // END drawPlayer() Put your code above this line!
 }
+
 
 // =============================================
 // 💰 COIN FUNCTIONS
@@ -222,6 +197,11 @@ function onAllCoinsCollected() {
   // This is called when all coins are collected!
   // Add a victory celebration here
 
+  if (SOUNDS_ON) {    
+    beep(760, 80, 0.3, 0.1)
+    beep(880, 80, 0.3, 0.2)
+  }
+
   // TODO: Make it epic! Try:
   // spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(46, 204, 113)', 100);
   // screenShake(10);
@@ -236,6 +216,56 @@ function drawCoins() {
     ctx.beginPath();
     ctx.arc(coin.x, coin.y, coin.size / 2, 0, Math.PI * 2);
     ctx.fill();
+  }
+}
+
+// =============================================
+// 🏆 SCORE DISPLAY FUNCTIONS
+// =============================================
+
+function drawScore() {
+  // Draw the score in big letters at the bottom of the screen!
+  // This makes it easy to see and add juice effects to
+
+  // TODO: Try adding juice here! Ideas:
+  // - Make the score pulse when you collect a coin (change size)
+  // - Make it shake when you collect a coin (add to position)
+  // - Change color based on score (use if statements)
+  // - Add a shadow or outline effect
+
+  ctx.fillStyle = SCORE_COLOR;
+  ctx.font = `bold ${SCORE_SIZE}px Arial`;
+  ctx.textAlign = 'center';  // Center the text
+  ctx.textBaseline = 'middle';
+
+  // Draw at center of canvas, near the bottom
+  ctx.fillText(`Score: ${score}`, canvas.width / 2, SCORE_Y_POSITION);
+}
+
+// =============================================
+// ☠️ DANGEROUS PLATFORM FUNCTIONS
+// =============================================
+
+function drawBadPlatforms() {  
+  // Draw the dangerous platforms as spikes!
+  ctx.fillStyle = BAD_PLATFORM_COLOR;
+  for (const platform of badPlatforms) {
+    // Draw spikes across the width of the platform
+    const spikeWidth = 20;  // How wide each spike is
+    const numSpikes = Math.ceil(platform.width / spikeWidth);
+
+    for (let i = 0; i < numSpikes; i++) {
+      const x = platform.x + i * spikeWidth;
+      const y = platform.y;
+
+      // Draw triangle spike
+      ctx.beginPath();
+      ctx.moveTo(x, y + platform.height);  // Bottom left
+      ctx.lineTo(x + spikeWidth / 2, y);   // Top point
+      ctx.lineTo(x + spikeWidth, y + platform.height);  // Bottom right
+      ctx.closePath();
+      ctx.fill();
+    }
   }
 }
 
@@ -297,7 +327,7 @@ function screenShake(intensity) {
 // Simple beep sounds using Web Audio API (no files needed!)
 let audioContext = null;
 
-function beep(frequency = 440, duration = 100, volume = 0.3) {
+function beep(frequency = 440, duration = 100, volume = 0.3, delay = 0) {
   // Makes a simple beep sound without needing sound files
   // frequency: how high the beep (220 = low, 440 = middle, 880 = high)
   // duration: how long in milliseconds
@@ -317,11 +347,13 @@ function beep(frequency = 440, duration = 100, volume = 0.3) {
     oscillator.frequency.value = frequency;
     oscillator.type = 'square'; // Try: 'sine', 'square', 'sawtooth', 'triangle'
 
-    gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
+    const startTime = audioContext.currentTime + delay
 
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + duration / 1000);
+    gainNode.gain.setValueAtTime(volume, startTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration / 1000);
+
+    oscillator.start(startTime);
+    oscillator.stop(startTime + duration / 1000);
 
     console.log('Beep!', frequency + 'Hz');
   } catch (e) {
