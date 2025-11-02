@@ -94,6 +94,15 @@ const COMBO_TIMEOUT = 120; // frames
 
 const SCORE_PROGRESS_TOTAL = NUMBER_OF_COINS * POINTS_PER_COIN * 1.5; // Score at which maximum juice is reached
 
+// Helper function to scale a value based on score progress
+// min: starting value at 0 score
+// max: maximum value at SCORE_PROGRESS_TOTAL score
+// Returns: interpolated value based on current score
+function scaleWithProgress(min, max) {
+  const progress = Math.min(score / SCORE_PROGRESS_TOTAL, 1.0);
+  return min + (max - min) * progress;
+}
+
 // Helper function to interpolate between two colors based on score
 function getPlatformColor() {
   // Gradually transitions from gray to turquoise as score increases
@@ -123,15 +132,15 @@ function jump() {
     player.isOnGround = false;
 
     // ULTRA JUICY JUMP! Particles grow with score
-    const jumpParticles = 5 + Math.floor(score / 100); // Start at 5, grows to 20+ at high scores
-    screenShake(3 + Math.min(score / 200, 5));
+    const jumpParticles = Math.floor(scaleWithProgress(5, 20)); // Start at 5, grows to 20 at high scores
+    screenShake(scaleWithProgress(3, 8));
     beep(440, 100, 0.3);
     beep(554, 100, 0.2); // Add harmony!
     spawnParticles(player.x + player.width / 2, player.y + player.height, PLAYER_COLOR, jumpParticles);
     spawnParticles(player.x + player.width / 2, player.y + player.height, 'rgb(255, 138, 193)', Math.floor(jumpParticles * 0.6));
 
     // Add speed lines! Grow with score
-    const numSpeedLines = Math.max(0, Math.floor(score / 300)); 
+    const numSpeedLines = Math.max(0, Math.floor(scaleWithProgress(0, 5))); 
     for (let i = 0; i < numSpeedLines; i++) {
       speedLines.push({
         x: player.x + player.width / 2,
@@ -150,8 +159,8 @@ function jump() {
 function land() {
   // ULTRA JUICY LANDING! Particles grow with score
   const landingForce = Math.abs(player.velocityY) / 2;
-  const landParticles = 8 + Math.floor(score / 80); // Start at 8, grows to 30+ at high scores
-  screenShake(Math.min(landingForce + score / 150, 12));
+  const landParticles = Math.floor(scaleWithProgress(3, 30)); // Start at 8, grows to 30 at high scores
+  screenShake(Math.min(landingForce + scaleWithProgress(0, 8), 12));
   beep(220, 80, 0.4);
   beep(165, 80, 0.3); // Lower harmony
 
@@ -161,7 +170,7 @@ function land() {
   spawnParticles(player.x + player.width / 2, player.y + player.height, 'rgb(110, 231, 223)', Math.floor(landParticles * 0.6));
 
   // Landing shockwave effect - grows with score
-  const shockwaveLines = Math.max(0, Math.floor(score / 250));
+  const shockwaveLines = Math.max(0, Math.floor(scaleWithProgress(0, 6)));
   for (let i = 0; i < shockwaveLines; i++) {
     const angle = (i / Math.max(shockwaveLines, 1)) * Math.PI * 2;
     speedLines.push({
@@ -184,16 +193,16 @@ function bump() {
   player.velocityY = 0;
 
   // ULTRA JUICY HEAD BUMP! Particles grow with score
-  const bumpParticles = 5 + Math.floor(score / 120); // Start at 5, grows with score
-  screenShake(2 + Math.min(score / 250, 4));
+  const bumpParticles = Math.floor(scaleWithProgress(5, 18)); // Start at 5, grows to 18 at high scores
+  screenShake(scaleWithProgress(2, 6));
   beep(880, 100, 0.2);
   beep(1100, 100, 0.15);
   const platformColor = getPlatformColor();
   spawnParticles(player.x + player.width / 2, player.y, platformColor, bumpParticles);
   spawnParticles(player.x + player.width / 2, player.y, 'rgb(110, 231, 223)', Math.floor(bumpParticles * 0.6));
 
-  // Stars circling the head! Grow with score (reduced from score/200 to score/300)
-  const numStars = Math.max(0, Math.floor(score / 300)); // Fewer stars for performance
+  // Stars circling the head! Grow with score
+  const numStars = Math.max(0, Math.floor(scaleWithProgress(0, 5)));
   for (let i = 0; i < numStars; i++) {
     const angle = (i / Math.max(numStars, 1)) * Math.PI * 2;
     particles.push({
@@ -247,7 +256,7 @@ function drawPlayer() {
   ctx.translate(-centerX, -centerY);
 
   // Glow intensity increases with score!
-  const glowIntensity = 0 + Math.min(score / 60, 20); // Starts at 0 (no glow), max 20 glow
+  const glowIntensity = scaleWithProgress(0, 20); // Starts at 0 (no glow), max 20 glow
   ctx.shadowBlur = glowIntensity;
   ctx.shadowColor = PLAYER_COLOR;
   ctx.fillStyle = PLAYER_COLOR;
@@ -477,12 +486,12 @@ function onCoinCollected(coin) {
   beep(noteFreq, 100, 0.3);
 
   // Particle explosion grows with score!
-  const coinParticles = 8 + Math.floor(score / 100); // Start at 8, max 20
+  const coinParticles = Math.floor(scaleWithProgress(8, 20)); // Start at 8, max 20
   spawnParticles(coin.x, coin.y, COIN_COLOR, coinParticles);
   spawnParticles(coin.x, coin.y, 'rgb(255, 235, 59)', Math.floor(coinParticles * 0.5));
 
   // Shockwave grows with score! (Reduced for performance)
-  const shockwaveCount = 4 + Math.floor(score / 200); // Start at 4, max 12
+  const shockwaveCount = Math.floor(scaleWithProgress(4, 12)); // Start at 4, max 12
   for (let i = 0; i < shockwaveCount; i++) {
     const angle = (i / shockwaveCount) * Math.PI * 2;
     speedLines.push({
@@ -635,7 +644,7 @@ function drawCoins() {
     ctx.scale(scale, scale);
 
     // Glow effect increases with score! (Reduced for performance)
-    const coinGlowIntensity = 0 + Math.min(score / 80, 12); // Starts at 0, max 12 (reduced from 25)
+    const coinGlowIntensity = scaleWithProgress(0, 12); // Starts at 0, max 12 (reduced from 25)
     ctx.shadowBlur = coinGlowIntensity;
     ctx.shadowColor = COIN_COLOR;
 
@@ -666,9 +675,7 @@ function drawCoins() {
 
 function updateCoins() {
   // Coins randomly emit sparks! Frequency increases with score
-  const baseSparkChance = 0.005; // 0.5% chance per frame per coin at start
-  const scoreBonus = Math.min(score / 2000, 0.045); // Up to +4.5% at high scores
-  const sparkChance = baseSparkChance + scoreBonus;
+  const sparkChance = scaleWithProgress(0.005, 0.05); // 0.5% chance at start, up to 5% at high scores
 
   for (const coin of coins) {
     if (Math.random() < sparkChance) {
@@ -831,8 +838,8 @@ function startBackgroundMusic() {
       if (!musicPlaying) return;
 
       // Dynamic music based on score!
-      const scoreMultiplier = 1 + (score / 2000); // Speeds up as score increases
-      const volumeBoost = 1 + (score / 1500); // Gets louder as score increases
+      const scoreMultiplier = 1 + scaleWithProgress(0, 0.75); // Speeds up as score increases (1x to 1.75x)
+      const volumeBoost = 1 + scaleWithProgress(0, 1.5); // Gets louder as score increases (1x to 2.5x)
       const beatDuration = baseBeatDuration / scoreMultiplier;
 
       // Update master volume dynamically
@@ -1151,8 +1158,8 @@ function updateParticles() {
 
 function updateTrail() {
   // Trail length and opacity increase with score!
-  const currentMaxTrail = BASE_TRAIL_LENGTH + Math.floor(Math.min(score / 80, MAX_TRAIL_LENGTH - BASE_TRAIL_LENGTH));
-  const trailOpacity = 0 + Math.min(score / 1200, 0.6); // Starts invisible (0), max 0.6 at high scores
+  const currentMaxTrail = BASE_TRAIL_LENGTH + Math.floor(scaleWithProgress(0, MAX_TRAIL_LENGTH - BASE_TRAIL_LENGTH));
+  const trailOpacity = scaleWithProgress(0, 0.6); // Starts invisible (0), max 0.6 at high scores
 
   // Add current position to trail with rotation
   playerTrail.unshift({
@@ -1218,9 +1225,7 @@ function updateEffects() {
   // Update player rotation when in air
   if (!player.isOnGround) {
     // Rotation speed increases with score! Starts slow, gets wild
-    const baseRotationSpeed = 0.03; // Much slower starting rotation
-    const scoreBonus = Math.min(score / SCORE_PROGRESS_TOTAL, 0.37); // Max +0.37 at high scores (more dramatic growth)
-    const rotationSpeed = baseRotationSpeed + scoreBonus;
+    const rotationSpeed = scaleWithProgress(0.03, 0.4); // 0.03 at start, 0.4 at high scores (more dramatic growth)
 
     // Rotate in the direction of movement
     if (player.velocityX > 0) {
@@ -1257,7 +1262,7 @@ function updatePlatforms() {
         platform.originalY = platform.y;
       }
 
-      const progress = 1 + Math.min(score / SCORE_PROGRESS_TOTAL, 1.0);
+      const progress = 1 + scaleWithProgress(0, 1.0);
 
       const offset = Math.sin(platformTime * platform.moveSpeed * progress) * 30;
       platform.x = platform.originalX + offset;
@@ -1432,7 +1437,7 @@ function render() {
   ctx.save();
 
   // CONTINUOUS background shake based on score!
-  const continuousShake = Math.min(score / 300, 15); // Max 3px shake at high scores
+  const continuousShake = scaleWithProgress(0, 15); // 0 at start, max 15px shake at high scores
   let totalShakeX = (Math.random() - 0.5) * continuousShake;
   let totalShakeY = (Math.random() - 0.5) * continuousShake;
 
@@ -1453,7 +1458,7 @@ function render() {
   // Draw platforms with glow - color changes with score!
   // Starts gray and boring, gets colorful and exciting!
   let platformColor = getPlatformColor();
-  let platformGlow = 2 + Math.min(score / 100, 8); // Starts at 2, grows to 10
+  let platformGlow = scaleWithProgress(2, 10); // Starts at 2, grows to 10
 
   if (score >= SCORE_PROGRESS_TOTAL) {
     // Rainbow platforms at very high scores!
