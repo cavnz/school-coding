@@ -1017,7 +1017,7 @@ function checkPlatformCollisions() {
 
 function isTooCloseToObject(x, y, objectSize) {
   for (const platform of platforms) {
-    const buffer = objectSize / 2;
+    const buffer = objectSize;
     if (x > platform.x - buffer &&
       x < platform.x + platform.width + buffer &&
       y > platform.y - buffer &&
@@ -1028,12 +1028,12 @@ function isTooCloseToObject(x, y, objectSize) {
 
   // Check bad platforms too - don't spawn coins on dangerous areas!
   for (const badPlatform of badPlatforms) {
-    const buffer = objectSize;
-    const topBuffer = objectSize * 5; // Extra buffer on top
+    const buffer = objectSize * 4;
+    const topBuffer = objectSize * 15; // Extra buffer on top
     if (x > badPlatform.x - buffer &&
       x < badPlatform.x + badPlatform.width + buffer &&
-      y > badPlatform.y - buffer &&
-      y < badPlatform.y + badPlatform.height + topBuffer) {
+      y > badPlatform.y - topBuffer &&
+      y < badPlatform.y + badPlatform.height + buffer) {
       return true;
     }
   }

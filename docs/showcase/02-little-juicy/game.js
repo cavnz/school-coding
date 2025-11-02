@@ -518,12 +518,13 @@ function isTooCloseToObject(x, y, objectSize) {
 
   // Check bad platforms too - don't spawn coins on dangerous areas!
   for (const badPlatform of badPlatforms) {
-    const buffer = objectSize * 3; // Extra buffer for bad platforms
+    const buffer = objectSize * 4;
+    const topBuffer = objectSize * 15; // Extra buffer on top
     if (x > badPlatform.x - buffer &&
       x < badPlatform.x + badPlatform.width + buffer &&
-      y > badPlatform.y - buffer &&
+      y > badPlatform.y - topBuffer &&
       y < badPlatform.y + badPlatform.height + buffer) {
-      return true;  // Too close to a dangerous platform!
+      return true;
     }
   }
 
