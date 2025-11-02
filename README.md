@@ -1,182 +1,72 @@
-# 🎮 Juicy Platformer - Year 8 Coding Session
+# Juicy Platformer - Year 8 Coding Session
 
-Welcome! This is a simple platformer game where you'll learn about **chain reactions in code** and how to make games feel awesome!
+An educational web-based 2D platformer game designed to teach Year 8 students (ages 12-13) about code configuration, chain reactions, and game "juice" (visual/audio effects that make games feel satisfying).
 
-## 🎯 What You'll Learn
+**🎮 Try it live:** https://cavnz.github.io/school-coding/
 
-1. **How web pages work** - HTML (structure), CSS (style), JavaScript (behavior)
-2. **Chain reactions in code** - How one action triggers a cascade of functions
-3. **Game feel ("juice")** - Small touches that make games satisfying
-4. **Experimentation** - Changing values to see what happens
+## Project Overview
 
-## 🎲 The Game (So Far)
+This project provides a pre-built platformer game where students experiment with configuration values and add special effects to understand:
+- How changing constants affects game behavior
+- Chain reactions (how one function triggers others)
+- Game feel through visual and audio feedback
+- The three core web technologies: HTML, CSS, and JavaScript
 
-Right now it's very basic:
-- A blue square (you!) that can move and jump
-- Some platforms to jump between
-- That's it! But we'll make it awesome...
+**Teaching approach:** Students don't build from scratch—they modify and enhance a working game, focusing on experimentation and immediate visual feedback.
 
-## 🧪 Your Mission
+## Quick Start
 
-You'll work in groups to experiment with the code and make this game feel amazing!
+**For students:** Visit the [GitHub Pages site](https://cavnz.github.io/school-coding/) which includes:
+- One-click setup to open the game in JSFiddle
+- Step-by-step activities and challenges
+- Coding concepts explained
+- Showcase of example projects
 
-### Part 1: Experiment with Physics (5-10 minutes)
-
-At the top of `game.js`, you'll find config variables. Try changing them:
-
-```javascript
-const GRAVITY = 0.5;           // Try: 0.2 (moon), 1.5 (heavy)
-const JUMP_POWER = 12;         // Try: 8 (low), 20 (super jump)
-const PLAYER_SPEED = 5;        // Try: 2 (slow), 10 (fast)
-const FRICTION = 0.8;          // Try: 0.95 (ice), 0.5 (sticky)
-const PLAYER_SIZE = 30;        // Try: 15 (tiny), 60 (huge)
-const PLAYER_COLOR = 'rgb(52, 152, 219)'; // Try: 'rgb(231, 76, 60)' (red), 'rgb(46, 204, 113)' (green)
-```
-
-**Questions to explore:**
-- What gravity value feels most "game-like"?
-- Can you make it feel like you're on the moon?
-- What happens if FRICTION is 1.0? Or 0.0?
-
-### Part 2: Add Coins & Scoring (10 minutes)
-
-**Step 1:** In `index.html`, uncomment the score display (around line 24-27)
-
-**Step 2:** In `game.js`, find these two lines and uncomment them:
-- In the `checkCollisions()` function: `// checkCoinCollisions();`
-- In the `render()` function: `// drawCoins();`
-
-Now you have collectible coins! They spawn randomly each time you refresh!
-
-**Experiment with:**
-- `NUMBER_OF_COINS = 5` (try 3, 10, 20!)
-- `POINTS_PER_COIN = 100` (try 1, 1000, 9999!)
-- `COIN_SIZE = 20` (bigger or smaller coins)
-- `COIN_COLOR = '#f39c12'` (change the color)
-
-**Advanced: Add specific coins**
-```javascript
-// Add a coin at position (400, 300)
-addCoin(400, 300);
-
-// Add 5 more random coins
-for (let i = 0; i < 5; i++) {
-  addRandomCoin();
-}
-```
-
-### Part 3: Make It Juicy! (Coming next...)
-
-We'll add special effects like:
-- Screen shake when you jump or collect coins
-- Particle explosions
-- Sound effects
-- Floating score text
-- And more!
-
-## 🔄 The Chain Reaction
-
-When you collect a coin, watch what happens in the code:
-
-```
-checkCoinCollisions()
-  → finds a coin touching the player
-  → calls collectCoin()
-  → adds points to score
-  → updates the display
-  → (soon: plays sound, shakes screen, spawns particles!)
-```
-
-One action triggers many functions - that's a **chain reaction**!
-
-## 🛠️ How to Use This Code
-
-### Option 1: Test Locally (For You - The Teacher!)
-
-**Quick start:**
+**For teachers (local testing):**
 ```bash
-cd school-coding/docs
-python3 -m http.server 8000
+npm start
+# Opens http://localhost:8000
 ```
 
-Then open http://localhost:8000 in your browser.
+## Project Structure
 
-**Why use a local server?**
-- Edit files in VS Code or any editor you like
-- Refresh browser to see changes instantly
-- Use browser dev tools for debugging
-- Test before sharing with students
+```
+docs/
+├── index.html           # Landing page with instructions
+├── concepts.html        # Coding concepts explained
+├── showcase.html        # Student project gallery
+├── showcase/
+│   ├── 01-starter/      # Base game (minimal juice)
+│   ├── 02-full-juice/   # Fully enhanced version
+│   └── 03-ultra-juicy/  # Bonus ultra-enhanced version
+└── showcase-data.js     # Showcase gallery configuration
+```
 
-### Option 2: JSFiddle (For Students!)
+Each showcase folder contains three files that work together:
+- `index.html` - Game structure and score display
+- `style.css` - Visual styling
+- `game.js` - All game logic (organized top-to-bottom for student accessibility)
 
-**JSFiddle advantages:**
-- **No login required!** Students can start coding immediately
-- Easy to fork and share with a unique URL
-- Instant preview - no setup needed
-- Clear separation of HTML/CSS/JS panels
-- Can't break the original
+## Adding Student Projects
 
-**To create a JSFiddle version:**
-1. Go to https://jsfiddle.net/
-2. Copy the code from `docs/showcase/01-starter/` into the panels:
-   - **HTML panel:** Body content from `index.html` (without `<html>`, `<head>`, `<body>` tags)
-   - **CSS panel:** All of `style.css`
-   - **JavaScript panel:** All of `game.js`
-3. Click "Run" to test it
-4. Click "Fork" to save your own copy
-5. Share the URL - others can fork it too!
-
-### Option 3: GitHub Pages (Live Website!)
-
-Visit **https://cavnz.github.io/school-coding/** to see:
-- Instructions and setup guide
-- Student showcase gallery
-- Links to edit projects on JSFiddle
-
-## 🛠️ Adding Student Projects (For Teachers)
-
-Use the provided bash script to quickly add JSFiddle projects to the showcase:
+Use the included script to add JSFiddle projects to the showcase:
 
 ```bash
 ./scripts/add-fiddle.sh <jsfiddle-url> <project-name> <author> <description>
 ```
 
-**Example:**
-```bash
-./scripts/add-fiddle.sh \
-  https://jsfiddle.net/abc123/ \
-  rainbow-game \
-  "Sarah & Mike" \
-  "Rainbow particles everywhere with crazy physics!"
-```
+See [scripts/README.md](scripts/README.md) for details.
 
-The script will:
-- Create a numbered showcase folder (e.g., `03-rainbow-game`)
-- Generate all required files
-- Provide instructions for updating `showcase-data.js`
+## Technical Notes
 
-See [scripts/README.md](scripts/README.md) for full documentation.
+- **No build process:** Pure HTML/CSS/JS for simplicity
+- **JSFiddle compatible:** Code structured to work locally and on JSFiddle
+- **Collision detection:** AABB for platforms, circular for coins
+- **Audio:** Web Audio API for procedural sound effects
+- **Organized for learning:** Student-editable code at top, system mechanics at bottom
 
-## 📝 Tips
+See [CLAUDE.md](CLAUDE.md) for detailed architecture and development guidelines.
 
-- **Don't worry about breaking things!** You can always undo or refresh
-- **Experiment!** Try weird values and see what happens
-- **Read the comments** - They explain what each part does
-- **Ask questions!** If something doesn't make sense, ask
+## License
 
-## 🎨 What's Next?
-
-After you've experimented with physics and added coins, we'll:
-1. Add "juice" functions (screen shake, particles, sounds)
-2. Add a goal to reach
-3. Make winning feel epic!
-
-## 🤔 Discussion Questions
-
-- Why does changing `GRAVITY` change how the game feels?
-- What happens if you put `screenShake()` in the game loop? (We'll try this later!)
-- What makes a game feel "good" to play?
-
----
-
-**Have fun! Remember: The best way to learn coding is to experiment and break things!**
+MIT License - feel free to use and adapt for your own teaching!
