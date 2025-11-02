@@ -47,6 +47,7 @@ const SCORE_Y_POSITION = 450 + SCORE_SIZE / 2;     // Y position of score (highe
 // Coin Settings
 const NUMBER_OF_COINS = 15;      // LOTS of coins for maximum juice!
 const POINTS_PER_COIN = 100;     // How many points per coin
+const COIN_COMPLETION_BONUS = 1000;
 const COIN_SIZE = 20;            // Size of coins
 const COIN_COLOR = 'rgb(255, 217, 61)';    // Color of coins
 
@@ -92,7 +93,8 @@ let comboCount = 0;
 let comboTimer = 0;
 const COMBO_TIMEOUT = 120; // frames
 
-const SCORE_PROGRESS_TOTAL = NUMBER_OF_COINS * POINTS_PER_COIN * 1.5; // Score at which maximum juice is reached
+// Score at which maximum juice is reached
+const SCORE_PROGRESS_TOTAL = 2 * (NUMBER_OF_COINS * POINTS_PER_COIN + COIN_COMPLETION_BONUS) // Three full completions
 
 // Helper function to scale a value based on score progress
 // min: starting value at 0 score
@@ -533,10 +535,8 @@ function onCoinCollected(coin) {
 
 function onAllCoinsCollected() {
   // 🎆 ULTIMATE VICTORY CELEBRATION! 🎆
-
-  // MASSIVE SCORE BONUS for completing all coins!
-  const completionBonus = 1000;
-  score += completionBonus;
+ 
+  score += COIN_COMPLETION_BONUS;
 
   screenShake(30);
 
@@ -614,7 +614,7 @@ function onAllCoinsCollected() {
   scorePopups.push({
     x: canvas.width / 2,
     y: canvas.height / 2 - 100,
-    text: `+${completionBonus} BONUS!`,
+    text: `+${COIN_COMPLETION_BONUS} BONUS!`,
     life: 2.0,
     vy: -1,
     scale: 2.5,
@@ -628,7 +628,7 @@ function onAllCoinsCollected() {
   // Screen flash
   backgroundPulse = 1.5;
 
-  console.log(`🎆🎇🎆 ULTIMATE VICTORY! ALL COINS! +${completionBonus} BONUS! 🎆🎇🎆`);
+  console.log(`🎆🎇🎆 ULTIMATE VICTORY! ALL COINS! +${COIN_COMPLETION_BONUS} BONUS! 🎆🎇🎆`);
 }
 
 function drawCoins() {
@@ -1028,11 +1028,12 @@ function isTooCloseToObject(x, y, objectSize) {
 
   // Check bad platforms too - don't spawn coins on dangerous areas!
   for (const badPlatform of badPlatforms) {
-    const buffer = objectSize * 3; // Extra buffer for bad platforms
+    const buffer = objectSize;
+    const topBuffer = objectSize * 5; // Extra buffer on top
     if (x > badPlatform.x - buffer &&
       x < badPlatform.x + badPlatform.width + buffer &&
       y > badPlatform.y - buffer &&
-      y < badPlatform.y + badPlatform.height + buffer) {
+      y < badPlatform.y + badPlatform.height + topBuffer) {
       return true;
     }
   }
@@ -1251,17 +1252,17 @@ function updatePlatforms() {
 
   for (let i = 0; i < platforms.length; i++) {
     const platform = platforms[i];
+
+    // Initialize random move speed and original position on first run
+    if (platform.originalX === undefined) {
+      platform.originalX = platform.x;
+      platform.originalY = platform.y;
+      // Randomize move speed: ground (i=0) doesn't move, others get random speed
+      platform.moveSpeed = (i === 0) ? 0 : (0.1 + Math.random() * 1.5);
+    }
+
     if (platform.moveSpeed > 0) {
       // Use sine wave for smooth back-and-forth motion
-
-      // Keep track of the original position
-      if (platform.originalX === undefined) {
-        platform.originalX = platform.x;
-      }
-      if (platform.originalY === undefined) {
-        platform.originalY = platform.y;
-      }
-
       const progress = 1 + scaleWithProgress(0, 1.0);
 
       const offset = Math.sin(platformTime * platform.moveSpeed * progress) * 30;
@@ -1273,7 +1274,7 @@ function updatePlatforms() {
         if (player.y + player.height === platform.y &&
             player.x < platform.x + platform.width &&
             player.x + player.width > platform.x) {
-          player.x += offset - Math.sin((platformTime - 0.02) * platform.moveSpeed) * 30;
+          player.x += offset - Math.sin((platformTime - 0.02) * platform.moveSpeed * progress) * 30;
         }
       }
     }
