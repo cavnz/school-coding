@@ -234,8 +234,8 @@ function onAllCoinsCollected() {
   // EPIC VICTORY CELEBRATION!
   screenShake(15);
   beep(880, 150, 0.4);
-  setTimeout(() => beep(1100, 150, 0.4), 150);
-  setTimeout(() => beep(1320, 300, 0.5), 300);
+  beep(1100, 150, 0.4, 0.15)
+  beep(1320, 300, 0.5, 0.3)
 
   // Explosion of colorful particles from the player!
   spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(78, 205, 196)', 50);
@@ -361,7 +361,7 @@ function playSound(soundName, volume = 0.5, pitch = 1.0) {
 // Simple beep sounds using Web Audio API (no files needed!)
 let audioContext = null;
 
-function beep(frequency = 440, duration = 100, volume = 0.3) {
+function beep(frequency = 440, duration = 100, volume = 0.3, delay = 0) {
   // Makes a simple beep sound without needing sound files
   // frequency: how high the beep (220 = low, 440 = middle, 880 = high)
   // duration: how long in milliseconds
@@ -381,11 +381,13 @@ function beep(frequency = 440, duration = 100, volume = 0.3) {
     oscillator.frequency.value = frequency;
     oscillator.type = 'square'; // Try: 'sine', 'square', 'sawtooth', 'triangle'
 
-    gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
+    const startTime = audioContext.currentTime + delay
 
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + duration / 1000);
+    gainNode.gain.setValueAtTime(volume, startTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration / 1000);
+
+    oscillator.start(startTime);
+    oscillator.stop(startTime + duration / 1000);
 
     console.log('Beep!', frequency + 'Hz');
   } catch (e) {

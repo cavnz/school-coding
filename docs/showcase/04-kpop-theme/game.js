@@ -418,7 +418,7 @@ function screenShake(intensity) {
 // Simple beep sounds using Web Audio API (no files needed!)
 let audioContext = null;
 
-function beep(frequency = 440, duration = 100, volume = 0.3) {
+function beep(frequency = 440, duration = 100, volume = 0.3, delay = 0) {
   // Makes a simple beep sound without needing sound files
   // frequency: how high the beep (220 = low, 440 = middle, 880 = high)
   // duration: how long in milliseconds
@@ -436,15 +436,17 @@ function beep(frequency = 440, duration = 100, volume = 0.3) {
     gainNode.connect(audioContext.destination);
 
     oscillator.frequency.value = frequency;
-    oscillator.type = 'sine'; // Sine wave for softer, cuter sounds
+    oscillator.type = 'square'; // Try: 'sine', 'square', 'sawtooth', 'triangle'
 
-    gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
+    const startTime = audioContext.currentTime + delay
 
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + duration / 1000);
+    gainNode.gain.setValueAtTime(volume, startTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration / 1000);
 
-    console.log('Beep!', frequency + 'Hz');
+    oscillator.start(startTime);
+    oscillator.stop(startTime + duration / 1000);
+
+    console.log('Beep!', frequency + 'Hz' + (delay ? ' after ' + delay + 's' : ''));
   } catch (e) {
     console.warn('Could not play beep:', e);
   }
