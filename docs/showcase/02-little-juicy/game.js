@@ -15,17 +15,24 @@ window.addEventListener('error', (e) => {
 // EXPERIMENT WITH THESE VALUES!
 // Try changing them to see what happens
 
-// Physics Settings
+// ==== Physics Settings ====
+// These control how the game feels!
+
 const GRAVITY = 0.5;           // How fast things fall (try 0.3 or 1.0)
 const JUMP_POWER = 12;         // How high you jump (try 8 or 15)
 const PLAYER_SPEED = 5;        // How fast you move left/right (try 3 or 8)
 const FRICTION = 0.8;          // How slippery the ground is (0.9 = ice, 0.5 = sticky)
-
-// Visual Settings
 const PLAYER_SIZE = 30;          // Size of your character (try 20 or 50)
+
+
+// ==== Visual Settings ====
+// Change these colors to make it your own!
+
 const PLAYER_COLOR = 'rgb(255, 107, 157)';  // Color of player (try 'rgb(231, 76, 60)' or 'rgb(46, 204, 113)')
 const PLATFORM_COLOR = 'rgb(78, 205, 196)'; // Color of platforms (try 'rgb(52, 73, 94)' or 'rgb(127, 140, 141)')
 const BACKGROUND_COLOR = 'rgb(26, 26, 46)'; // Color of background (try 'rgb(44, 62, 80)' or 'rgb(26, 26, 26)')
+
+// ==== Platform Settings ====
 
 // Platforms to jump on
 const platforms = [
@@ -37,23 +44,18 @@ const platforms = [
   { x: 200, y: 150, width: 120, height: 20 }     // Platform 5
 ];
 
+// ==== Coin Settings ====
 
-// Score Display Settings
-const SCORE_SIZE = 48;            // Font size for score (try 36, 64, 80!)
-const SCORE_COLOR = 'rgb(255, 235, 59)';    // Color of score text (try 'rgb(241, 196, 15)' or 'rgb(46, 204, 113)')
-const SCORE_Y_POSITION = 450 + SCORE_SIZE / 2;     // Y position of score (higher = lower on screen)
-
-// Coin Settings
 const NUMBER_OF_COINS = 10;      // How many coins to spawn (try 3, 10, 20!)
 const POINTS_PER_COIN = 100;     // How many points per coin (try 1, 100, 1000!)
 const COIN_SIZE = 20;            // Size of coins
 const COIN_COLOR = 'rgb(255, 217, 61)';    // Color of coins (try 'rgb(241, 196, 15)' or 'rgb(230, 126, 34)')
 
-// Death Settings
+// ==== Death Settings ====
+
 const BAD_PLATFORM_COLOR = 'rgb(255, 51, 102)';  // Color of dangerous platforms (try 'rgb(192, 57, 43)' or 'rgb(0, 0, 0)')
 const RESPAWN_X = 100;           // Where to respawn horizontally
 const RESPAWN_Y = 100;           // Where to respawn vertically
-
 
 // Dangerous platforms (spikes, lava, etc.) - touching these kills you!
 // You can add more by copying the format: { x: , y: , width: , height: }
@@ -61,22 +63,27 @@ const badPlatforms = [
    { x: 400, y: 440, width: 100, height: 10 }  // Spikes on the ground
 ];
 
+// ==== Score Display Settings ====
+
+const SCORE_SIZE = 48;            // Font size for score (try 36, 64, 80!)
+const SCORE_COLOR = 'rgb(255, 235, 59)';    // Color of score text (try 'rgb(241, 196, 15)' or 'rgb(46, 204, 113)')
+const SCORE_Y_POSITION = 450 + SCORE_SIZE / 2;     // Y position of score (higher = lower on screen)
+
+
 // =============================================
 // 👤 PLAYER FUNCTIONS
 // =============================================
 
 function jump() {
-  if (player.isOnGround) {
-    player.velocityY = -JUMP_POWER;
-    player.isOnGround = false;
+  // This is called when the player jumps!
+  // Add effects here to make it feel responsive
 
-    // Jump effects - light and quick!
-    screenShake(2);
-    beep(440, 100, 0.2);
-    spawnParticles(player.x + player.width / 2, player.y + player.height, PLAYER_COLOR, 5);
+  // Jump effects - light and quick!
+  screenShake(2);
+  beep(440, 100, 0.2);
+  spawnParticles(player.x + player.width / 2, player.y + player.height, PLAYER_COLOR, 5);
 
-    console.log('Jump!');
-  }
+  console.log('Jump!');
 }
 
 function land() {
@@ -92,7 +99,8 @@ function land() {
 }
 
 function bump() {
-  player.velocityY = 0;
+  // This is called when you bump your head on a platform!
+  // Add effects here to make it feel impactful
 
   // Head bump effects - short and high-pitched
   screenShake(2);
@@ -100,6 +108,19 @@ function bump() {
   spawnParticles(player.x + player.width / 2, player.y, 'rgb(149, 165, 166)', 8);
 
   console.log('Bump!');
+}
+
+function onDeath() {
+  // This is called when you touch a dangerous platform!
+  // Add effects here to make it feel dramatic
+
+  // Death effects - MAXIMUM DRAMA!
+  screenShake(15);
+  beep(110, 300, 0.4);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, PLAYER_COLOR, 50);
+  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(255, 51, 102)', 30);
+
+  console.log('You died! Respawning...');
 }
 
 function drawPlayer() {
@@ -132,80 +153,6 @@ function drawPlayer() {
   ctx.fill();
 }
 
-// =============================================
-// 🏆 SCORE DISPLAY FUNCTIONS
-// =============================================
-
-// Score pulse animation
-let scorePulse = 1.0;  // 1.0 = normal size
-let scorePulseSpeed = 0;
-
-function drawScore() {
-  // Draw the score in big letters at the bottom of the screen!
-  // This makes it easy to see and add juice effects to
-
-  // Pulse animation - shrinks back to normal over time
-  if (scorePulse > 1.0) {
-    scorePulse -= 0.02;
-    if (scorePulse < 1.0) scorePulse = 1.0;
-  }
-
-  // Calculate pulsing size
-  const pulsingSize = SCORE_SIZE * scorePulse;
-
-  // Change color based on score!
-  let scoreColor = SCORE_COLOR;
-  if (score >= 1000) scoreColor = 'rgb(255, 107, 157)';  // Pink for high scores!
-  else if (score >= 500) scoreColor = 'rgb(167, 139, 250)';  // Purple for medium scores
-
-  ctx.fillStyle = scoreColor;
-  ctx.font = `bold ${pulsingSize}px Arial`;
-  ctx.textAlign = 'center';  // Center the text
-  ctx.textBaseline = 'middle';
-
-  // Draw at center of canvas, near the bottom
-  ctx.fillText(`Score: ${score}`, canvas.width / 2, SCORE_Y_POSITION);
-}
-
-function onDeath() {
-  // This is called when you touch a dangerous platform!
-  // Add effects here to make it feel dramatic
-
-  // Death effects - MAXIMUM DRAMA!
-  screenShake(15);
-  beep(110, 300, 0.4);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, PLAYER_COLOR, 50);
-  spawnParticles(player.x + player.width / 2, player.y + player.height / 2, 'rgb(255, 51, 102)', 30);
-
-  console.log('You died! Respawning...');
-}
-
-// =============================================
-// ☠️ DANGEROUS PLATFORM FUNCTIONS
-// =============================================
-
-function drawBadPlatforms() {
-  // Draw the dangerous platforms as spikes!
-  ctx.fillStyle = BAD_PLATFORM_COLOR;
-  for (const platform of badPlatforms) {
-    // Draw spikes across the width of the platform
-    const spikeWidth = 20;  // How wide each spike is
-    const numSpikes = Math.ceil(platform.width / spikeWidth);
-
-    for (let i = 0; i < numSpikes; i++) {
-      const x = platform.x + i * spikeWidth;
-      const y = platform.y;
-
-      // Draw triangle spike
-      ctx.beginPath();
-      ctx.moveTo(x, y + platform.height);  // Bottom left
-      ctx.lineTo(x + spikeWidth / 2, y);   // Top point
-      ctx.lineTo(x + spikeWidth, y + platform.height);  // Bottom right
-      ctx.closePath();
-      ctx.fill();
-    }
-  }
-}
 
 // =============================================
 // 💰 COIN FUNCTIONS
@@ -273,6 +220,68 @@ function drawCoins() {
 }
 
 // =============================================
+// 🏆 SCORE DISPLAY FUNCTIONS
+// =============================================
+
+// Score pulse animation
+let scorePulse = 1.0;  // 1.0 = normal size
+let scorePulseSpeed = 0;
+
+function drawScore() {
+  // Draw the score in big letters at the bottom of the screen!
+  // This makes it easy to see and add juice effects to
+
+  // Pulse animation - shrinks back to normal over time
+  if (scorePulse > 1.0) {
+    scorePulse -= 0.02;
+    if (scorePulse < 1.0) scorePulse = 1.0;
+  }
+
+  // Calculate pulsing size
+  const pulsingSize = SCORE_SIZE * scorePulse;
+
+  // Change color based on score!
+  let scoreColor = SCORE_COLOR;
+  if (score >= 1000) scoreColor = 'rgb(255, 107, 157)';  // Pink for high scores!
+  else if (score >= 500) scoreColor = 'rgb(167, 139, 250)';  // Purple for medium scores
+
+  ctx.fillStyle = scoreColor;
+  ctx.font = `bold ${pulsingSize}px Arial`;
+  ctx.textAlign = 'center';  // Center the text
+  ctx.textBaseline = 'middle';
+
+  // Draw at center of canvas, near the bottom
+  ctx.fillText(`Score: ${score}`, canvas.width / 2, SCORE_Y_POSITION);
+}
+
+// =============================================
+// ☠️ DANGEROUS PLATFORM FUNCTIONS
+// =============================================
+
+function drawBadPlatforms() {
+  // Draw the dangerous platforms as spikes!
+  ctx.fillStyle = BAD_PLATFORM_COLOR;
+  for (const platform of badPlatforms) {
+    // Draw spikes across the width of the platform
+    const spikeWidth = 20;  // How wide each spike is
+    const numSpikes = Math.ceil(platform.width / spikeWidth);
+
+    for (let i = 0; i < numSpikes; i++) {
+      const x = platform.x + i * spikeWidth;
+      const y = platform.y;
+
+      // Draw triangle spike
+      ctx.beginPath();
+      ctx.moveTo(x, y + platform.height);  // Bottom left
+      ctx.lineTo(x + spikeWidth / 2, y);   // Top point
+      ctx.lineTo(x + spikeWidth, y + platform.height);  // Bottom right
+      ctx.closePath();
+      ctx.fill();
+    }
+  }
+}
+
+// =============================================
 // ✨ PARTICLE FUNCTIONS
 // =============================================
 
@@ -326,37 +335,6 @@ function screenShake(intensity) {
   console.log('Screen shake!', intensity);
 }
 
-// Sound system for loading sound files
-const sounds = {
-  // You can add sound files here later!
-  // Format: 'soundName': 'path/to/sound.mp3'
-  // Example:
-  // 'jump': 'sounds/jump.wav',
-  // 'coin': 'sounds/coin.wav',
-  // 'land': 'sounds/land.wav'
-};
-
-function playSound(soundName, volume = 0.5, pitch = 1.0) {
-  // Plays a sound effect
-  // soundName: the name of the sound (must be in sounds object above)
-  // volume: how loud (0.0 to 1.0)
-  // pitch: how high/low (1.0 = normal, 0.5 = lower, 2.0 = higher)
-
-  if (sounds[soundName]) {
-    try {
-      const audio = new Audio(sounds[soundName]);
-      audio.volume = volume;
-      audio.playbackRate = pitch;
-      audio.play();
-      console.log('Playing sound:', soundName);
-    } catch (e) {
-      console.warn('Could not play sound:', soundName, e);
-    }
-  } else {
-    // Sound not found - that's okay, just log it
-    console.log('Sound not loaded yet:', soundName, '(add it to the sounds object!)');
-  }
-}
 
 // Simple beep sounds using Web Audio API (no files needed!)
 let audioContext = null;
@@ -434,7 +412,11 @@ function handleInput() {
 
   // Jumping
   if (keys['ArrowUp'] || keys['w'] || keys['W'] || keys[' ']) {
-    jump();
+    if (player.isOnGround) {
+      player.velocityY = -JUMP_POWER;
+      player.isOnGround = false;
+      jump();
+    }
   }
 }
 
@@ -494,6 +476,7 @@ function checkPlatformCollisions() {
       if (player.velocityY < 0 &&
         player.y - player.velocityY >= platform.y + platform.height) {
         player.y = platform.y + platform.height;
+        player.velocityY = 0;
         bump();
       }
     }
@@ -518,13 +501,12 @@ function isTooCloseToObject(x, y, objectSize) {
 
   // Check bad platforms too - don't spawn coins on dangerous areas!
   for (const badPlatform of badPlatforms) {
-    const buffer = objectSize * 4;
-    const topBuffer = objectSize * 15; // Extra buffer on top
+    const buffer = objectSize * 3; // Extra buffer for bad platforms
     if (x > badPlatform.x - buffer &&
       x < badPlatform.x + badPlatform.width + buffer &&
-      y > badPlatform.y - topBuffer &&
+      y > badPlatform.y - buffer &&
       y < badPlatform.y + badPlatform.height + buffer) {
-      return true;
+      return true;  // Too close to a dangerous platform!
     }
   }
 

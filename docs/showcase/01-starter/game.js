@@ -103,7 +103,7 @@ function jump() {
 function land() {
 
   if (SHAKE_ON_LAND) {
-    screenShake(5)
+    screenShake(8)
   }
 
   if (SOUNDS_ON) {
@@ -111,7 +111,7 @@ function land() {
   }
 
   // 📋 TODO: Add juice here! What should happen when you land?
-  // Try calling: screenShake(5)
+  // Try calling: screenShake(8)
   // Try calling: beep(220, 50, 0.3)
 
   // END land() Put your code above this line!
@@ -124,8 +124,9 @@ function bump() {
   }
 
   // 📋 TODO: Add juice here! What should happen when you bump your head?
-  // Try calling: screenShake(2)
+  // Try calling: screenShake(3)
   // Try calling: beep(880, 80, 0.15)
+  // Try calling: spawnParticles(player.x + player.width / 2, player.y + player.height / 2, PLAYER_COLOR, 5)
 
   
   // END bump() Put your code above this line!
