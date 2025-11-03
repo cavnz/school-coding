@@ -58,7 +58,7 @@ const RESPAWN_Y = 100;           // Where to respawn vertically
 // Dangerous platforms (lightning bolts!) - touching these kills you!
 // You can add more by copying the format: { x: , y: , width: , height: }
 const badPlatforms = [
-   { x: 400, y: 440, width: 100, height: 10 }  // Spikes on the ground
+  { x: 400, y: 440, width: 100, height: 10 }  // Spikes on the ground
 ];
 
 // Sparkles for background!
@@ -73,16 +73,24 @@ for (let i = 0; i < 50; i++) {
   });
 }
 
+// Platform reaction effect - which platform to flash
+let flashingPlatformIndex = -1;
+let flashIntensity = 0;
+
+// Background music state
+const MUSIC_ON = false;
+let musicPlaying = false;
+
 // =============================================
 // 👤 PLAYER FUNCTIONS
 // =============================================
 
 function jump() {
 
-    // Cute jump sound!
-    beep(550, 100, 0.2);
-    spawnParticles(player.x + player.width / 2, player.y + player.height, ACCENT_COLOR, 5);
-    console.log('Jump! ✨');
+  // Cute jump sound!
+  beep(550, 100, 0.2);
+  spawnParticles(player.x + player.width / 2, player.y + player.height, ACCENT_COLOR, 5);
+  console.log('Jump! ✨');
 }
 
 function land() {
@@ -91,6 +99,19 @@ function land() {
   beep(350, 50, 0.3);
   screenShake(3);
   spawnParticles(player.x + player.width / 2, player.y + player.height, PLAYER_COLOR, 8);
+
+  // Platform reaction - find which platform we landed on
+  for (let i = 0; i < platforms.length; i++) {
+    const platform = platforms[i];
+    // Check if player is on this platform
+    if (player.x < platform.x + platform.width &&
+      player.x + player.width > platform.x &&
+      Math.abs(player.y + player.height - platform.y) < 5) {
+      flashingPlatformIndex = i;
+      flashIntensity = 1.0;
+      break;
+    }
+  }
 
   console.log('Landed! 💖');
 }
@@ -261,6 +282,7 @@ function onCoinCollected(coin) {
 
   screenShake(4);
   beep(880, 80, 0.3);
+
   spawnParticles(coin.x, coin.y, COIN_COLOR, 25);
   spawnParticles(coin.x, coin.y, ACCENT_COLOR, 10);
 
@@ -449,6 +471,147 @@ function beep(frequency = 440, duration = 100, volume = 0.3, delay = 0) {
     console.log('Beep!', frequency + 'Hz' + (delay ? ' after ' + delay + 's' : ''));
   } catch (e) {
     console.warn('Could not play beep:', e);
+  }
+}
+
+// K-pop style background music system
+// Define note frequencies (G Major scale: G A B C D E F# G)
+const notes = {
+  G4: 392.00,
+  A4: 440.00,
+  B4: 493.88,
+  C5: 523.25,
+  D5: 587.33,
+  E5: 659.25,
+  Fs5: 739.99,  // F# (sharp)
+  G5: 783.99
+};
+
+// Music sequencer to schedule notes
+let currentTime = 0;
+let scheduledNotes = [];
+
+function addNote(frequency, duration, delay = 0) {
+  // Add a note to the sequence
+  // Returns the total time elapsed (for chaining notes)
+  const startTime = currentTime + delay;
+  scheduledNotes.push({ frequency, startTime, duration });
+  currentTime = startTime + duration;
+  return currentTime;
+}
+
+function addPause(duration) {
+  // Add a pause (silence)
+  currentTime += duration;
+  return currentTime;
+}
+
+function getTotalPhraseTime() {
+  // Returns the total duration of all scheduled notes
+  return currentTime;
+}
+
+function playScheduledNote(frequency, startTime, duration, volume = 0.12) {
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+
+  oscillator.frequency.setValueAtTime(frequency, startTime);
+  oscillator.type = 'square'; // Square wave for punchier, more energetic sound
+
+  // Envelope: VERY quick attack, sharp decay for punch
+  gainNode.gain.setValueAtTime(0, startTime);
+  gainNode.gain.linearRampToValueAtTime(volume, startTime + 0.005); // Super fast attack!
+  gainNode.gain.exponentialRampToValueAtTime(volume * 0.3, startTime + duration * 0.5); // Quick decay
+  gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+  oscillator.start(startTime);
+  oscillator.stop(startTime + duration);
+}
+
+function createKpopPhrase() {
+  // Reset the sequence
+  currentTime = 0;
+  scheduledNotes = [];
+
+  // K-pop inspired melody in G Major (energetic and catchy!)
+  // Faster tempo with punchier notes!
+
+  // Phrase 1: Catchy opening riff (like a synth hook)
+  addNote(notes.B4, 0.15);  
+  addNote(notes.B4, 0.15);  
+  addNote(notes.E5, 0.15); 
+  addNote(notes.E5, 0.3);  
+  addNote(notes.E5, 0.4);   
+  addNote(notes.E5, 0.4);   
+  addNote(notes.B4, 0.15);  
+  addNote(notes.B4, 0.15);  
+  addNote(notes.D5, 0.15);  
+  addNote(notes.D5, 0.4);  
+  addNote(notes.D5, 0.4);  
+  addPause(0.1);
+
+  addNote(notes.C5, 0.15); 
+  addNote(notes.D5, 0.15); 
+  addNote(notes.D5, 0.15); 
+  addNote(notes.D5, 0.15);
+  addNote(notes.C5, 0.15); 
+  addNote(notes.C5, 0.15);  
+  addNote(notes.C5, 0.3); 
+  addNote(notes.B4, 0.4); 
+
+
+
+
+  return getTotalPhraseTime();
+}
+
+function startBackgroundMusic() {
+  if (!MUSIC_ON) { return; }
+
+  if (musicPlaying) {
+    console.log('Music already playing');
+    return;
+  }
+
+  try {
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    // Resume audio context if it's suspended (browser security requirement)
+    if (audioContext.state === 'suspended') {
+      audioContext.resume().then(() => {
+        console.log('Audio context resumed:', audioContext.state);
+      });
+    }
+
+    console.log('Audio context state:', audioContext.state);
+    musicPlaying = true;
+
+    function playMusicLoop() {
+      if (!musicPlaying) return;
+
+      const now = audioContext.currentTime;
+
+      // Create the phrase
+      const phraseTime = createKpopPhrase();
+
+      // Play all scheduled notes
+      for (const note of scheduledNotes) {
+        playScheduledNote(note.frequency, now + note.startTime, note.duration);
+      }
+
+      // Schedule next loop (phrase time + small pause)
+      setTimeout(playMusicLoop, (phraseTime + 0.5) * 1000);
+    }
+
+    playMusicLoop();
+    console.log('🎵 K-pop background music started!');
+  } catch (e) {
+    console.warn('Could not start background music:', e);
   }
 }
 
@@ -764,19 +927,57 @@ function render() {
   drawSparkles();
 
   // Draw platforms with gradient
-  for (const platform of platforms) {
+  for (let i = 0; i < platforms.length; i++) {
+    const platform = platforms[i];
+
+    // Check if this platform is flashing
+    const isFlashing = (i === flashingPlatformIndex && flashIntensity > 0);
+
     const platformGradient = ctx.createLinearGradient(
       platform.x, platform.y,
       platform.x, platform.y + platform.height
     );
-    platformGradient.addColorStop(0, PLATFORM_COLOR);
-    platformGradient.addColorStop(1, 'rgb(75, 0, 130)');
+
+    if (isFlashing) {
+      // Flash to bright gold/white color
+      const flashColor = `rgba(255, 215, 0, ${flashIntensity})`;
+      const normalColor = PLATFORM_COLOR;
+
+      // Blend between normal and flash color
+      platformGradient.addColorStop(0, flashColor);
+      platformGradient.addColorStop(1, normalColor);
+
+      // Add glow effect
+      ctx.shadowBlur = 20 * flashIntensity;
+      ctx.shadowColor = ACCENT_COLOR;
+    } else {
+      platformGradient.addColorStop(0, PLATFORM_COLOR);
+      platformGradient.addColorStop(1, 'rgb(75, 0, 130)');
+    }
+
     ctx.fillStyle = platformGradient;
     ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+
+    ctx.shadowBlur = 0; // Reset shadow
 
     // Add sparkle highlight
     ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
     ctx.fillRect(platform.x, platform.y, platform.width, 4);
+
+    const isPlayerTouchingPlatform = (
+      player.x < platform.x + platform.width &&
+      player.x + player.width > platform.x &&
+      Math.abs(player.y + player.height - platform.y) < 5);
+
+
+    if (!isPlayerTouchingPlatform && isFlashing) {
+      flashIntensity *= 0.94; // Decay the flash
+      if (flashIntensity < 0.01) {
+        flashIntensity = 0;
+        flashingPlatformIndex = -1;
+      }
+
+    }
   }
 
   // Draw dangerous platforms
@@ -800,11 +1001,23 @@ function render() {
 
 window.addEventListener('keydown', (e) => {
   keys[e.key] = true;
+
+  // Start music on first keypress (browsers require user interaction)
+  if (!musicPlaying) {
+    startBackgroundMusic();
+  }
 });
 
 window.addEventListener('keyup', (e) => {
   keys[e.key] = false;
 });
+
+// Also try to start music on first click
+window.addEventListener('click', () => {
+  if (!musicPlaying) {
+    startBackgroundMusic();
+  }
+}, { once: true });
 
 // =============================================
 // 🔁 GAME LOOP
