@@ -74,7 +74,7 @@ const SCORE_Y_POSITION = 450 + SCORE_SIZE / 2;     // Y position of score (highe
 // 👤 PLAYER FUNCTIONS
 // =============================================
 
-function jump() {
+function onJump() {
   // This is called when the player jumps!
   // Add effects here to make it feel responsive
 
@@ -86,7 +86,7 @@ function jump() {
   console.log('Jump!');
 }
 
-function land() {
+function onLand() {
   // This is called ONCE when the player first touches the ground
   // (not every frame while on the ground)
 
@@ -98,7 +98,7 @@ function land() {
   console.log('Landed!');
 }
 
-function bump() {
+function onBump() {
   // This is called when you bump your head on a platform!
   // Add effects here to make it feel impactful
 
@@ -415,7 +415,7 @@ function handleInput() {
     if (player.isOnGround) {
       player.velocityY = -JUMP_POWER;
       player.isOnGround = false;
-      jump();
+      onJump();
     }
   }
 }
@@ -465,9 +465,9 @@ function checkPlatformCollisions() {
         player.y = platform.y - player.height;
         player.velocityY = 0;  // Stop falling
 
-        // Only call land() if we weren't on ground before (just landed!)
+        // Only call onLand() if we weren't on ground before (just landed!)
         if (!player.wasOnGround) {
-          land();
+          onLand();
         }
         player.isOnGround = true;
       }
@@ -477,7 +477,7 @@ function checkPlatformCollisions() {
         player.y - player.velocityY >= platform.y + platform.height) {
         player.y = platform.y + platform.height;
         player.velocityY = 0;
-        bump();
+        onBump();
       }
     }
   }
@@ -741,3 +741,9 @@ function gameLoop() {
 
 spawnCoins();  // Create coins when game starts
 gameLoop();
+
+// Auto-focus the canvas so keyboard controls work immediately
+// This helps when running in JSFiddle or other embedded environments
+canvas.tabIndex = 1;  // Make canvas focusable
+canvas.focus();       // Give it focus automatically
+console.log('Game started! Use arrow keys or WASD to move, Space/W/Up to jump.');

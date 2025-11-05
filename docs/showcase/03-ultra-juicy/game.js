@@ -59,7 +59,7 @@ const RESPAWN_Y = 100;           // Where to respawn vertically
 
 // Dangerous platforms (spikes, lava, etc.) - touching these kills you!
 const badPlatforms = [
-   { x: 400, y: 440, width: 100, height: 10 }  // Spikes on the ground
+  { x: 400, y: 440, width: 100, height: 10 }  // Spikes on the ground
 ];
 
 // =============================================
@@ -128,37 +128,32 @@ function getPlatformColor() {
 // 👤 PLAYER FUNCTIONS
 // =============================================
 
-function jump() {
-  if (player.isOnGround) {
-    player.velocityY = -JUMP_POWER;
-    player.isOnGround = false;
+function onJump() {
+  // ULTRA JUICY JUMP! Particles grow with score
+  const jumpParticles = Math.floor(scaleWithProgress(5, 20)); // Start at 5, grows to 20 at high scores
+  screenShake(scaleWithProgress(3, 8));
+  beep(440, 100, 0.3);
+  beep(554, 100, 0.2); // Add harmony!
+  spawnParticles(player.x + player.width / 2, player.y + player.height, PLAYER_COLOR, jumpParticles);
+  spawnParticles(player.x + player.width / 2, player.y + player.height, 'rgb(255, 138, 193)', Math.floor(jumpParticles * 0.6));
 
-    // ULTRA JUICY JUMP! Particles grow with score
-    const jumpParticles = Math.floor(scaleWithProgress(5, 20)); // Start at 5, grows to 20 at high scores
-    screenShake(scaleWithProgress(3, 8));
-    beep(440, 100, 0.3);
-    beep(554, 100, 0.2); // Add harmony!
-    spawnParticles(player.x + player.width / 2, player.y + player.height, PLAYER_COLOR, jumpParticles);
-    spawnParticles(player.x + player.width / 2, player.y + player.height, 'rgb(255, 138, 193)', Math.floor(jumpParticles * 0.6));
-
-    // Add speed lines! Grow with score
-    const numSpeedLines = Math.max(0, Math.floor(scaleWithProgress(0, 5))); 
-    for (let i = 0; i < numSpeedLines; i++) {
-      speedLines.push({
-        x: player.x + player.width / 2,
-        y: player.y + player.height,
-        length: 20 + Math.random() * 20,
-        angle: Math.PI / 2, // Point down
-        life: 1.0,
-        width: 2
-      });
-    }
+  // Add speed lines! Grow with score
+  const numSpeedLines = Math.max(0, Math.floor(scaleWithProgress(0, 5)));
+  for (let i = 0; i < numSpeedLines; i++) {
+    speedLines.push({
+      x: player.x + player.width / 2,
+      y: player.y + player.height,
+      length: 20 + Math.random() * 20,
+      angle: Math.PI / 2, // Point down
+      life: 1.0,
+      width: 2
+    });
 
     console.log('💨 SUPER JUMP!');
   }
 }
 
-function land() {
+function onLand() {
   // ULTRA JUICY LANDING! Particles grow with score
   const landingForce = Math.abs(player.velocityY) / 2;
   const landParticles = Math.floor(scaleWithProgress(3, 30)); // Start at 8, grows to 30 at high scores
@@ -191,7 +186,7 @@ function land() {
   console.log('💥 EPIC LANDING!');
 }
 
-function bump() {
+function onBump() {
   player.velocityY = 0;
 
   // ULTRA JUICY HEAD BUMP! Particles grow with score
@@ -535,7 +530,7 @@ function onCoinCollected(coin) {
 
 function onAllCoinsCollected() {
   // 🎆 ULTIMATE VICTORY CELEBRATION! 🎆
- 
+
   score += COIN_COMPLETION_BONUS;
 
   screenShake(30);
@@ -960,8 +955,13 @@ function handleInput() {
     player.velocityX *= FRICTION;
   }
 
+  // Jumping
   if (keys['ArrowUp'] || keys['w'] || keys['W'] || keys[' ']) {
-    jump();
+    if (player.isOnGround) {
+      player.velocityY = -JUMP_POWER;
+      player.isOnGround = false;
+      onJump();
+    }
   }
 }
 
@@ -1001,7 +1001,7 @@ function checkPlatformCollisions() {
         player.velocityY = 0;
 
         if (!player.wasOnGround) {
-          land();
+          onLand();
         }
         player.isOnGround = true;
       }
@@ -1009,7 +1009,7 @@ function checkPlatformCollisions() {
       if (player.velocityY < 0 &&
         player.y - player.velocityY >= platform.y + platform.height) {
         player.y = platform.y + platform.height;
-        bump();
+        onBump();
       }
     }
   }
@@ -1272,8 +1272,8 @@ function updatePlatforms() {
       if (player.isOnGround) {
         // Check if player is on this specific platform
         if (player.y + player.height === platform.y &&
-            player.x < platform.x + platform.width &&
-            player.x + player.width > platform.x) {
+          player.x < platform.x + platform.width &&
+          player.x + player.width > platform.x) {
           player.x += offset - Math.sin((platformTime - 0.02) * platform.moveSpeed * progress) * 30;
         }
       }
@@ -1533,3 +1533,9 @@ function gameLoop() {
 initBackground();
 spawnCoins();
 gameLoop();
+
+// Auto-focus the canvas so keyboard controls work immediately
+// This helps when running in JSFiddle or other embedded environments
+canvas.tabIndex = 1;  // Make canvas focusable
+canvas.focus();       // Give it focus automatically
+console.log('Game started! Use arrow keys or WASD to move, Space/W/Up to jump.');

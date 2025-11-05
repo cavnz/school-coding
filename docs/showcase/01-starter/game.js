@@ -87,7 +87,7 @@ const SCORE_Y_POSITION = 450 + SCORE_SIZE / 2;     // Y position of score (highe
 // 👤 PLAYER FUNCTIONS
 // =============================================
 
-function jump() {
+function onJump() {
 
   if (SOUNDS_ON) {
     beep(440, 100, 0.2)
@@ -96,11 +96,11 @@ function jump() {
     // 📋 TODO: Add juice here! What should happen when you jump?
     // Try calling: screenShake(3)
     // Try calling: beep(440, 100, 0.2)
-    
-    // END jump() Put your code above this line!
+
+    // END onJump() Put your code above this line!
 }
 
-function land() {
+function onLand() {
 
   if (SHAKE_ON_LAND) {
     screenShake(8)
@@ -114,10 +114,10 @@ function land() {
   // Try calling: screenShake(8)
   // Try calling: beep(220, 50, 0.3)
 
-  // END land() Put your code above this line!
+  // END onLand() Put your code above this line!
 }
 
-function bump() {
+function onBump() {
 
   if (SOUNDS_ON) {
     beep(880, 80, 0.15)
@@ -128,8 +128,8 @@ function bump() {
   // Try calling: beep(880, 80, 0.15)
   // Try calling: spawnParticles(player.x + player.width / 2, player.y + player.height / 2, PLAYER_COLOR, 5)
 
-  
-  // END bump() Put your code above this line!
+
+  // END onBump() Put your code above this line!
 }
 
 function onDeath() {
@@ -401,14 +401,14 @@ function handleInput() {
 
   // Jumping
   if (keys['ArrowUp'] || keys['w'] || keys['W'] || keys[' ']) {
-    
+
     if (player.isOnGround) {
       player.velocityY = -JUMP_POWER;
       player.isOnGround = false;
-      jump();
+      onJump();
     }
-  
-  
+
+
   }
 }
 
@@ -457,9 +457,9 @@ function checkPlatformCollisions() {
         player.y = platform.y - player.height;
         player.velocityY = 0;  // Stop falling
 
-        // Only call land() if we weren't on ground before (just landed!)
+        // Only call onLand() if we weren't on ground before (just landed!)
         if (!player.wasOnGround) {
-          land();
+          onLand();
         }
         player.isOnGround = true;
       }
@@ -469,7 +469,7 @@ function checkPlatformCollisions() {
         player.y - player.velocityY >= platform.y + platform.height) {
         player.y = platform.y + platform.height;
         player.velocityY = 0;
-        bump();
+        onBump();
       }
     }
   }
@@ -730,5 +730,11 @@ function gameLoop() {
 checkPlatformsOn()
 spawnCoins();  // Create coins when game starts
 gameLoop();
+
+// Auto-focus the canvas so keyboard controls work immediately
+// This helps when running in JSFiddle or other embedded environments
+canvas.tabIndex = 1;  // Make canvas focusable
+canvas.focus();       // Give it focus automatically
+console.log('Game started! Use arrow keys or WASD to move, Space/W/Up to jump.');
 
 

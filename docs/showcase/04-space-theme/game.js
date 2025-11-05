@@ -76,7 +76,7 @@ for (let i = 0; i < 100; i++) {
 // 👤 PLAYER FUNCTIONS
 // =============================================
 
-function jump() {
+function onJump() {
 
     // Space thruster sound!
     beep(220, 100, 0.2);
@@ -84,7 +84,7 @@ function jump() {
     console.log('Thrusters engaged!');
 }
 
-function land() {
+function onLand() {
 
   // Landing thud
   beep(150, 50, 0.3);
@@ -93,7 +93,7 @@ function land() {
   console.log('Landed on platform!');
 }
 
-function bump() {
+function onBump() {
 
   // Bump sound
   beep(300, 80, 0.15);
@@ -392,7 +392,7 @@ function handleInput() {
     if (player.isOnGround) {
       player.velocityY = -JUMP_POWER;
       player.isOnGround = false;
-      jump();
+      onJump();
     }
 
 
@@ -444,9 +444,9 @@ function checkPlatformCollisions() {
         player.y = platform.y - player.height;
         player.velocityY = 0;  // Stop falling
 
-        // Only call land() if we weren't on ground before (just landed!)
+        // Only call onLand() if we weren't on ground before (just landed!)
         if (!player.wasOnGround) {
-          land();
+          onLand();
         }
         player.isOnGround = true;
       }
@@ -456,7 +456,7 @@ function checkPlatformCollisions() {
         player.y - player.velocityY >= platform.y + platform.height) {
         player.y = platform.y + platform.height;
         player.velocityY = 0;
-        bump();
+        onBump();
       }
     }
   }
@@ -713,3 +713,9 @@ function gameLoop() {
 
 spawnCoins();  // Create coins when game starts
 gameLoop();
+
+// Auto-focus the canvas so keyboard controls work immediately
+// This helps when running in JSFiddle or other embedded environments
+canvas.tabIndex = 1;  // Make canvas focusable
+canvas.focus();       // Give it focus automatically
+console.log('Game started! Use arrow keys or WASD to move, Space/W/Up to jump.');

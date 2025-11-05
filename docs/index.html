@@ -19,8 +19,13 @@
     <main>
       <section class="intro">
         <h2>Welcome!</h2>
-        <p>Today we're learning about changing and configuring code - and how to make games feel satisfying by adding "juice" - screen shake, particles, sounds, and other special effects!</p>
-
+        <p>Today we're learning about changing and configuring code:</p>
+        <ul>
+          <li>changing configuration to affect how the rest of the code behaves</li>
+          <li>using functions to respond to events in the game</li>
+        </ul>
+        <p>... and how to make games feel satisfying by adding "juice" - screen shake, particles, sounds, and other special effects!</p>
+        <br/>
         <p>Inspired by this youtube video: <a href="https://www.youtube.com/watch?v=Fy0aCDmgnxg" target="_blank">Juice It or Lose It</a></p>
       </section>
 
@@ -39,17 +44,25 @@
 
       <section class="quick-start">
         <h2>🚀 Getting Started with JSFiddle</h2>
-        <p>Choose your method:</p>
 
         <div style="text-align: center; margin: 30px 0;">
           <button onclick="openInJSFiddle()" class="copy-btn" style="font-size: 1.2em; padding: 15px 30px; background: #2ecc71;">
             🚀 Open Starter Code in JSFiddle (Easy!)
           </button>
           <p style="margin-top: 10px; color: #7f8c8d;">Auto-creates a JSFiddle with all the code ready to go!</p>
-          <p style="margin-top: 10px; color: #e74c3c;">Change the windows so you can see the 'JavaScript' and Game window</p>
-          <p style="margin-top: 10px; color: #8f8f8f;">(You won't need the HTML and CSS windows)</p>
-          <p style="margin-top: 10px; color: #e74c3c;">Click 'Run' to try the game</p>
-          <p style="margin-top: 10px; color: #e74c3c;">Make changes in the 'JavaScript' Window, then click 'Run'.</p>
+        </div>
+
+        <div class="activity">
+          <h3>📝 How to Use JSFiddle</h3>
+          <ol>
+            <li>Click the green button above to open the starter code in JSFiddle</li>
+            <li><strong>Arrange your windows:</strong> You can see the 'JavaScript' code and the 'Result' (game) window. You won't need the HTML and CSS windows.</li>
+            <li><strong>Run the game:</strong> Click the 'Run' button (top left) to start the game</li>
+            <li><strong>Make changes:</strong> Edit the JavaScript code, then click 'Run' again to see your changes</li>
+            <li><strong>Save your work:</strong> Click 'Save' at the top to create your own copy. You'll get a unique URL you can bookmark!</li>
+            <li><strong>Share with others:</strong> Copy the URL from your browser and share it with friends or your teacher to show off your game!</li>
+          </ol>
+          <p><strong>💡 Tip:</strong> You don't need a JSFiddle account to save and share, but creating one lets you organize all your fiddles in one place!</p>
         </div>
 
 
@@ -57,43 +70,82 @@
         <h2>🎯 Activities</h2>
 
         <div class="activity">
-          <h3>Part 1: Experiment with Physics</h3>
-          <p>At the top of the JavaScript, try changing these values:</p>
+          <h3>Part 1: Get the Game Running</h3>
+          <p>First, let's get the game set up and understand what's there:</p>
+          <ol>
+            <li>Click the <strong>"Open Starter Code in JSFiddle"</strong> button above</li>
+            <li>In JSFiddle, arrange the windows so you can see the <strong>JavaScript</strong> code and the <strong>Result</strong> (game) window</li>
+            <li>Click <strong>"Run"</strong> to start the game</li>
+            <li>Try the controls: <strong>Arrow keys</strong> to move, <strong>Space</strong> to jump</li>
+            <li>Look at the top of the JavaScript code to see all the configuration values</li>
+          </ol>
+          <p><strong>Important:</strong> Turn on features by changing these values at the top of the JavaScript:</p>
+          <ul>
+            <li><code>PLATFORMS_ON = true</code> → Turn on platforms so you can jump around (there's always a ground, but this adds more platforms!)</li>
+            <li><code>NUMBER_OF_COINS = 5</code> → Add coins to collect (try 3, 10, or 20!)</li>
+            <li><code>DEATH_ON = true</code> → Enable dangerous red spike platforms!</li>
+          </ul>
+        </div>
+
+        <div class="activity">
+          <h3>Part 2: Experiment with Physics</h3>
+          <p>At the top of the JavaScript, try changing these values to change how the game feels:</p>
           <ul>
             <li><code>GRAVITY = 0.5</code> → Try 0.2 (moon) or 1.5 (heavy)</li>
             <li><code>JUMP_POWER = 12</code> → Try 8 (low) or 20 (super jump)</li>
             <li><code>PLAYER_SPEED = 5</code> → Try 2 (slow) or 10 (fast)</li>
             <li><code>FRICTION = 0.8</code> → Try 0.95 (ice) or 0.5 (sticky)</li>
           </ul>
+          <p><strong>Tip:</strong> Click "Run" after each change to see the effect!</p>
         </div>
-        
+
         <div class="activity">
-          <h3>Part 2: Change the Colours</h3>
-          <p>At the top of the JavaScript, try changing these values:</p>
+          <h3>Part 3: Change the Colours</h3>
+          <p>At the top of the JavaScript, try changing these color values:</p>
           <ul>
             <li><code>BACKGROUND_COLOR = 'rgb(52, 73, 94)'</code> → Try different RGB values (e.g., 'rgb(0, 0, 0)' for black)</li>
             <li><code>PLAYER_COLOR = 'rgb(52, 152, 219)'</code> → Try different colors for the player (e.g., 'rgb(0, 255, 0)' for green)</li>
             <li><code>PLATFORM_COLOR = 'rgb(149, 165, 166)'</code> → Try different colors for the platforms (e.g., 'rgb(200, 100, 50)')</li>
           </ul>
-        </div>
-
-        <div class="activity">
-          <h3>Part 3: Add Coins & Scoring</h3>
-          <ol>
-            <li>Change <code>NUMBER_OF_COINS</code> to see more/fewer coins</li>
-            <li>Experiment with <code>POINTS_PER_COIN</code> and <code>COIN_SIZE</code></li>
-          </ol>
+          <p><strong>Challenge:</strong> Create a theme! Try space (dark blue/purple), forest (green/brown), or fire (red/orange)!</p>
         </div>
 
         <div class="activity">
           <h3>Part 4: Make It Juicy!</h3>
-          <p>Find the <code>TODO</code> comments in the code and uncomment the suggested effects:</p>
+          <p>Now for the fun part! Find the <code>TODO</code> comments in the code and uncomment the suggested effects to add "juice":</p>
           <ul>
             <li><strong>Jump effects:</strong> <code>screenShake(3)</code> and <code>beep(440, 100, 0.2)</code></li>
             <li><strong>Land effects:</strong> <code>screenShake(5)</code> and <code>beep(220, 50, 0.3)</code></li>
             <li><strong>Coin collection:</strong> <code>spawnParticles()</code>, <code>screenShake()</code>, and <code>beep()</code></li>
             <li><strong>All coins collected:</strong> Make an epic celebration!</li>
           </ul>
+          <p><strong>What is "juice"?</strong> It's all the little effects that make a game feel satisfying - particles flying, screen shaking, sound effects playing. Try uncommenting one effect at a time to see the difference!</p>
+        </div>
+
+        <div class="activity" style="background: #fff3cd; border-left-color: #f39c12;">
+          <h3>Part 5: Make It Your Own! (Advanced)</h3>
+          <p>Ready to get creative? Try these advanced customizations:</p>
+          <ul>
+            <li><strong>Custom player character:</strong> Find the <code>drawPlayer()</code> function and uncomment the eye-drawing code, or create your own design using shapes!</li>
+            <li><strong>Change coin appearance:</strong> In the <code>drawCoins()</code> function, try using emojis instead of circles (hint: use <code>ctx.fillText('⭐', coin.x, coin.y)</code>)</li>
+            <li><strong>Add more platforms:</strong> Add new objects to the <code>platforms</code> array at the top - try making stairs or floating islands!</li>
+            <li><strong>More dangerous platforms:</strong> Add new spikes to the <code>badPlatforms</code> array to create challenging obstacles</li>
+            <li><strong>Change particle colors:</strong> Make rainbow particles by using different colors in your <code>spawnParticles()</code> calls</li>
+            <li><strong>Modify sound effects:</strong> Change the <code>frequency</code> values in <code>beep()</code> calls to create different pitched sounds</li>
+          </ul>
+          <p><strong>💡 Bonus Challenge:</strong> Create a themed level! Make a space theme with stars for coins, or a jungle theme with green platforms and leaf emojis!</p>
+        </div>
+
+        <div class="activity" style="background: #d5f4e6; border-left-color: #27ae60;">
+          <h3>💾 Don't Forget to Save!</h3>
+          <p>When you're happy with your game:</p>
+          <ol>
+            <li>Click the <strong>"Save"</strong> button at the top of JSFiddle</li>
+            <li>Your fiddle will get a unique URL (like <code>jsfiddle.net/abc123/</code>)</li>
+            <li>Copy the URL and share it with your teacher or friends!</li>
+            <li>Bookmark the URL so you can come back and edit it later</li>
+          </ol>
+          <p><strong>🎉 Show off your work!</strong> Share your game URL and let others try your custom platformer!</p>
         </div>
       </section>
 
