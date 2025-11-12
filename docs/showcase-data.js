@@ -39,5 +39,12 @@ const projects = [
     author: "Jimmy (and AI)",
     description: "A vibrant superstar inspired world! Cute character with headphones, pink hearts to collect, rainbow sparkles, lightning bolts, and pulsing effects. Shows how color gradients and CSS animations create personality.",
     folder: "showcase/05-kpop-theme"
+  },
+  {
+    title: "Willem",
+    author: "Willem",
+    description: "Willem",
+    folder: "showcase/06-Willem",
+    jsfiddle: "https://jsfiddle.net/h6zb1r3c"
   }
 ];
