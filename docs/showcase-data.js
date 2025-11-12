@@ -97,16 +97,17 @@ const projects = [
       accent: 'rgb(255, 215, 0)'
     }
   },
-  {
-    title: "Willem",
+ {
+    title: "willem",
     author: "Willem",
-    description: "Willem",
+    description: "Willem's game",
+    folder: "showcase/06-willem",
     jsfiddle: "https://jsfiddle.net/h6zb1r3c",
     preview: {
       background: 'white',
       player: 'black',
       platform: 'black',
-      accent: 'black'
+      accent: 'BLACK'
     }
   }
 ];

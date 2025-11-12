@@ -1,0 +1,39 @@
+  🎨 STYLES - CSS defines how things LOOK
+  Try changing colors, sizes, fonts!
+*/
+
+body {
+  margin: 0;
+  background: rgb(0, 0, 0);
+  font-family: 'Courier New', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  margin: 0 0 10px 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 24px;
+  color: rgb(236, 240, 241);
+}
+
+#gameCanvas {
+  background: rgb(255, 255, 255);
+  display: block;
+}
+
+.info {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+  color: rgb(255, 255, 255);
+}
+
+.score {
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(243, 156, 18);
+}

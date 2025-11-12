@@ -22,26 +22,29 @@ print_info() { echo -e "${BLUE}ℹ${NC} $1"; }
 print_warning() { echo -e "${YELLOW}⚠${NC} $1"; }
 
 # Check arguments
-if [ "$#" -lt 4 ]; then
+if [ "$#" -lt 2 ]; then
     print_error "Missing arguments"
     echo ""
-    echo "Usage: $0 <jsfiddle-url> <project-name> <author> <description>"
+    echo "Usage: $0 <jsfiddle-url> <student-name> [description]"
     echo ""
-    echo "Example:"
-    echo "  $0 https://jsfiddle.net/abc123/ rainbow-game \"Team Awesome\" \"Rainbow particles everywhere!\""
+    echo "Examples:"
+    echo "  $0 https://jsfiddle.net/abc123/ \"Willem\""
+    echo "  $0 https://jsfiddle.net/abc123/ \"Team Awesome\" \"Rainbow particles everywhere!\""
     echo ""
     echo "Arguments:"
     echo "  jsfiddle-url   : Full JSFiddle URL (e.g., https://jsfiddle.net/abc123/)"
-    echo "  project-name   : Folder name (lowercase, hyphens, no spaces)"
-    echo "  author         : Student or team name (use quotes if spaces)"
-    echo "  description    : Brief description (use quotes if spaces)"
+    echo "  student-name   : Student or team name (used for author, title, and folder)"
+    echo "  description    : Optional: Brief description (defaults to '\${name}'s game')"
     exit 1
 fi
 
 JSFIDDLE_URL="$1"
-PROJECT_NAME="$2"
-AUTHOR="$3"
-DESCRIPTION="$4"
+AUTHOR="$2"
+DEFAULT_DESC="${AUTHOR}'s game"
+DESCRIPTION="${3:-$DEFAULT_DESC}"
+
+# Generate project name from author (lowercase, replace spaces with hyphens)
+PROJECT_NAME=$(echo "$AUTHOR" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')
 
 # Validate JSFiddle URL
 if [[ ! "$JSFIDDLE_URL" =~ ^https?://jsfiddle\.net/ ]]; then
@@ -100,85 +103,77 @@ fi
 
 print_success "Downloaded JSFiddle content"
 
-# Fetch actual code from JSFiddle
-print_info "Attempting to fetch code from JSFiddle..."
-print_warning "JSFiddle doesn't provide a public API to extract code."
-print_info "You'll need to manually copy the code from JSFiddle."
-echo ""
-echo "Please follow these steps:"
-echo "  1. Open ${JSFIDDLE_URL} in your browser"
-echo "  2. Copy the HTML from the HTML panel"
-echo "  3. Copy the CSS from the CSS panel"
-echo "  4. Copy the JavaScript from the JavaScript panel"
-echo "  5. Paste them into the respective files in ${FOLDER_PATH}/"
-echo ""
-print_info "Creating template files..."
+# Fetch actual code from JSFiddle using jsfiddle-downloader
+print_info "Downloading JSFiddle content..."
 
-# Create template index.html
-cat > "$FOLDER_PATH/index.html" << 'EOF'
+# Check if jsfiddle-downloader is installed
+if ! command -v jsfiddle-downloader &> /dev/null; then
+    print_warning "jsfiddle-downloader not found, installing..."
+    npm install -g jsfiddle-downloader
+fi
+
+# Create temp directory for download
+TEMP_DOWNLOAD_DIR=$(mktemp -d)
+
+# Download the fiddle (change to temp dir first since -o doesn't work as expected)
+cd "$TEMP_DOWNLOAD_DIR"
+if jsfiddle-downloader -l "$JSFIDDLE_URL" > /dev/null 2>&1; then
+    cd - > /dev/null
+    print_success "Downloaded JSFiddle content"
+
+    # Find the downloaded HTML file
+    DOWNLOADED_HTML=$(find "$TEMP_DOWNLOAD_DIR" -name "*.html" | head -1)
+
+    if [ -f "$DOWNLOADED_HTML" ]; then
+        print_info "Extracting HTML, CSS, and JavaScript..."
+
+        # Extract CSS (between <style id="compiled-css"> and </style>)
+        CSS_CONTENT=$(sed -n '/<style id="compiled-css"/,/<\/style>/p' "$DOWNLOADED_HTML" | sed '1d;$d' | sed '/^\s*\/\*/d' | sed '/EOS/d')
+
+        # Extract JavaScript (between <script type="text/javascript"> and </script>)
+        JS_CONTENT=$(sed -n '/<script type="text\/javascript">/,/<\/script>/p' "$DOWNLOADED_HTML" | sed '1d;$d')
+
+        # Extract HTML body content (between <body> and </body>, excluding scripts)
+        BODY_CONTENT=$(sed -n '/<body>/,/<\/body>/p' "$DOWNLOADED_HTML" | sed '1d;$d' | grep -v '<script' | grep -v '</script>' | sed 's/^[[:space:]]*//')
+
+        # Create index.html with extracted content
+        cat > "$FOLDER_PATH/index.html" << EOF
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Juicy Platformer</title>
+  <title>Juicy Platformer - ${AUTHOR}</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- TODO: Paste HTML from JSFiddle here -->
-  <div class="game-container">
-    <canvas id="gameCanvas" width="600" height="500"></canvas>
-    <div id="score">Score: 0</div>
-  </div>
+${BODY_CONTENT}
   <script src="game.js"></script>
 </body>
 </html>
 EOF
 
-# Create template style.css
-cat > "$FOLDER_PATH/style.css" << 'EOF'
-/* TODO: Paste CSS from JSFiddle here */
-body {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #1a1a2e;
-  font-family: 'Courier New', monospace;
-}
+        # Create style.css
+        echo "$CSS_CONTENT" > "$FOLDER_PATH/style.css"
 
-.game-container {
-  position: relative;
-}
+        # Create game.js
+        echo "$JS_CONTENT" > "$FOLDER_PATH/game.js"
 
-#gameCanvas {
-  border: 3px solid #0f3460;
-  display: block;
-  background: #1a1a2e;
-}
+        print_success "Extracted and created project files"
+    else
+        print_error "Could not find downloaded HTML file"
+        rm -rf "$TEMP_DOWNLOAD_DIR"
+        exit 1
+    fi
 
-#score {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #f1c40f;
-  font-size: 36px;
-  font-weight: bold;
-  pointer-events: none;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-EOF
-
-# Create template game.js
-cat > "$FOLDER_PATH/game.js" << 'EOF'
-// TODO: Paste JavaScript from JSFiddle here
-console.log('Please copy code from JSFiddle');
-EOF
-
-print_success "Created template files"
+    # Clean up temp directory
+    rm -rf "$TEMP_DOWNLOAD_DIR"
+else
+    cd - > /dev/null
+    print_error "Failed to download JSFiddle content"
+    rm -rf "$TEMP_DOWNLOAD_DIR"
+    exit 1
+fi
 
 # Create README.md
 cat > "$FOLDER_PATH/README.md" << EOF
@@ -248,17 +243,7 @@ print_success "Showcase folder created successfully!"
 echo ""
 print_info "Next steps:"
 echo ""
-echo "  1. Copy code from JSFiddle to the template files:"
-echo "     - Open ${JSFIDDLE_URL}"
-echo "     - Copy HTML panel → ${FOLDER_PATH}/index.html (body content only)"
-echo "     - Copy CSS panel → ${FOLDER_PATH}/style.css"
-echo "     - Copy JS panel → ${FOLDER_PATH}/game.js"
-echo ""
-echo "  2. Re-run this script to extract colors (or extract manually):"
-echo "     ./scripts/add-fiddle.sh \"${JSFIDDLE_URL}\" \"${PROJECT_NAME}\" \"${AUTHOR}\" \"${DESCRIPTION}\""
-echo "     (It will detect existing folder and only extract colors)"
-echo ""
-echo "  3. Add this project to docs/showcase-data.js:"
+echo "  1. Add this project to docs/showcase-data.js:"
 echo ""
 echo -e "  {"
 echo "    title: \"${PROJECT_NAME}\","
@@ -268,7 +253,10 @@ echo "    folder: \"showcase/${FOLDER_NAME}\","
 echo -e "    jsfiddle: \"${JSFIDDLE_URL}\"${PREVIEW_SECTION}"
 echo "  }"
 echo ""
-echo "  4. Commit and push:"
+echo "  2. Test the game:"
+echo "     Open http://localhost:8000/docs/showcase/${FOLDER_NAME}/index.html"
+echo ""
+echo "  3. Commit and push:"
 echo "     git add ."
 echo "     git commit -m \"Add ${PROJECT_NAME} by ${AUTHOR} to showcase\""
 echo "     git push"

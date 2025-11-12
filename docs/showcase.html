@@ -150,6 +150,12 @@
       font-size: 0.95em;
     }
 
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
     .project-link {
       display: inline-block;
       background: #3498db;
@@ -158,6 +164,7 @@
       border-radius: 5px;
       text-decoration: none;
       transition: background 0.3s;
+      white-space: nowrap;
     }
 
     .project-link:hover {
@@ -364,16 +371,15 @@
           playLink = `<a href="${project.jsfiddle}" target="_blank" class="project-link">View on JSFiddle →</a>`;
         }
 
-        // Edit link (only show if there's a JSFiddle URL OR if it's a local folder that can be opened in JSFiddle)
+        // Edit link - always prefer local folder if it exists
         let editLink = '';
-        if (project.jsfiddle && project.folder) {
-          // Has both - show edit link
-          editLink = `<a href="${project.jsfiddle}" target="_blank" class="project-link" style="background: #f39c12; margin-left: 10px;">Edit on JSFiddle →</a>`;
-        } else if (project.folder) {
-          // Local folder only - show "Open in JSFiddle" button
-          editLink = `<button onclick="openProjectInJSFiddle('${project.folder}')" class="project-link" style="background: #2ecc71; margin-left: 10px; border: none; cursor: pointer;">🚀 Open in JSFiddle</button>`;
+        if (project.folder) {
+          // Has local folder - use it to open in JSFiddle
+          editLink = `<button onclick="openProjectInJSFiddle('${project.folder}')" class="project-link" style="background: #f39c12; border: none; cursor: pointer; font-family: inherit; font-size: inherit;">🚀 Edit on JSFiddle →</button>`;
+        } else if (project.jsfiddle) {
+          // JSFiddle-only - link directly to it
+          editLink = `<a href="${project.jsfiddle}" target="_blank" class="project-link" style="background: #f39c12;">🚀 Edit on JSFiddle →</a>`;
         }
-        // If jsfiddle-only, the playLink already handles it, so no separate edit link needed
 
         card.innerHTML = `
           ${preview}
@@ -381,7 +387,7 @@
             <div class="project-title">${escapeHtml(project.title)}</div>
             <div class="project-author">by ${escapeHtml(project.author)}</div>
             <div class="project-description">${escapeHtml(project.description)}</div>
-            <div>${playLink}${editLink}</div>
+            <div class="project-links">${playLink}${editLink}</div>
           </div>
         `;
 
