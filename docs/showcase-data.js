@@ -44,7 +44,6 @@ const projects = [
     title: "Willem",
     author: "Willem",
     description: "Willem",
-    folder: "showcase/06-Willem",
-    jsfiddle: "https://jsfiddle.net/h6zb1r3c"
+    folder: "showcase/06-Willem"    
   }
 ];
