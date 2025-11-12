@@ -40,12 +40,92 @@
       font-size: 1.2em;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
+      transition: filter 0.3s;
+    }
+
+    .project-preview:hover {
+      filter: brightness(1.1);
     }
 
     .project-preview iframe {
       width: 100%;
       height: 100%;
       border: none;
+    }
+
+    /* Static preview styles */
+    .static-preview {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-scene {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-player {
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .preview-platform {
+      width: 120px;
+      height: 15px;
+      position: absolute;
+      border-radius: 2px;
+    }
+
+    .preview-coin {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      position: absolute;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .preview-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .project-preview:hover .preview-overlay {
+      opacity: 1;
+    }
+
+    .preview-play-btn {
+      background: white;
+      color: #2c3e50;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-weight: bold;
+      font-size: 1.1em;
+      pointer-events: none;
     }
 
     .project-info {
@@ -236,17 +316,64 @@
         const card = document.createElement('div');
         card.className = 'project-card';
 
-        const preview = project.folder
-          ? `<iframe src="${project.folder}/index.html" loading="lazy" allowfullscreen></iframe>`
-          : `<div class="project-preview">Preview Coming Soon</div>`;
+        // Generate static preview or fallback
+        let preview;
+        const targetUrl = project.folder ? `${project.folder}/index.html` : project.jsfiddle;
 
-        const playLink = project.folder
-          ? `<a href="${project.folder}/index.html" target="_blank" class="project-link">Play Full Screen →</a>`
-          : '';
+        if (project.preview && targetUrl) {
+          // Custom color preview (works for both folder and jsfiddle projects)
+          preview = `
+            <div class="project-preview" onclick="window.open('${targetUrl}', '_blank')">
+              <div class="static-preview">
+                <div class="preview-scene" style="background: ${project.preview.background};">
+                  <!-- Platform at bottom -->
+                  <div class="preview-platform" style="background: ${project.preview.platform}; bottom: 20%; left: 50%; transform: translateX(-50%);"></div>
 
-        const editLink = project.jsfiddle
-          ? `<a href="${project.jsfiddle}" target="_blank" class="project-link" style="background: #f39c12; margin-left: 10px;">Edit on JSFiddle →</a>`
-          : (project.folder ? `<button onclick="openProjectInJSFiddle('${project.folder}')" class="project-link" style="background: #2ecc71; margin-left: 10px; border: none; cursor: pointer;">🚀 Open in JSFiddle</button>` : '');
+                  <!-- Player in center -->
+                  <div class="preview-player" style="background: ${project.preview.player}; top: 40%;"></div>
+
+                  <!-- Coins scattered around -->
+                  <div class="preview-coin" style="background: ${project.preview.accent}; top: 25%; left: 30%;"></div>
+                  <div class="preview-coin" style="background: ${project.preview.accent}; top: 35%; left: 65%;"></div>
+                  <div class="preview-coin" style="background: ${project.preview.accent}; top: 65%; left: 40%;"></div>
+                </div>
+              </div>
+              <div class="preview-overlay">
+                <div class="preview-play-btn">▶ Click to ${project.folder ? 'Play' : 'Open JSFiddle'}</div>
+              </div>
+            </div>
+          `;
+        } else if (targetUrl) {
+          // Generic preview for projects without custom colors
+          preview = `
+            <div class="project-preview" onclick="window.open('${targetUrl}', '_blank')">
+              <div class="preview-overlay" style="opacity: 1; background: rgba(52, 73, 94, 0.95);">
+                <div class="preview-play-btn">▶ ${project.folder ? 'Click to Play' : 'Open on JSFiddle'}</div>
+              </div>
+            </div>
+          `;
+        } else {
+          preview = `<div class="project-preview">Preview Coming Soon</div>`;
+        }
+
+        // Play/View link
+        let playLink = '';
+        if (project.folder) {
+          playLink = `<a href="${project.folder}/index.html" target="_blank" class="project-link">Play Full Screen →</a>`;
+        } else if (project.jsfiddle) {
+          playLink = `<a href="${project.jsfiddle}" target="_blank" class="project-link">View on JSFiddle →</a>`;
+        }
+
+        // Edit link (only show if there's a JSFiddle URL OR if it's a local folder that can be opened in JSFiddle)
+        let editLink = '';
+        if (project.jsfiddle && project.folder) {
+          // Has both - show edit link
+          editLink = `<a href="${project.jsfiddle}" target="_blank" class="project-link" style="background: #f39c12; margin-left: 10px;">Edit on JSFiddle →</a>`;
+        } else if (project.folder) {
+          // Local folder only - show "Open in JSFiddle" button
+          editLink = `<button onclick="openProjectInJSFiddle('${project.folder}')" class="project-link" style="background: #2ecc71; margin-left: 10px; border: none; cursor: pointer;">🚀 Open in JSFiddle</button>`;
+        }
+        // If jsfiddle-only, the playLink already handles it, so no separate edit link needed
 
         card.innerHTML = `
           ${preview}
@@ -268,6 +395,35 @@
       return div.innerHTML;
     }
 
+    function extractColorsFromGameJS(js) {
+      // Extract color constants from game.js using regex
+      const colors = {
+        background: null,
+        player: null,
+        platform: null,
+        accent: null
+      };
+
+      // Look for BACKGROUND_COLOR
+      const bgMatch = js.match(/BACKGROUND_COLOR\s*=\s*['"]([^'"]+)['"]/);
+      if (bgMatch) colors.background = bgMatch[1];
+
+      // Look for PLAYER_COLOR
+      const playerMatch = js.match(/PLAYER_COLOR\s*=\s*['"]([^'"]+)['"]/);
+      if (playerMatch) colors.player = playerMatch[1];
+
+      // Look for PLATFORM_COLOR or PLATFORM_COLOR_START
+      const platformMatch = js.match(/PLATFORM_COLOR(?:_START)?\s*=\s*['"]([^'"]+)['"]/);
+      if (platformMatch) colors.platform = platformMatch[1];
+
+      // Look for COIN_COLOR or SCORE_COLOR for accent
+      const coinMatch = js.match(/COIN_COLOR\s*=\s*['"]([^'"]+)['"]/);
+      const scoreMatch = js.match(/SCORE_COLOR\s*=\s*['"]([^'"]+)['"]/);
+      colors.accent = coinMatch ? coinMatch[1] : (scoreMatch ? scoreMatch[1] : null);
+
+      return colors;
+    }
+
     async function openProjectInJSFiddle(folderPath) {
       try {
         // Fetch the project files
@@ -280,6 +436,21 @@
         const htmlFull = await htmlRes.text();
         const css = await cssRes.text();
         const js = await jsRes.text();
+
+        // Extract colors from game.js
+        const colors = extractColorsFromGameJS(js);
+
+        // Log the colors for easy copy-paste into showcase-data.js
+        console.log('=== Color Theme Detected ===');
+        console.log('Copy this into showcase-data.js:');
+        console.log('');
+        console.log('preview: {');
+        if (colors.background) console.log(`  background: '${colors.background}',`);
+        if (colors.player) console.log(`  player: '${colors.player}',`);
+        if (colors.platform) console.log(`  platform: '${colors.platform}',`);
+        if (colors.accent) console.log(`  accent: '${colors.accent}'`);
+        console.log('}');
+        console.log('');
 
         // Extract just the body content from HTML
         const bodyMatch = htmlFull.match(/<body[^>]*>([\s\S]*)<\/body>/i);
@@ -316,6 +487,35 @@
         alert('Failed to create JSFiddle. Please try again.');
       }
     }
+
+    // Helper function to extract colors from a project folder
+    // Usage: extractProjectColors('showcase/06-Willem')
+    async function extractProjectColors(folderPath) {
+      try {
+        const jsRes = await fetch(`${folderPath}/game.js`);
+        const js = await jsRes.text();
+        const colors = extractColorsFromGameJS(js);
+
+        console.log('=== Color Theme for ' + folderPath + ' ===');
+        console.log('Copy this into showcase-data.js:');
+        console.log('');
+        console.log('preview: {');
+        if (colors.background) console.log(`  background: '${colors.background}',`);
+        if (colors.player) console.log(`  player: '${colors.player}',`);
+        if (colors.platform) console.log(`  platform: '${colors.platform}',`);
+        if (colors.accent) console.log(`  accent: '${colors.accent}'`);
+        console.log('}');
+        console.log('');
+
+        return colors;
+      } catch (error) {
+        console.error('Error extracting colors:', error);
+        return null;
+      }
+    }
+
+    // Make it available globally for console access
+    window.extractProjectColors = extractProjectColors;
 
     // Load projects when page loads
     loadProjects();
