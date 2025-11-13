@@ -97,7 +97,7 @@ const projects = [
       accent: 'rgb(255, 215, 0)'
     }
   },
- {
+  {
     title: "willem",
     author: "Willem",
     description: "Willem's game",
@@ -108,6 +108,32 @@ const projects = [
       player: 'black',
       platform: 'black',
       accent: 'BLACK'
+    }
+  },
+  {
+    title: "alfie",
+    author: "Alfie",
+    description: "Alfie's game",
+    folder: "showcase/07-alfie",
+    jsfiddle: "https://jsfiddle.net/a6j7dxut/",
+    preview: {
+      background: 'rgb(112, 73, 94)',
+      player: 'rgb(52, 152, 219)',
+      platform: 'rgb(149, 65, 166)',
+      accent: 'rgb(243, 156, 18)'
+    }
+  },
+  {
+    title: "elliot",
+    author: "Elliot",
+    description: "Elliot's game",
+    folder: "showcase/08-elliot",
+    jsfiddle: "https://jsfiddle.net/ywz12jo6/",
+    preview: {
+      background: 'rgb(15, 100, 35)',
+      player: 'rgb(255, 10, 15)',
+      platform: 'rgb(107, 114, 120)',
+      accent: 'rgb(255, 217, 61)'
     }
   }
 ];
