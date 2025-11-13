@@ -622,212 +622,246 @@ onLand();                        <span class="comment">// Trigger landing effect
 
       <!-- Canvas Drawing -->
       <section class="concept-section">
-        <h2>🎨 Drawing Shapes: Beyond fillRect</h2>
+        <h2>🎨 Drawing Shapes: Using Helper Functions</h2>
 
-        <p>Our game uses <code>ctx.fillRect()</code> to draw squares, but the canvas can draw many other shapes! Here are some fun alternatives to try.</p>
+        <p>Our game includes helpful drawing functions that make it easy to draw different shapes! Instead of writing complex canvas code, you can use simple functions like <code>drawCircle()</code>, <code>drawRect()</code>, <code>drawTriangle()</code>, and <code>drawText()</code>.</p>
 
-        <h3>The Basics: fillRect</h3>
-        <p>This is what our game currently uses for platforms and the player:</p>
+        <h3>The Drawing Functions</h3>
+        <p>These functions are available in the game and make drawing super easy:</p>
 
-        <pre class="code-example"><span class="comment">// Draw a rectangle (our current method)</span>
-ctx.fillStyle = <span class="string">'#3498db'</span>;                      <span class="comment">// Set the color</span>
-ctx.fillRect(player.x, player.y, player.width, player.height);  <span class="comment">// Draw the player!</span>
+        <h4>drawRect(x, y, width, height, color)</h4>
+        <p>Draw a rectangle at any position with any color!</p>
 
-<span class="comment">// Example: Draw a platform</span>
-ctx.fillStyle = <span class="string">'#2c3e50'</span>;
-ctx.fillRect(platform.x, platform.y, platform.width, platform.height);</pre>
+        <pre class="code-example"><span class="comment">// Draw a blue rectangle for the player body</span>
+drawRect(player.x, player.y, player.width, player.height, PLAYER_COLOR);
 
-        <h3>Drawing Circles</h3>
-        <p>Make your player or coins circular instead of square!</p>
+<span class="comment">// Draw a red rectangle for decoration</span>
+drawRect(<span class="number">100</span>, <span class="number">200</span>, <span class="number">50</span>, <span class="number">30</span>, <span class="string">'rgb(255, 0, 0)'</span>);
 
-        <pre class="code-example"><span class="comment">// Draw a circle using arc</span>
-ctx.fillStyle = <span class="string">'#e74c3c'</span>;                          <span class="comment">// Color</span>
-ctx.beginPath();                                   <span class="comment">// Start drawing</span>
-ctx.arc(player.x, player.y, player.width / <span class="number">2</span>, <span class="number">0</span>, Math.PI * <span class="number">2</span>); <span class="comment">// Draw circle</span>
-ctx.fill();                                        <span class="comment">// Fill it in</span>
+<span class="comment">// Try this: Draw a hat on the player!</span>
+drawRect(player.x, player.y - <span class="number">10</span>, player.width, <span class="number">5</span>, <span class="string">'red'</span>);</pre>
 
-<span class="comment">// Example: Draw a circular coin</span>
-ctx.fillStyle = <span class="string">'#FFD700'</span>;
-ctx.beginPath();
-ctx.arc(coin.x, coin.y, coin.size / <span class="number">2</span>, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
-ctx.fill();</pre>
+        <h4>drawCircle(x, y, size, color)</h4>
+        <p>Draw a circle - perfect for eyes, buttons, or round decorations!</p>
 
-        <h3>Drawing Lines and Outlines</h3>
-        <p>Create platforms with just an outline, or draw trails behind the player!</p>
+        <pre class="code-example"><span class="comment">// Draw a white circle for an eye</span>
+drawCircle(player.x + <span class="number">10</span>, player.y + <span class="number">10</span>, <span class="number">8</span>, <span class="string">'white'</span>);
 
-        <pre class="code-example"><span class="comment">// Draw a platform outline (no fill)</span>
-ctx.strokeStyle = <span class="string">'#2ecc71'</span>;                        <span class="comment">// Outline color</span>
-ctx.lineWidth = <span class="number">3</span>;                                    <span class="comment">// How thick the line is</span>
-ctx.strokeRect(platform.x, platform.y, platform.width, platform.height);  <span class="comment">// Draw outline</span>
+<span class="comment">// Draw a yellow circle for a coin</span>
+drawCircle(coin.x, coin.y, COIN_SIZE, <span class="string">'rgb(255, 215, 0)'</span>);
 
-<span class="comment">// Draw a coin outline</span>
-ctx.strokeStyle = <span class="string">'#f39c12'</span>;
-ctx.lineWidth = <span class="number">2</span>;
-ctx.beginPath();
-ctx.arc(coin.x, coin.y, coin.size / <span class="number">2</span>, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
-ctx.stroke();  <span class="comment">// Draw the outline (not fill!)</span></pre>
+<span class="comment">// Try this: Draw both eyes on the player!</span>
+drawCircle(player.x + <span class="number">10</span>, player.y + <span class="number">10</span>, <span class="number">6</span>, <span class="string">'white'</span>);  <span class="comment">// Left eye</span>
+drawCircle(player.x + <span class="number">20</span>, player.y + <span class="number">10</span>, <span class="number">6</span>, <span class="string">'white'</span>);  <span class="comment">// Right eye</span></pre>
 
-        <h3>Drawing Triangles and Custom Shapes</h3>
-        <p>You can draw ANY shape by connecting points together!</p>
+        <h4>drawTriangle(x, y, size, direction, color)</h4>
+        <p>Draw a triangle pointing in any direction - great for arrows, hats, or spikes!</p>
 
-        <pre class="code-example"><span class="comment">// Draw a triangle platform (3 connected points)</span>
-ctx.fillStyle = <span class="string">'#9b59b6'</span>;
-ctx.beginPath();                              <span class="comment">// Start drawing</span>
-ctx.moveTo(platform.x + platform.width / <span class="number">2</span>, platform.y);  <span class="comment">// Top center</span>
-ctx.lineTo(platform.x, platform.y + platform.height);  <span class="comment">// Bottom-left</span>
-ctx.lineTo(platform.x + platform.width, platform.y + platform.height);  <span class="comment">// Bottom-right</span>
-ctx.closePath();                              <span class="comment">// Connect back to start</span>
-ctx.fill();                                   <span class="comment">// Fill the triangle</span>
+        <pre class="code-example"><span class="comment">// Draw a red triangle pointing up (like a hat)</span>
+drawTriangle(player.x + player.width / <span class="number">2</span>, player.y - <span class="number">10</span>, <span class="number">20</span>, <span class="string">'up'</span>, <span class="string">'red'</span>);
 
-<span class="comment">// Draw a star particle!</span>
-ctx.fillStyle = <span class="string">'#f1c40f'</span>;
-ctx.beginPath();
-ctx.moveTo(particle.x, particle.y - <span class="number">10</span>);      <span class="comment">// Top point</span>
-ctx.lineTo(particle.x + <span class="number">3</span>, particle.y - <span class="number">3</span>);  <span class="comment">// Draw each point...</span>
-ctx.lineTo(particle.x + <span class="number">10</span>, particle.y);      <span class="comment">// Keep connecting points</span>
-<span class="comment">// ... add more points to make a star!</span>
-ctx.closePath();
-ctx.fill();</pre>
+<span class="comment">// Draw a green triangle pointing right (like an arrow)</span>
+drawTriangle(<span class="number">100</span>, <span class="number">200</span>, <span class="number">30</span>, <span class="string">'right'</span>, <span class="string">'rgb(0, 255, 0)'</span>);
+
+<span class="comment">// Try this: Draw spikes pointing down on platforms!</span>
+drawTriangle(platform.x + <span class="number">50</span>, platform.y, <span class="number">15</span>, <span class="string">'down'</span>, <span class="string">'red'</span>);
+
+<span class="comment">// Directions you can use: 'up', 'down', 'left', 'right'</span></pre>
+
+        <h4>drawText(x, y, text, size, color)</h4>
+        <p>Draw text or emojis at any position - perfect for messages or emoji characters!</p>
+
+        <pre class="code-example"><span class="comment">// Draw an emoji as the player character</span>
+drawText(player.x + player.width / <span class="number">2</span>, player.y + player.height / <span class="number">2</span>, <span class="string">'😀'</span>, <span class="number">30</span>, <span class="string">'white'</span>);
+
+<span class="comment">// Draw a star emoji for coins</span>
+drawText(coin.x, coin.y, <span class="string">'⭐'</span>, COIN_SIZE, <span class="string">'white'</span>);
+
+<span class="comment">// Draw a victory message</span>
+drawText(canvas.width / <span class="number">2</span>, <span class="number">100</span>, <span class="string">'YOU WIN! 🎉'</span>, <span class="number">48</span>, <span class="string">'rgb(255, 255, 0)'</span>);
+
+<span class="comment">// Try this: Draw floating "+10" text when you collect coins!</span>
+drawText(coin.x, coin.y - <span class="number">20</span>, <span class="string">'+10'</span>, <span class="number">24</span>, <span class="string">'yellow'</span>);</pre>
 
         <h3>Combining Shapes for Cool Effects</h3>
-        <p>Layer multiple shapes to create interesting characters or platforms!</p>
+        <p>Layer multiple shapes to create interesting characters or decorations!</p>
 
-        <pre class="code-example"><span class="comment">// Draw a smiley face on the player (circle + eyes + smile)</span>
+        <pre class="code-example"><span class="comment">// Draw a smiley face character using helper functions!</span>
 <span class="keyword">function</span> drawPlayer() {
   <span class="keyword">const</span> centerX = player.x + player.width / <span class="number">2</span>;
   <span class="keyword">const</span> centerY = player.y + player.height / <span class="number">2</span>;
 
-  <span class="comment">// Face (yellow circle)</span>
-  ctx.fillStyle = <span class="string">'#f1c40f'</span>;
-  ctx.beginPath();
-  ctx.arc(centerX, centerY, player.width / <span class="number">2</span>, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
-  ctx.fill();
+  <span class="comment">// Body (blue circle)</span>
+  drawCircle(centerX, centerY, player.width, PLAYER_COLOR);
 
-  <span class="comment">// Left eye (black circle)</span>
-  ctx.fillStyle = <span class="string">'#000000'</span>;
-  ctx.beginPath();
-  ctx.arc(centerX - <span class="number">8</span>, centerY - <span class="number">5</span>, <span class="number">3</span>, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
-  ctx.fill();
+  <span class="comment">// Left eye (white circle)</span>
+  drawCircle(centerX - <span class="number">8</span>, centerY - <span class="number">5</span>, <span class="number">6</span>, <span class="string">'white'</span>);
 
-  <span class="comment">// Right eye</span>
-  ctx.beginPath();
-  ctx.arc(centerX + <span class="number">8</span>, centerY - <span class="number">5</span>, <span class="number">3</span>, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
-  ctx.fill();
+  <span class="comment">// Right eye (white circle)</span>
+  drawCircle(centerX + <span class="number">8</span>, centerY - <span class="number">5</span>, <span class="number">6</span>, <span class="string">'white'</span>);
 
-  <span class="comment">// Smile (arc for mouth)</span>
-  ctx.strokeStyle = <span class="string">'#000000'</span>;
-  ctx.lineWidth = <span class="number">2</span>;
-  ctx.beginPath();
-  ctx.arc(centerX, centerY + <span class="number">3</span>, <span class="number">10</span>, <span class="number">0</span>, Math.PI); <span class="comment">// Half circle (smile)</span>
-  ctx.stroke();
+  <span class="comment">// Pupils (black circles)</span>
+  drawCircle(centerX - <span class="number">8</span>, centerY - <span class="number">5</span>, <span class="number">3</span>, <span class="string">'black'</span>);
+  drawCircle(centerX + <span class="number">8</span>, centerY - <span class="number">5</span>, <span class="number">3</span>, <span class="string">'black'</span>);
+
+  <span class="comment">// Hat (red triangle pointing up)</span>
+  drawTriangle(centerX, centerY - player.width / <span class="number">2</span> - <span class="number">10</span>, <span class="number">20</span>, <span class="string">'up'</span>, <span class="string">'red'</span>);
+}
+
+<span class="comment">// Or use emojis for instant characters!</span>
+<span class="keyword">function</span> drawPlayer() {
+  <span class="keyword">const</span> centerX = player.x + player.width / <span class="number">2</span>;
+  <span class="keyword">const</span> centerY = player.y + player.height / <span class="number">2</span>;
+
+  <span class="comment">// Draw different emojis based on what's happening</span>
+  <span class="keyword">if</span> (player.isOnGround) {
+    drawText(centerX, centerY, <span class="string">'😊'</span>, player.width, <span class="string">'white'</span>);
+  } <span class="keyword">else</span> {
+    drawText(centerX, centerY, <span class="string">'😲'</span>, player.width, <span class="string">'white'</span>);  <span class="comment">// Surprised face when jumping!</span>
+  }
 }</pre>
 
         <h3>Using This in Our Game</h3>
-        <p>Here are some ideas to modify the platformer:</p>
+        <p>Here are some ideas to modify the platformer using these helper functions:</p>
 
         <div class="activity" style="margin-top: 20px;">
           <h4>Try These Experiments:</h4>
           <ul>
-            <li><strong>Make the player circular:</strong> In <code>drawPlayer()</code>, replace <code>ctx.fillRect()</code> with <code>ctx.arc()</code></li>
-            <li><strong>Draw triangle platforms:</strong> Use the triangle code above instead of rectangles for spiky platforms!</li>
-            <li><strong>Add glowing outlines:</strong> Draw a <code>strokeRect</code> around platforms with a bright color</li>
-            <li><strong>Make particles different shapes:</strong> Mix circles, squares, and triangles in the particle system</li>
-            <li><strong>Create a face for the player:</strong> Use the face example above to make a smiley character!</li>
+            <li><strong>Add eyes to the player:</strong> In <code>drawPlayer()</code>, use <code>drawCircle()</code> to add two white circles for eyes</li>
+            <li><strong>Make emoji character:</strong> Use <code>drawText()</code> to draw an emoji face (😀, 🤖, 👾, 🐱) as your player</li>
+            <li><strong>Add a hat:</strong> Use <code>drawTriangle()</code> to draw a party hat on top of the player</li>
+            <li><strong>Decorate platforms:</strong> Add triangles for spikes or circles for decorations on platforms</li>
+            <li><strong>Change coin appearance:</strong> In <code>drawCoins()</code>, try different emojis like ⭐, 💎, 🍀, or 🪙</li>
+            <li><strong>Victory message:</strong> Use <code>drawText()</code> to show a big celebration message when you collect all coins</li>
           </ul>
         </div>
 
-        <h3>Quick Reference: Common Shapes</h3>
-        <pre class="code-example"><span class="comment">// Rectangle (filled)</span>
-ctx.fillRect(player.x, player.y, player.width, player.height);
+        <h3>Quick Reference: Helper Functions</h3>
+        <pre class="code-example"><span class="comment">// Rectangle</span>
+drawRect(x, y, width, height, color);
+<span class="comment">// Example:</span> drawRect(<span class="number">100</span>, <span class="number">200</span>, <span class="number">50</span>, <span class="number">30</span>, <span class="string">'red'</span>);
 
-<span class="comment">// Rectangle (outline)</span>
-ctx.strokeRect(platform.x, platform.y, platform.width, platform.height);
+<span class="comment">// Circle</span>
+drawCircle(x, y, size, color);
+<span class="comment">// Example:</span> drawCircle(<span class="number">150</span>, <span class="number">150</span>, <span class="number">20</span>, <span class="string">'blue'</span>);
 
-<span class="comment">// Circle (filled)</span>
-ctx.beginPath();
-ctx.arc(coin.x, coin.y, coin.size / <span class="number">2</span>, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
-ctx.fill();
+<span class="comment">// Triangle</span>
+drawTriangle(x, y, size, direction, color);
+<span class="comment">// Example:</span> drawTriangle(<span class="number">200</span>, <span class="number">100</span>, <span class="number">25</span>, <span class="string">'up'</span>, <span class="string">'green'</span>);
 
-<span class="comment">// Circle (outline)</span>
-ctx.beginPath();
-ctx.arc(particle.x, particle.y, <span class="number">5</span>, <span class="number">0</span>, Math.PI * <span class="number">2</span>);
-ctx.stroke();
+<span class="comment">// Text or Emoji</span>
+drawText(x, y, text, size, color);
+<span class="comment">// Example:</span> drawText(<span class="number">300</span>, <span class="number">200</span>, <span class="string">'😀'</span>, <span class="number">40</span>, <span class="string">'white'</span>);</pre>
 
-<span class="comment">// Line from player to coin</span>
-ctx.beginPath();
-ctx.moveTo(player.x, player.y);
-ctx.lineTo(coin.x, coin.y);
-ctx.stroke();</pre>
-
-        <p><strong>Pro Tip:</strong> Always set <code>fillStyle</code> or <code>strokeStyle</code> BEFORE drawing! The color applies to everything you draw after setting it.</p>
+        <p><strong>Pro Tip:</strong> These helper functions handle all the canvas complexity for you - just tell them what to draw and where! Mix and match them to create unique characters and effects.</p>
       </section>
 
       <!-- Drawing Text and Emojis -->
       <section class="concept-section">
-        <h2>✍️ Drawing Text and Emojis</h2>
+        <h2>✍️ Drawing Text and Emojis (Advanced)</h2>
 
-        <p>The canvas can draw text and emojis too! This is perfect for displaying messages, labels, or making your game characters more expressive.</p>
+        <p>The game includes a <code>drawText()</code> helper function (see the Drawing Shapes section above), but if you want to customize text further, you can use the canvas directly! This section shows advanced text techniques.</p>
 
-        <h3>The Basics: fillText</h3>
-        <p>Drawing text is similar to drawing shapes - set a style, then draw!</p>
+        <h3>Using drawText() - The Easy Way</h3>
+        <p>Most of the time, you'll want to use the helper function:</p>
 
-        <pre class="code-example"><span class="comment">// Draw text on the canvas</span>
+        <pre class="code-example"><span class="comment">// Draw text or emoji using the helper function</span>
+drawText(player.x, player.y, <span class="string">'Hello!'</span>, <span class="number">24</span>, <span class="string">'white'</span>);
+
+<span class="comment">// Draw emojis as game elements</span>
+drawText(coin.x, coin.y, <span class="string">'⭐'</span>, COIN_SIZE, <span class="string">'yellow'</span>);     <span class="comment">// Star coin</span>
+drawText(coin.x, coin.y, <span class="string">'💎'</span>, COIN_SIZE, <span class="string">'cyan'</span>);       <span class="comment">// Diamond coin</span>
+drawText(player.x, player.y, <span class="string">'🏆'</span>, player.width, <span class="string">'gold'</span>); <span class="comment">// Trophy for player</span></pre>
+
+        <h3>Direct Canvas Text (Advanced)</h3>
+        <p>If you need more control, you can draw text directly on the canvas:</p>
+
+        <pre class="code-example"><span class="comment">// Draw text directly on the canvas</span>
 ctx.fillStyle = <span class="string">'#ffffff'</span>;           <span class="comment">// Set the color</span>
 ctx.font = <span class="string">'bold 20px Arial'</span>;       <span class="comment">// Set font size and style</span>
+ctx.textAlign = <span class="string">'center'</span>;           <span class="comment">// Center the text horizontally</span>
+ctx.textBaseline = <span class="string">'middle'</span>;        <span class="comment">// Center the text vertically</span>
 ctx.fillText(<span class="string">'Hello!'</span>, player.x, player.y);  <span class="comment">// Draw text at player position</span>
 
 <span class="comment">// Example: Draw score text in the corner</span>
 ctx.fillStyle = <span class="string">'#ecf0f1'</span>;
 ctx.font = <span class="string">'24px Arial'</span>;
+ctx.textAlign = <span class="string">'left'</span>;
 ctx.fillText(<span class="string">'Score: '</span> + score, <span class="number">20</span>, <span class="number">30</span>);</pre>
 
-        <h3>Drawing Emojis</h3>
-        <p>Emojis are just text! You can use them to make colorful game elements without loading images.</p>
+        <h3>Text with Outlines</h3>
+        <p>Create bold, easy-to-read text by adding an outline:</p>
 
-        <pre class="code-example"><span class="comment">// Draw an emoji as a coin (from our game!)</span>
-ctx.font = <span class="string">`bold ${coin.size}px Arial`</span>;
-ctx.fillText(<span class="string">'😃'</span>, coin.x, coin.y);
+        <pre class="code-example"><span class="comment">// Draw text with a black outline</span>
+<span class="keyword">const</span> centerX = canvas.width / <span class="number">2</span>;
+<span class="keyword">const</span> centerY = <span class="number">100</span>;
 
-<span class="comment">// Draw different emojis for different game elements</span>
-ctx.font = <span class="string">'30px Arial'</span>;
-ctx.fillText(<span class="string">'⭐'</span>, coin.x, coin.y);     <span class="comment">// Star coin</span>
-ctx.fillText(<span class="string">'💎'</span>, coin.x, coin.y);     <span class="comment">// Diamond coin</span>
-ctx.fillText(<span class="string">'🏆'</span>, player.x, player.y);  <span class="comment">// Trophy for player</span>
-
-<span class="comment">// Draw emoji particles when collecting coins</span>
-ctx.font = <span class="string">'20px Arial'</span>;
-ctx.fillText(<span class="string">'✨'</span>, particle.x, particle.y);  <span class="comment">// Sparkle effect</span></pre>
-
-        <h3>Font Sizes and Styles</h3>
-        <p>The <code>font</code> property lets you customize how text looks:</p>
-
-        <pre class="code-example"><span class="comment">// Font format: 'style weight size family'</span>
-ctx.font = <span class="string">'20px Arial'</span>;              <span class="comment">// Normal 20px text</span>
-ctx.font = <span class="string">'bold 30px Arial'</span>;         <span class="comment">// Bold 30px text</span>
-ctx.font = <span class="string">'italic 25px Arial'</span>;       <span class="comment">// Italic 25px text</span>
-ctx.font = <span class="string">'bold italic 40px Arial'</span>;  <span class="comment">// Bold AND italic</span>
-
-<span class="comment">// You can use variables for dynamic sizing</span>
-ctx.font = <span class="string">`${coin.size}px Arial`</span>;     <span class="comment">// Size matches coin size</span>
-ctx.font = <span class="string">`bold ${player.width}px Arial`</span>;  <span class="comment">// Size matches player width</span></pre>
-
-        <h3>Text Alignment</h3>
-        <p>Control where text is positioned relative to the x, y coordinates:</p>
-
-        <pre class="code-example"><span class="comment">// Horizontal alignment</span>
-ctx.textAlign = <span class="string">'left'</span>;    <span class="comment">// Text starts at x (default)</span>
-ctx.textAlign = <span class="string">'center'</span>;  <span class="comment">// Text centered on x</span>
-ctx.textAlign = <span class="string">'right'</span>;   <span class="comment">// Text ends at x</span>
-
-<span class="comment">// Vertical alignment</span>
-ctx.textBaseline = <span class="string">'top'</span>;       <span class="comment">// Text starts at y</span>
-ctx.textBaseline = <span class="string">'middle'</span>;    <span class="comment">// Text centered on y</span>
-ctx.textBaseline = <span class="string">'bottom'</span>;    <span class="comment">// Text ends at y</span>
-
-<span class="comment">// Center text perfectly on the player</span>
+<span class="comment">// First draw the outline (stroke)</span>
+ctx.strokeStyle = <span class="string">'black'</span>;
+ctx.lineWidth = <span class="number">4</span>;
+ctx.font = <span class="string">'bold 48px Arial'</span>;
 ctx.textAlign = <span class="string">'center'</span>;
 ctx.textBaseline = <span class="string">'middle'</span>;
-ctx.fillText(<span class="string">'😊'</span>, player.x + player.width / <span class="number">2</span>, player.y + player.height / <span class="number">2</span>);</pre>
+ctx.strokeText(<span class="string">'YOU WIN!'</span>, centerX, centerY);
+
+<span class="comment">// Then draw the fill on top</span>
+ctx.fillStyle = <span class="string">'yellow'</span>;
+ctx.fillText(<span class="string">'YOU WIN!'</span>, centerX, centerY);</pre>
+
+        <h3>Dynamic Emoji Characters</h3>
+        <p>Change emojis based on what's happening in the game:</p>
+
+        <pre class="code-example"><span class="comment">// In drawPlayer(), draw different emojis based on game state</span>
+<span class="keyword">function</span> drawPlayer() {
+  <span class="keyword">const</span> centerX = player.x + player.width / <span class="number">2</span>;
+  <span class="keyword">const</span> centerY = player.y + player.height / <span class="number">2</span>;
+
+  <span class="keyword">let</span> emoji = <span class="string">'😊'</span>;  <span class="comment">// Default: happy face</span>
+
+  <span class="keyword">if</span> (!player.isOnGround) {
+    emoji = <span class="string">'😲'</span>;  <span class="comment">// Surprised face when jumping!</span>
+  }
+
+  <span class="keyword">if</span> (player.velocityY < -<span class="number">5</span>) {
+    emoji = <span class="string">'🚀'</span>;  <span class="comment">// Rocket when jumping fast!</span>
+  }
+
+  <span class="keyword">if</span> (score >= <span class="number">100</span>) {
+    emoji = <span class="string">'😎'</span>;  <span class="comment">// Cool sunglasses when you've collected lots of coins!</span>
+  }
+
+  drawText(centerX, centerY, emoji, player.width, <span class="string">'white'</span>);
+}</pre>
+
+        <h3>Floating Text Effects</h3>
+        <p>Create floating "+10" text that appears when collecting coins:</p>
+
+        <pre class="code-example"><span class="comment">// Add to your coin collection code</span>
+<span class="keyword">function</span> onCoinCollected(coin) {
+  <span class="comment">// Spawn floating text particle</span>
+  particles.push({
+    x: coin.x,
+    y: coin.y,
+    text: <span class="string">'+10'</span>,          <span class="comment">// Display points earned</span>
+    velocityX: <span class="number">0</span>,
+    velocityY: -<span class="number">2</span>,        <span class="comment">// Float upward slowly</span>
+    life: <span class="number">60</span>,             <span class="comment">// Last for 60 frames (1 second)</span>
+    isText: <span class="keyword">true</span>          <span class="comment">// Flag to know it's text</span>
+  });
+}
+
+<span class="comment">// In your particle drawing code, handle text particles</span>
+<span class="keyword">function</span> drawParticles() {
+  particles.forEach(p => {
+    <span class="keyword">if</span> (p.isText) {
+      <span class="comment">// Draw text particle</span>
+      drawText(p.x, p.y, p.text, <span class="number">24</span>, <span class="string">'yellow'</span>);
+    } <span class="keyword">else</span> {
+      <span class="comment">// Draw regular circle particle</span>
+      drawCircle(p.x, p.y, <span class="number">5</span>, p.color);
+    }
+  });
+}</pre>
 
         <h3>Using This in Our Game</h3>
         <p>Here are some ideas to add text and emojis to the platformer:</p>
@@ -835,34 +869,40 @@ ctx.fillText(<span class="string">'😊'</span>, player.x + player.width / <span
         <div class="activity" style="margin-top: 20px;">
           <h4>Try These Experiments:</h4>
           <ul>
-            <li><strong>Change coin emojis:</strong> In <code>drawCoins()</code>, try different emojis like ⭐ 💎 🪙 🍀</li>
-            <li><strong>Add player expression:</strong> Draw an emoji on the player that changes when jumping or landing</li>
-            <li><strong>Victory message:</strong> In <code>onAllCoinsCollected()</code>, draw a big "YOU WIN! 🎉" message</li>
-            <li><strong>Floating text:</strong> When collecting coins, spawn text particles that say "+10" and float upward</li>
-            <li><strong>Platform labels:</strong> Draw emoji decorations on platforms (🌸 🔥 ❄️)</li>
+            <li><strong>Change coin emojis:</strong> In <code>drawCoins()</code>, use <code>drawText()</code> to try different emojis like ⭐ 💎 🪙 🍀</li>
+            <li><strong>Dynamic player expressions:</strong> Change the player emoji based on velocity or score</li>
+            <li><strong>Victory message:</strong> In <code>onAllCoinsCollected()</code>, draw a big "YOU WIN! 🎉" message with outline</li>
+            <li><strong>Floating text:</strong> Create "+10" particles that float up when collecting coins</li>
+            <li><strong>Platform decorations:</strong> Use <code>drawText()</code> to add emoji decorations on platforms (🌸 🔥 ❄️)</li>
+            <li><strong>Countdown timer:</strong> Display a countdown using <code>drawText()</code> in the corner</li>
           </ul>
         </div>
 
         <h3>Quick Reference: Text Drawing</h3>
-        <pre class="code-example"><span class="comment">// Basic text</span>
+        <pre class="code-example"><span class="comment">// Easy way - use helper function</span>
+drawText(x, y, <span class="string">'Text here'</span>, size, color);
+<span class="comment">// Example:</span> drawText(<span class="number">100</span>, <span class="number">200</span>, <span class="string">'Hello!'</span>, <span class="number">24</span>, <span class="string">'white'</span>);
+
+<span class="comment">// Advanced - direct canvas control</span>
 ctx.fillStyle = <span class="string">'#ffffff'</span>;
 ctx.font = <span class="string">'20px Arial'</span>;
-ctx.fillText(<span class="string">'Text here'</span>, player.x, player.y);
+ctx.textAlign = <span class="string">'center'</span>;
+ctx.textBaseline = <span class="string">'middle'</span>;
+ctx.fillText(<span class="string">'Text here'</span>, x, y);
 
 <span class="comment">// Text with outline</span>
-ctx.strokeStyle = <span class="string">'#000000'</span>;
+ctx.strokeStyle = <span class="string">'black'</span>;
 ctx.lineWidth = <span class="number">3</span>;
-ctx.strokeText(<span class="string">'Outlined'</span>, player.x, player.y);
+ctx.strokeText(<span class="string">'Outlined'</span>, x, y);
+ctx.fillStyle = <span class="string">'yellow'</span>;
+ctx.fillText(<span class="string">'Outlined'</span>, x, y);
 
-<span class="comment">// Emoji (just text!)</span>
-ctx.font = <span class="string">'30px Arial'</span>;
-ctx.fillText(<span class="string">'🎮'</span>, coin.x, coin.y);
+<span class="comment">// Emoji examples</span>
+drawText(x, y, <span class="string">'😀'</span>, <span class="number">30</span>, <span class="string">'white'</span>);  <span class="comment">// Smiley</span>
+drawText(x, y, <span class="string">'⭐'</span>, <span class="number">25</span>, <span class="string">'yellow'</span>); <span class="comment">// Star</span>
+drawText(x, y, <span class="string">'🚀'</span>, <span class="number">35</span>, <span class="string">'white'</span>);  <span class="comment">// Rocket</span></pre>
 
-<span class="comment">// Dynamic size from variable</span>
-ctx.font = <span class="string">`bold ${coin.size}px Arial`</span>;
-ctx.fillText(<span class="string">'😃'</span>, coin.x, coin.y);</pre>
-
-        <p><strong>Pro Tip:</strong> Emojis are a quick way to add colorful graphics without image files! They work great for prototyping game ideas.</p>
+        <p><strong>Pro Tip:</strong> For most cases, use the <code>drawText()</code> helper function - it's simpler and automatically centers text! Use direct canvas control only when you need special effects like outlines or custom alignment.</p>
       </section>
 
       <section class="resources">
