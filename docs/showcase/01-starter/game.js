@@ -150,21 +150,17 @@ function onDeath() {
 
 function drawPlayer() {
   // Draw the player's body as a rectangle
-  ctx.fillStyle = PLAYER_COLOR;
-  ctx.fillRect(player.x, player.y, player.width, player.height);
+  drawRect(player.x, player.y, player.width, player.height, PLAYER_COLOR);
 
-  // 📋 TODO: Try drawing eyes! Eyes are circles
+  // 📋 TODO: Try drawing eyes using drawCircle!
+  // drawCircle(player.x + 10, player.y + 10, 8, 'white');
+  // drawCircle(player.x + 20, player.y + 10, 8, 'white');
 
-  // ctx.fillStyle = 'white';
-  // ctx.beginPath();
-  // ctx.arc(player.x + 10, player.y + 10, 4, 0, Math.PI * 2);  // Left eye
-  // ctx.fill();
-  // ctx.beginPath();
-  // ctx.arc(player.x + 20, player.y + 10, 4, 0, Math.PI * 2);  // Right eye
-  // ctx.fill();
+  // 📋 TODO: Try making the player an emoji instead!
+  // drawText(player.x + player.width / 2, player.y + player.height / 2, '😀', 30, 'white');
 
-  // 📋 TODO: Try a more complicated shape... 
-  // (don't forget to remove the bits above you don't need)
+  // 📋 TODO: Try adding a hat using drawTriangle!
+  // drawTriangle(player.x + player.width / 2, player.y - 10, 20, 'up', 'red');
 
   // END drawPlayer() Put your code above this line!
 }
@@ -212,11 +208,17 @@ function onAllCoinsCollected() {
 }
 
 function drawCoins() {
-  ctx.fillStyle = COIN_COLOR;
   for (const coin of coins) {
-    ctx.beginPath();
-    ctx.arc(coin.x, coin.y, coin.size / 2, 0, Math.PI * 2);
-    ctx.fill();
+    drawCircle(coin.x, coin.y, coin.size, COIN_COLOR);
+
+    // 📋 TODO: Try making coins look different! Ideas:
+    // drawText(coin.x, coin.y, '⭐', coin.size, 'yellow');
+    // drawText(coin.x, coin.y, '💎', coin.size, 'white');
+    // drawText(coin.x, coin.y, '🪙', coin.size, 'gold');
+
+    // 📋 TODO: Try making a diamond shape with two triangles!
+    // drawTriangle(coin.x, coin.y - coin.size / 4, coin.size, 'up', 'rgb(100, 200, 255)');
+    // drawTriangle(coin.x, coin.y + coin.size / 4, coin.size, 'down', 'rgb(150, 220, 255)');
   }
 }
 
@@ -234,22 +236,18 @@ function drawScore() {
   // - Change color based on score (use if statements)
   // - Add a shadow or outline effect
 
-  ctx.fillStyle = SCORE_COLOR;
-  ctx.font = `bold ${SCORE_SIZE}px Arial`;
-  ctx.textAlign = 'center';  // Center the text
-  ctx.textBaseline = 'middle';
+  drawText(canvas.width / 2, SCORE_Y_POSITION, `Score: ${score}`, SCORE_SIZE, SCORE_COLOR);
 
-  // Draw at center of canvas, near the bottom
-  ctx.fillText(`Score: ${score}`, canvas.width / 2, SCORE_Y_POSITION);
+  // 📋 TODO: Try adding emoji to the score!
+  // drawText(canvas.width / 2, SCORE_Y_POSITION, `⭐ ${score} ⭐`, SCORE_SIZE, SCORE_COLOR);
 }
 
 // =============================================
 // ☠️ DANGEROUS PLATFORM FUNCTIONS
 // =============================================
 
-function drawBadPlatforms() {  
+function drawBadPlatforms() {
   // Draw the dangerous platforms as spikes!
-  ctx.fillStyle = BAD_PLATFORM_COLOR;
   for (const platform of badPlatforms) {
     // Draw spikes across the width of the platform
     const spikeWidth = 20;  // How wide each spike is
@@ -259,13 +257,8 @@ function drawBadPlatforms() {
       const x = platform.x + i * spikeWidth;
       const y = platform.y;
 
-      // Draw triangle spike
-      ctx.beginPath();
-      ctx.moveTo(x, y + platform.height);  // Bottom left
-      ctx.lineTo(x + spikeWidth / 2, y);   // Top point
-      ctx.lineTo(x + spikeWidth, y + platform.height);  // Bottom right
-      ctx.closePath();
-      ctx.fill();
+      // Draw triangle spike using our helper function!
+      drawTriangle(x + spikeWidth / 2, y + platform.height / 2, platform.height * 2, 'up', BAD_PLATFORM_COLOR);
     }
   }
 }
@@ -301,12 +294,96 @@ function drawParticles() {
   // Draw all particles
   for (const p of particles) {
     ctx.globalAlpha = p.life;  // Fade based on life
-    ctx.fillStyle = p.color;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-    ctx.fill();
+    drawCircle(p.x, p.y, 6, p.color);
   }
   ctx.globalAlpha = 1.0;  // Reset alpha
+}
+
+// =============================================
+// 🎨 DRAWING HELPER FUNCTIONS
+// =============================================
+
+function drawCircle(x, y, size, color) {
+  // Draw a circle at position (x, y)
+  // x, y: center position of the circle
+  // size: diameter of the circle
+  // color: color of the circle (try 'rgb(255, 0, 0)' or 'white')
+
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(x, y, size / 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // TODO: Try using this in drawPlayer() to make eyes!
+  // drawCircle(player.x + 10, player.y + 10, 8, 'white');
+}
+
+function drawRect(x, y, width, height, color) {
+  // Draw a rectangle at position (x, y)
+  // x, y: top-left corner position
+  // width, height: size of the rectangle
+  // color: color of the rectangle (try 'rgb(0, 255, 0)' or 'black')
+
+  ctx.fillStyle = color;
+  ctx.fillRect(x, y, width, height);
+
+  // TODO: Try using this in drawPlayer() to make a body!
+  // drawRect(player.x, player.y, player.width, player.height, PLAYER_COLOR);
+}
+
+function drawTriangle(x, y, size, direction, color) {
+  // Draw a triangle pointing in a direction
+  // x, y: center position of the triangle
+  // size: how big the triangle is
+  // direction: which way it points ('up', 'down', 'left', 'right')
+  // color: color of the triangle (try 'rgb(255, 255, 0)' or 'orange')
+
+  ctx.fillStyle = color;
+  ctx.beginPath();
+
+  if (direction === 'up') {
+    ctx.moveTo(x, y - size / 2);           // Top point
+    ctx.lineTo(x - size / 2, y + size / 2); // Bottom left
+    ctx.lineTo(x + size / 2, y + size / 2); // Bottom right
+  } else if (direction === 'down') {
+    ctx.moveTo(x, y + size / 2);           // Bottom point
+    ctx.lineTo(x - size / 2, y - size / 2); // Top left
+    ctx.lineTo(x + size / 2, y - size / 2); // Top right
+  } else if (direction === 'left') {
+    ctx.moveTo(x - size / 2, y);           // Left point
+    ctx.lineTo(x + size / 2, y - size / 2); // Top right
+    ctx.lineTo(x + size / 2, y + size / 2); // Bottom right
+  } else if (direction === 'right') {
+    ctx.moveTo(x + size / 2, y);           // Right point
+    ctx.lineTo(x - size / 2, y - size / 2); // Top left
+    ctx.lineTo(x - size / 2, y + size / 2); // Bottom left
+  }
+
+  ctx.closePath();
+  ctx.fill();
+
+  // TODO: Try using this in drawPlayer() to make a hat or nose!
+  // drawTriangle(player.x + player.width / 2, player.y - 10, 20, 'up', 'red');
+}
+
+function drawText(x, y, text, size, color) {
+  // Draw text or emoji at position (x, y)
+  // x, y: center position of the text
+  // text: what to draw (try 'Hello!', '😀', '⭐', '❤️')
+  // size: how big the text is (try 20, 30, 50)
+  // color: color of the text (try 'white', 'rgb(255, 255, 0)')
+
+  ctx.fillStyle = color;
+  ctx.font = `${size}px Arial`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, x, y);
+
+  // TODO: Try using this in drawPlayer() to make an emoji character!
+  // drawText(player.x + player.width / 2, player.y + player.height / 2, '😀', 30, 'white');
+
+  // TODO: Try adding floating text when you collect coins!
+  // drawText(coin.x, coin.y - 20, '+100', 20, 'yellow');
 }
 
 // =============================================
@@ -674,13 +751,11 @@ function render() {
   }
 
   // Clear screen
-  ctx.fillStyle = BACKGROUND_COLOR;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  drawRect(0, 0, canvas.width, canvas.height, BACKGROUND_COLOR);
 
   // Draw platforms
-  ctx.fillStyle = PLATFORM_COLOR;
   for (const platform of platforms) {
-    ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+    drawRect(platform.x, platform.y, platform.width, platform.height, PLATFORM_COLOR);
   }
 
   // Draw dangerous platforms
