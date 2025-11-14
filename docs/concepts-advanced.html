@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced - Coding Concepts</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Extra styles specific to concepts page */
+    .concept-section {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      border-left: 5px solid #9b59b6;
+    }
+
+    .game-loop-diagram {
+      background: #2c3e50;
+      color: white;
+      padding: 25px;
+      border-radius: 10px;
+      margin: 20px 0;
+      font-family: 'Courier New', monospace;
+    }
+
+    .loop-step {
+      background: #34495e;
+      padding: 15px;
+      margin: 10px 0;
+      border-left: 4px solid #9b59b6;
+      border-radius: 5px;
+    }
+
+    .loop-arrow {
+      text-align: center;
+      font-size: 2em;
+      color: #9b59b6;
+      margin: 10px 0;
+    }
+
+    .code-example {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+    }
+
+    .comment {
+      color: #95a5a6;
+    }
+
+    .keyword {
+      color: #e74c3c;
+    }
+
+    .string {
+      color: #2ecc71;
+    }
+
+    .number {
+      color: #f39c12;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      font-size: 1.1em;
+    }
+
+    .interactive-demo {
+      background: white;
+      padding: 20px;
+      border: 2px solid #9b59b6;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .position-demo {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: #ecf0f1;
+      border: 2px solid #2c3e50;
+      border-radius: 5px;
+      margin: 15px 0;
+    }
+
+    .demo-player {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: #9b59b6;
+      border-radius: 50%;
+      transition: all 0.3s;
+    }
+
+    .demo-controls {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .demo-info {
+      font-family: 'Courier New', monospace;
+      background: #2c3e50;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔬 Advanced Concepts</h1>
+      <p class="subtitle">How Games Really Work</p>
+    </header>
+
+    <main>
+      <a href="concepts.html" class="back-link">← Back to Concepts</a>
+
+      <section class="intro">
+        <h2>For the Curious!</h2>
+        <p>These concepts explain how the game actually works behind the scenes. You don't need to understand all of this to customize the game, but it's interesting to see how it all fits together!</p>
+        <p><strong>Note:</strong> Most of this code is in the "bottom section" of the game - you usually won't need to change it!</p>
+      </section>
+
+      <!-- Game Loop -->
+      <section class="concept-section">
+        <h2>🔄 The Game Loop: How Games Work</h2>
+
+        <p>Games don't just sit still - they're constantly updating and redrawing, usually <strong>60 times per second</strong>!</p>
+
+        <h3>The Magic Loop</h3>
+        <p>Think of it like a flipbook animation. Each "page" is one frame:</p>
+
+        <div class="game-loop-diagram">
+          <div class="loop-step">
+            <strong>1. UPDATE</strong> - Change positions, check for collisions, handle input
+          </div>
+          <div class="loop-arrow">↓</div>
+          <div class="loop-step">
+            <strong>2. DRAW</strong> - Clear the screen and draw everything in new positions
+          </div>
+          <div class="loop-arrow">↓</div>
+          <div class="loop-step">
+            <strong>3. REPEAT</strong> - Do it all again! (60 times per second)
+          </div>
+        </div>
+
+        <h3>Position and Velocity: The Core Concept</h3>
+        <p>Everything moving in a game uses these two ideas:</p>
+
+        <ul>
+          <li><strong>Position (x, y):</strong> Where something IS right now</li>
+          <li><strong>Velocity (speedX, speedY):</strong> How fast it's MOVING</li>
+        </ul>
+
+        <div class="interactive-demo">
+          <h3>Interactive Demo: Position & Speed</h3>
+          <p>Watch how position and velocity work together:</p>
+
+          <div class="position-demo" id="positionDemo">
+            <div class="demo-player" id="demoPlayer"></div>
+          </div>
+
+          <div class="demo-controls">
+            <button class="copy-btn" onclick="moveRight()">Move Right →</button>
+            <button class="copy-btn" onclick="moveLeft()">← Move Left</button>
+            <button class="copy-btn" onclick="resetDemo()">Reset</button>
+          </div>
+
+          <div class="demo-info" id="demoInfo">
+            Position X: 0 | Velocity X: 0
+          </div>
+        </div>
+
+        <h3>How It Works in Code</h3>
+
+        <pre class="code-example"><span class="comment">// Game state - keeping track of where things are</span>
+<span class="keyword">const</span> player = {
+  x: <span class="number">100</span>,           <span class="comment">// Position (where the player is)</span>
+  y: <span class="number">300</span>,
+  velocityX: <span class="number">0</span>,     <span class="comment">// Speed (how fast they're moving)</span>
+  velocityY: <span class="number">0</span>
+};
+
+<span class="comment">// Every frame (60 times per second):</span>
+<span class="keyword">function</span> gameLoop() {
+  <span class="comment">// 1. UPDATE - Add velocity to position</span>
+  player.x += player.velocityX;  <span class="comment">// Move horizontally</span>
+  player.y += player.velocityY;  <span class="comment">// Move vertically</span>
+
+  <span class="comment">// 2. Apply gravity (makes velocity increase)</span>
+  player.velocityY += GRAVITY;   <span class="comment">// Speed up falling</span>
+
+  <span class="comment">// 3. DRAW - Show everything in new positions</span>
+  drawPlayer();
+
+  <span class="comment">// 4. REPEAT - Call this function again next frame</span>
+  requestAnimationFrame(gameLoop);
+}</pre>
+
+        <h3>Real Example: Jumping</h3>
+        <p>When you jump, here's what happens frame-by-frame:</p>
+
+        <pre class="code-example"><span class="comment">// Frame 0: Player presses space</span>
+player.velocityY = -<span class="number">12</span>;  <span class="comment">// Negative = up! Start moving upward fast</span>
+onJump();                <span class="comment">// Trigger effects (particles, sound, shake)</span>
+
+<span class="comment">// Frame 1: (1/60th second later)</span>
+player.y += player.velocityY;     <span class="comment">// y = 300 + (-12) = 288 (moved up!)</span>
+player.velocityY += GRAVITY;      <span class="comment">// velocityY = -12 + 0.5 = -11.5 (slowing down)</span>
+
+<span class="comment">// Frame 2:</span>
+player.y += player.velocityY;     <span class="comment">// y = 288 + (-11.5) = 276.5 (still going up)</span>
+player.velocityY += GRAVITY;      <span class="comment">// velocityY = -11.5 + 0.5 = -11 (slower)</span>
+
+<span class="comment">// ... many frames later ...</span>
+
+<span class="comment">// Eventually velocityY becomes positive and player falls!</span>
+player.velocityY += GRAVITY;      <span class="comment">// velocityY = 0.5 (now falling)</span>
+player.y += player.velocityY;     <span class="comment">// Moving down now!</span>
+
+<span class="comment">// When player hits platform:</span>
+player.velocityY = <span class="number">0</span>;            <span class="comment">// Stop falling</span>
+onLand();                        <span class="comment">// Trigger landing effects!</span></pre>
+
+        <h3>Why This Matters</h3>
+        <p>Understanding position + velocity lets you:</p>
+        <ul>
+          <li>Change <code>GRAVITY</code> to make the game feel floaty or heavy</li>
+          <li>Change <code>JUMP_POWER</code> to jump higher or lower</li>
+          <li>Add particles that fly out and fall down (they use the same system!)</li>
+          <li>Make screen shake by changing the camera position quickly</li>
+        </ul>
+      </section>
+
+      <!-- Physics and Collision -->
+      <section class="concept-section">
+        <h2>⚛️ Physics and Collisions</h2>
+
+        <p>The game needs to detect when the player touches platforms, coins, or bad platforms. This is called <strong>collision detection</strong>.</p>
+
+        <h3>How Collision Detection Works</h3>
+        <p>The game constantly checks if objects are overlapping:</p>
+
+        <pre class="code-example"><span class="comment">// Platform collision (AABB - Axis-Aligned Bounding Box)</span>
+<span class="keyword">function</span> checkPlatformCollision(player, platform) {
+  <span class="comment">// Check if the rectangles overlap</span>
+  <span class="keyword">return</span> player.x < platform.x + platform.width &&    <span class="comment">// Player left edge < platform right edge</span>
+         player.x + player.width > platform.x &&     <span class="comment">// Player right edge > platform left edge</span>
+         player.y < platform.y + platform.height &&  <span class="comment">// Player top edge < platform bottom edge</span>
+         player.y + player.height > platform.y;      <span class="comment">// Player bottom edge > platform top edge</span>
+}
+
+<span class="comment">// Coin collision (circular distance check)</span>
+<span class="keyword">function</span> checkCoinCollision(player, coin) {
+  <span class="comment">// Calculate centers</span>
+  <span class="keyword">const</span> playerCenterX = player.x + player.width / <span class="number">2</span>;
+  <span class="keyword">const</span> playerCenterY = player.y + player.height / <span class="number">2</span>;
+
+  <span class="comment">// Calculate distance between centers</span>
+  <span class="keyword">const</span> dx = playerCenterX - coin.x;
+  <span class="keyword">const</span> dy = playerCenterY - coin.y;
+  <span class="keyword">const</span> distance = Math.sqrt(dx * dx + dy * dy);
+
+  <span class="comment">// Check if they're close enough to touch</span>
+  <span class="keyword">const</span> touchDistance = player.width / <span class="number">2</span> + coin.size / <span class="number">2</span>;
+  <span class="keyword">return</span> distance < touchDistance;
+}</pre>
+
+        <h3>Physics Updates</h3>
+        <p>Each frame, the game applies physics rules:</p>
+
+        <pre class="code-example"><span class="keyword">function</span> applyPhysics() {
+  <span class="comment">// Apply gravity - makes things fall</span>
+  player.velocityY += GRAVITY;
+
+  <span class="comment">// Apply friction - makes horizontal movement slow down</span>
+  player.velocityX *= FRICTION;
+
+  <span class="comment">// Update position based on velocity</span>
+  player.x += player.velocityX;
+  player.y += player.velocityY;
+
+  <span class="comment">// Check platform collisions</span>
+  platforms.forEach(platform => {
+    <span class="keyword">if</span> (checkPlatformCollision(player, platform)) {
+      <span class="comment">// Player is touching a platform - handle the collision!</span>
+      <span class="keyword">if</span> (player.velocityY > <span class="number">0</span>) {  <span class="comment">// Falling down</span>
+        player.y = platform.y - player.height;  <span class="comment">// Put player on top</span>
+        player.velocityY = <span class="number">0</span>;  <span class="comment">// Stop falling</span>
+        player.isOnGround = <span class="keyword">true</span>;
+        onLand();  <span class="comment">// Trigger landing effects!</span>
+      }
+    }
+  });
+}</pre>
+
+        <h3>Why Separation Matters</h3>
+        <p>Notice how the physics system calls <code>onLand()</code> - this is the separation between:</p>
+        <ul>
+          <li><strong>System code (bottom):</strong> Detects collision, updates position, calls your function</li>
+          <li><strong>Your code (top):</strong> <code>onLand()</code> adds effects like particles and sounds</li>
+        </ul>
+        <p>This way you can focus on making it look and sound awesome, while the game handles the technical stuff!</p>
+      </section>
+
+      <!-- Particles System -->
+      <section class="concept-section">
+        <h2>✨ Particles System</h2>
+
+        <p>When you call <code>spawnParticles()</code>, the game creates many small objects that fly out and fall down. Here's how it works!</p>
+
+        <h3>Creating Particles</h3>
+
+        <pre class="code-example"><span class="keyword">function</span> spawnParticles(x, y, color, count) {
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < count; i++) {
+    <span class="comment">// Create a new particle object</span>
+    particles.push({
+      x: x,
+      y: y,
+      color: color,
+      velocityX: Math.random() * <span class="number">6</span> - <span class="number">3</span>,  <span class="comment">// Random horizontal speed (-3 to +3)</span>
+      velocityY: Math.random() * <span class="number">-8</span>,      <span class="comment">// Random upward speed (0 to -8)</span>
+      life: <span class="number">60</span>,                          <span class="comment">// Lives for 60 frames (1 second)</span>
+      size: <span class="number">5</span>                             <span class="comment">// Size in pixels</span>
+    });
+  }
+}</pre>
+
+        <h3>Updating Particles Each Frame</h3>
+
+        <pre class="code-example"><span class="keyword">function</span> updateParticles() {
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = particles.length - <span class="number">1</span>; i >= <span class="number">0</span>; i--) {
+    <span class="keyword">const</span> p = particles[i];
+
+    <span class="comment">// Apply physics (just like the player!)</span>
+    p.x += p.velocityX;
+    p.y += p.velocityY;
+    p.velocityY += GRAVITY;  <span class="comment">// Gravity pulls particles down</span>
+
+    <span class="comment">// Reduce life and size (fade out effect)</span>
+    p.life--;
+    p.size *= <span class="number">0.95</span>;  <span class="comment">// Shrink a bit each frame</span>
+
+    <span class="comment">// Remove dead particles</span>
+    <span class="keyword">if</span> (p.life <= <span class="number">0</span> || p.size < <span class="number">0.5</span>) {
+      particles.splice(i, <span class="number">1</span>);
+    }
+  }
+}</pre>
+
+        <h3>Drawing Particles</h3>
+
+        <pre class="code-example"><span class="keyword">function</span> drawParticles() {
+  particles.forEach(p => {
+    drawCircle(p.x, p.y, p.size, p.color);
+  });
+}</pre>
+
+        <p><strong>Cool fact:</strong> Particles use the same position + velocity system as the player! This is why they fly out and fall down realistically.</p>
+      </section>
+
+      <!-- Screen Shake -->
+      <section class="concept-section">
+        <h2>📳 Screen Shake</h2>
+
+        <p>Screen shake is a simple but effective juice technique. Instead of moving the objects, we move the camera!</p>
+
+        <h3>How It Works</h3>
+
+        <pre class="code-example"><span class="comment">// Global shake variables</span>
+<span class="keyword">let</span> shakeAmount = <span class="number">0</span>;
+<span class="keyword">let</span> shakeX = <span class="number">0</span>;
+<span class="keyword">let</span> shakeY = <span class="number">0</span>;
+
+<span class="comment">// Call this to start shaking</span>
+<span class="keyword">function</span> screenShake(intensity) {
+  shakeAmount = intensity;  <span class="comment">// How hard to shake</span>
+}
+
+<span class="comment">// Every frame, update the shake</span>
+<span class="keyword">function</span> updateScreenShake() {
+  <span class="keyword">if</span> (shakeAmount > <span class="number">0</span>) {
+    <span class="comment">// Random offset in both directions</span>
+    shakeX = (Math.random() - <span class="number">0.5</span>) * shakeAmount;
+    shakeY = (Math.random() - <span class="number">0.5</span>) * shakeAmount;
+
+    <span class="comment">// Reduce shake amount (decay)</span>
+    shakeAmount *= <span class="number">0.8</span>;
+
+    <span class="comment">// Stop shaking when it's tiny</span>
+    <span class="keyword">if</span> (shakeAmount < <span class="number">0.1</span>) {
+      shakeAmount = <span class="number">0</span>;
+      shakeX = <span class="number">0</span>;
+      shakeY = <span class="number">0</span>;
+    }
+  }
+}
+
+<span class="comment">// Before drawing, offset the canvas</span>
+<span class="keyword">function</span> render() {
+  ctx.save();  <span class="comment">// Save current state</span>
+  ctx.translate(shakeX, shakeY);  <span class="comment">// Move the "camera"</span>
+
+  <span class="comment">// Draw everything (it all moves together!)</span>
+  drawBackground();
+  drawPlatforms();
+  drawPlayer();
+  drawCoins();
+  drawParticles();
+
+  ctx.restore();  <span class="comment">// Reset to normal position</span>
+}</pre>
+
+        <p><strong>Pro tip:</strong> Screen shake works by moving the entire canvas slightly. The objects don't actually move - the camera does!</p>
+      </section>
+
+      <!-- Web Audio API -->
+      <section class="concept-section">
+        <h2>🔊 Sound: Web Audio API</h2>
+
+        <p>The <code>beep()</code> function uses the Web Audio API to create sounds programmatically (without audio files!).</p>
+
+        <h3>How Beep Works</h3>
+
+        <pre class="code-example"><span class="keyword">function</span> beep(frequency, duration, volume) {
+  <span class="comment">// Create an audio context (the sound system)</span>
+  <span class="keyword">const</span> audioContext = <span class="keyword">new</span> AudioContext();
+
+  <span class="comment">// Create an oscillator (generates the tone)</span>
+  <span class="keyword">const</span> oscillator = audioContext.createOscillator();
+  oscillator.type = <span class="string">'sine'</span>;           <span class="comment">// Wave type (sine = smooth beep)</span>
+  oscillator.frequency.value = frequency;  <span class="comment">// Pitch (Hz)</span>
+
+  <span class="comment">// Create a gain node (controls volume)</span>
+  <span class="keyword">const</span> gainNode = audioContext.createGain();
+  gainNode.gain.value = volume;  <span class="comment">// How loud</span>
+
+  <span class="comment">// Connect everything: oscillator → gain → speakers</span>
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+
+  <span class="comment">// Start and stop the sound</span>
+  oscillator.start();
+  oscillator.stop(audioContext.currentTime + duration / <span class="number">1000</span>);
+}</pre>
+
+        <h3>Sound Parameters</h3>
+        <ul>
+          <li><strong>Frequency (Hz):</strong> How high/low the sound is
+            <ul>
+              <li>220 Hz = Low (like a thud)</li>
+              <li>440 Hz = Middle A (standard pitch)</li>
+              <li>880 Hz = High (like a coin collection)</li>
+            </ul>
+          </li>
+          <li><strong>Duration (ms):</strong> How long the sound plays (100 = 0.1 seconds)</li>
+          <li><strong>Volume (0-1):</strong> How loud (0.1 = quiet, 0.5 = loud)</li>
+        </ul>
+      </section>
+
+      <section class="resources">
+        <h2>🎓 You Made It!</h2>
+        <p>You now understand how the game works at a deep level! Remember:</p>
+        <ul>
+          <li>The game loop runs 60 times per second</li>
+          <li>Everything uses position + velocity</li>
+          <li>Collision detection checks if objects overlap</li>
+          <li>Particles are just tiny objects that use the same physics</li>
+          <li>Screen shake moves the camera, not the objects</li>
+          <li>Sounds are created programmatically with the Web Audio API</li>
+        </ul>
+        <p style="text-align: center; margin-top: 30px;">
+          <a href="concepts-basics.html" class="copy-btn" style="display: inline-block; text-decoration: none;">← Back to Basics</a>
+          <a href="concepts-juice.html" class="copy-btn" style="display: inline-block; text-decoration: none; margin-left: 10px;">← Back to Juice</a>
+          <a href="concepts.html" class="copy-btn" style="display: inline-block; text-decoration: none; margin-left: 10px;">← Back to Concepts</a>
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Understanding how things work makes you a better coder! 🚀</p>
+    </footer>
+  </div>
+
+  <script>
+    // Interactive demo for position and velocity
+    let demoX = 0;
+    let demoVelocityX = 0;
+    let animationRunning = false;
+
+    function updateDemo() {
+      const player = document.getElementById('demoPlayer');
+      const info = document.getElementById('demoInfo');
+
+      // Update position based on velocity
+      demoX += demoVelocityX;
+
+      // Keep within bounds
+      const maxX = document.getElementById('positionDemo').clientWidth - 30;
+      if (demoX < 0) {
+        demoX = 0;
+        demoVelocityX = 0;
+      }
+      if (demoX > maxX) {
+        demoX = maxX;
+        demoVelocityX = 0;
+      }
+
+      // Apply friction (slow down)
+      demoVelocityX *= 0.95;
+
+      // Stop if moving very slowly
+      if (Math.abs(demoVelocityX) < 0.1) {
+        demoVelocityX = 0;
+        animationRunning = false;
+      }
+
+      // Update display
+      player.style.left = demoX + 'px';
+      player.style.top = '85px'; // Center vertically
+      info.textContent = `Position X: ${Math.round(demoX)} | Velocity X: ${demoVelocityX.toFixed(1)}`;
+
+      // Continue animation if moving
+      if (animationRunning) {
+        requestAnimationFrame(updateDemo);
+      }
+    }
+
+    function moveRight() {
+      demoVelocityX = 5; // Add speed to the right
+      if (!animationRunning) {
+        animationRunning = true;
+        updateDemo();
+      }
+    }
+
+    function moveLeft() {
+      demoVelocityX = -5; // Add speed to the left
+      if (!animationRunning) {
+        animationRunning = true;
+        updateDemo();
+      }
+    }
+
+    function resetDemo() {
+      demoX = 0;
+      demoVelocityX = 0;
+      animationRunning = false;
+      updateDemo();
+    }
+
+    // Initialize
+    resetDemo();
+  </script>
+</body>
+</html>

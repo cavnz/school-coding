@@ -6,89 +6,51 @@
   <title>Coding Concepts - Juicy Platformer</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Extra styles specific to concepts page */
-    .concept-section {
-      background: #f8f9fa;
-      padding: 25px;
-      border-radius: 10px;
-      margin-bottom: 30px;
-      border-left: 5px solid #3498db;
-    }
-
-    .color-demo {
-      display: inline-block;
-      width: 60px;
-      height: 60px;
-      border: 2px solid #2c3e50;
-      border-radius: 5px;
-      margin: 5px;
-      vertical-align: middle;
-    }
-
-    .color-row {
-      margin: 15px 0;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .color-label {
-      font-family: 'Courier New', monospace;
-      background: #e8f4f8;
-      padding: 8px 12px;
-      border-radius: 5px;
-      min-width: 200px;
-    }
-
-    .game-loop-diagram {
-      background: #2c3e50;
+    .concept-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
-      padding: 25px;
-      border-radius: 10px;
+      padding: 30px;
+      border-radius: 15px;
       margin: 20px 0;
-      font-family: 'Courier New', monospace;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
     }
 
-    .loop-step {
-      background: #34495e;
-      padding: 15px;
-      margin: 10px 0;
-      border-left: 4px solid #3498db;
-      border-radius: 5px;
+    .concept-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
-    .loop-arrow {
-      text-align: center;
+    .concept-card h2 {
+      margin-top: 0;
       font-size: 2em;
-      color: #3498db;
-      margin: 10px 0;
     }
 
-    .code-example {
-      background: #2c3e50;
-      color: #ecf0f1;
-      padding: 20px;
-      border-radius: 8px;
+    .concept-card p {
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
+
+    .concept-card.basics {
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    }
+
+    .concept-card.juice {
+      background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    }
+
+    .concept-card.advanced {
+      background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+    }
+
+    .concept-list {
       margin: 15px 0;
-      font-family: 'Courier New', monospace;
-      overflow-x: auto;
+      padding-left: 20px;
     }
 
-    .comment {
-      color: #95a5a6;
-    }
-
-    .keyword {
-      color: #e74c3c;
-    }
-
-    .string {
-      color: #2ecc71;
-    }
-
-    .number {
-      color: #f39c12;
+    .concept-list li {
+      margin: 8px 0;
+      font-size: 1.05em;
     }
 
     .back-link {
@@ -97,46 +59,11 @@
       font-size: 1.1em;
     }
 
-    .interactive-demo {
-      background: white;
-      padding: 20px;
-      border: 2px solid #3498db;
+    .intro {
+      background: #f8f9fa;
+      padding: 25px;
       border-radius: 10px;
-      margin: 20px 0;
-    }
-
-    .position-demo {
-      position: relative;
-      width: 100%;
-      height: 200px;
-      background: #ecf0f1;
-      border: 2px solid #2c3e50;
-      border-radius: 5px;
-      margin: 15px 0;
-    }
-
-    .demo-player {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background: #e74c3c;
-      border-radius: 50%;
-      transition: all 0.3s;
-    }
-
-    .demo-controls {
-      margin-top: 10px;
-      text-align: center;
-    }
-
-    .demo-info {
-      font-family: 'Courier New', monospace;
-      background: #2c3e50;
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 10px;
-      text-align: center;
+      margin-bottom: 30px;
     }
   </style>
 </head>
@@ -144,856 +71,77 @@
   <div class="container">
     <header>
       <h1>💡 Coding Concepts</h1>
-      <p class="subtitle">Understanding the Building Blocks</p>
+      <p class="subtitle">Choose Your Learning Path</p>
     </header>
 
     <main>
       <a href="index.html" class="back-link">← Back to Home</a>
 
       <section class="intro">
-        <h2>What You'll Learn</h2>
-        <p>These are the key concepts that make our platformer game work. Understanding these will help you customize the game and create your own awesome effects!</p>
-        <p><strong>Start with the basics:</strong> Configuration and Functions are the foundation of everything!</p>
+        <h2>Learn at Your Own Pace</h2>
+        <p>We've organized the concepts into three sections. Start with <strong>The Basics</strong> to understand the fundamentals, then move to <strong>Adding Juice</strong> to make your game awesome. If you're curious about how everything works under the hood, check out <strong>Advanced Concepts</strong>!</p>
       </section>
 
-       <!-- Comments -->
-      <section class="concept-section">
-        <h2>💬 Comments: Notes to Yourself</h2>
-
-        <p>Comments are lines in your code that the computer <strong>completely ignores</strong>. They're notes for humans to read!</p>
-
-        <h3>Why Use Comments?</h3>
-        <ul>
-          <li><strong>Explain what code does:</strong> "This makes the player jump"</li>
-          <li><strong>Leave yourself reminders:</strong> "TODO: Add sound effect here"</li>
-          <li><strong>Turn code off temporarily:</strong> Comment it out instead of deleting</li>
-          <li><strong>Help others understand:</strong> Future you will thank present you!</li>
-        </ul>
-
-        <h3>Two Ways to Comment</h3>
-
-        <pre class="code-example"><span class="comment">// Single line comment - everything after // is ignored</span>
-<span class="keyword">const</span> GRAVITY = <span class="number">0.5</span>;  <span class="comment">// You can also put comments at the end of lines</span>
-
-<span class="comment">/*
-  Multi-line comment
-  Everything between /* and */ is ignored
-  Great for longer explanations!
-*/</span>
-
-<span class="keyword">function</span> onJump() {
-  <span class="comment">// TODO: Add effects here! What should happen when you jump?</span>
-  <span class="comment">// Try calling: screenShake(3)</span>
-  <span class="comment">// Try calling: beep(440, 100, 0.2)</span>
-  <span class="comment">// Try calling: spawnParticles(player.x, player.y, PLAYER_COLOR, 5)</span>
-
-  <span class="comment">// screenShake(3);  ← This line is "commented out" - it won't run</span>
-
-  console.log(<span class="string">'Jump!'</span>);
-}</pre>
-
-        <h3>Comments in Our Game</h3>
-        <p>Look for <code>TODO</code> comments in the game code - they suggest experiments you can try!</p>
-
-        <pre class="code-example"><span class="keyword">function</span> onCoinCollected(coin) {
-  <span class="comment">// This is called when you collect a coin!</span>
-  <span class="comment">// Add effects and sounds here to make it feel awesome</span>
-
-  <span class="comment">// TODO: Add juice here! What should happen when you collect a coin?</span>
-  <span class="comment">// Try: spawnParticles(coin.x, coin.y, COIN_COLOR, 20);</span>
-  <span class="comment">// Try: screenShake(3);</span>
-  <span class="comment">// Try: beep(660, 100, 0.3);</span>
-
-  console.log(<span class="string">'Coin collected! Score:'</span>, score);
-}</pre>
-
-        <p><strong>Pro Tip:</strong> To activate an effect, just remove the <code>//</code> from the start of the line!</p>
-      </section>
-
-      <!-- Configuration -->
-      <section class="concept-section">
-        <h2>⚙️ Configuration: Setting Up Values</h2>
-
-        <h3>What is Configuration?</h3>
-        <p>Configuration means <strong>setting up values at the top of your code</strong> that control how everything else works. Instead of using random numbers scattered everywhere, you give each number a clear name and put them all in one place.</p>
-
-        <p><strong>Why is this important?</strong></p>
-        <ul>
-          <li><strong>Easy to find:</strong> All the numbers you might want to change are at the top</li>
-          <li><strong>Easy to understand:</strong> <code>GRAVITY = 0.5</code> is clearer than just seeing <code>0.5</code> somewhere in the code</li>
-          <li><strong>Easy to experiment:</strong> Change one value and see how it affects the whole game!</li>
-          <li><strong>No mistakes:</strong> If you want to change gravity, you change it once, not 10 times in different places</li>
-        </ul>
-
-        <h3>Configuration in Our Game</h3>
-        <p>At the very top of the game code, you'll see constants like these:</p>
-
-        <pre class="code-example"><span class="comment">// === GAME CONFIGURATION ===</span>
-<span class="comment">// Physics - how the game world behaves</span>
-<span class="keyword">const</span> GRAVITY = <span class="number">0.5</span>;              <span class="comment">// How fast things fall</span>
-<span class="keyword">const</span> JUMP_POWER = <span class="number">12</span>;           <span class="comment">// How high you jump</span>
-<span class="keyword">const</span> PLAYER_SPEED = <span class="number">5</span>;          <span class="comment">// How fast you move left/right</span>
-<span class="keyword">const</span> FRICTION = <span class="number">0.8</span>;            <span class="comment">// How slippery the ground is</span>
-
-<span class="comment">// Visual settings - how things look</span>
-<span class="keyword">const</span> BACKGROUND_COLOR = <span class="string">'#34495e'</span>;
-<span class="keyword">const</span> PLAYER_COLOR = <span class="string">'#3498db'</span>;
-<span class="keyword">const</span> PLATFORM_COLOR = <span class="string">'#2c3e50'</span>;
-
-<span class="comment">// Coin settings</span>
-<span class="keyword">const</span> NUMBER_OF_COINS = <span class="number">5</span>;        <span class="comment">// How many coins spawn</span>
-<span class="keyword">const</span> POINTS_PER_COIN = <span class="number">10</span>;      <span class="comment">// Points for each coin</span>
-<span class="keyword">const</span> COIN_SIZE = <span class="number">15</span>;             <span class="comment">// How big coins are</span></pre>
-
-        <h3>How the Rest of the Code Uses These</h3>
-        <p>Once you set these values at the top, the rest of the game uses them automatically:</p>
-
-        <pre class="code-example"><span class="comment">// Later in the code, when making the player fall:</span>
-<span class="keyword">function</span> applyPhysics() {
-  player.velocityY += GRAVITY;  <span class="comment">// Use the GRAVITY value from the top!</span>
-  player.x += player.velocityX * FRICTION;  <span class="comment">// Use FRICTION too!</span>
-}
-
-<span class="comment">// The system handles jumping mechanics:</span>
-<span class="keyword">function</span> handleInput() {
-  <span class="keyword">if</span> (keys.Space && player.isOnGround) {
-    player.velocityY = -JUMP_POWER;  <span class="comment">// Use JUMP_POWER from config</span>
-    onJump();  <span class="comment">// Then trigger effects!</span>
-  }
-}
-
-<span class="comment">// When drawing the background:</span>
-<span class="keyword">function</span> render() {
-  ctx.fillStyle = BACKGROUND_COLOR;  <span class="comment">// Use the color from config</span>
-  ctx.fillRect(<span class="number">0</span>, <span class="number">0</span>, canvas.width, canvas.height);
-}</pre>
-
-        <h3>The Power of Configuration</h3>
-        <p>Watch what happens when you change just ONE value at the top:</p>
-
-        <pre class="code-example"><span class="comment">// Change this at the top:</span>
-<span class="keyword">const</span> GRAVITY = <span class="number">0.2</span>;  <span class="comment">// Changed from 0.5 to 0.2</span>
-
-<span class="comment">// Now EVERYWHERE in the code that uses GRAVITY automatically changes!</span>
-<span class="comment">// The player falls slower</span>
-<span class="comment">// Particles float down gently</span>
-<span class="comment">// The whole game feels like you're on the moon!</span>
-<span class="comment">// And you only changed ONE number!</span></pre>
-
-        <h3>Try This!</h3>
-        <p>Experiment with these configuration changes at the top of the game code:</p>
-        <ul>
-          <li><strong>Moon gravity:</strong> <code>GRAVITY = 0.2</code></li>
-          <li><strong>Super jump:</strong> <code>JUMP_POWER = 20</code></li>
-          <li><strong>Ice mode:</strong> <code>FRICTION = 0.95</code></li>
-          <li><strong>Speed demon:</strong> <code>PLAYER_SPEED = 10</code></li>
-          <li><strong>Coin party:</strong> <code>NUMBER_OF_COINS = 20</code></li>
-        </ul>
-
-        <p><strong>Pro Tip:</strong> This is why constants use UPPERCASE_NAMES - it makes them easy to spot and tells you "this is a setting you can change!"</p>
-      </section>
-
-
-       <!-- RGB and Hex Colors -->
-      <section class="concept-section">
-        <h2>🎨 Colors: RGB and Hex</h2>
-
-        <h3>What Are RGB Colors?</h3>
-        <p>RGB stands for <strong>Red, Green, Blue</strong>. Every color on a screen is made by mixing these three colors of light!</p>
-        <p>Each color uses a number from <strong>0 to 255</strong>:</p>
-        <ul>
-          <li><strong>0</strong> = none of that color</li>
-          <li><strong>255</strong> = maximum amount of that color</li>
-        </ul>
-
-        <div class="color-row">
-          <div class="color-demo" style="background: rgb(255, 0, 0);"></div>
-          <span class="color-label">rgb(255, 0, 0) = Red</span>
-        </div>
-
-        <div class="color-row">
-          <div class="color-demo" style="background: rgb(0, 255, 0);"></div>
-          <span class="color-label">rgb(0, 255, 0) = Green</span>
-        </div>
-
-        <div class="color-row">
-          <div class="color-demo" style="background: rgb(0, 0, 255);"></div>
-          <span class="color-label">rgb(0, 0, 255) = Blue</span>
-        </div>
-
-        <div class="color-row">
-          <div class="color-demo" style="background: rgb(255, 255, 0);"></div>
-          <span class="color-label">rgb(255, 255, 0) = Yellow (Red + Green)</span>
-        </div>
-
-        <div class="color-row">
-          <div class="color-demo" style="background: rgb(255, 0, 255);"></div>
-          <span class="color-label">rgb(255, 0, 255) = Magenta (Red + Blue)</span>
-        </div>
-
-        <div class="color-row">
-          <div class="color-demo" style="background: rgb(0, 255, 255);"></div>
-          <span class="color-label">rgb(0, 255, 255) = Cyan (Green + Blue)</span>
-        </div>
-
-        <h3 style="margin-top: 30px;">What Are Hex Colors?</h3>
-        <p>Hex is just another way to write the same colors! It's shorter and often used in web design.</p>
-        <p>Format: <code>#RRGGBB</code> where each pair is a number in hexadecimal (0-9, A-F)</p>
-
-        <div class="color-row">
-          <div class="color-demo" style="background: #FF0000;"></div>
-          <span class="color-label">#FF0000 = Red</span>
-        </div>
-
-        <div class="color-row">
-          <div class="color-demo" style="background: #00FF00;"></div>
-          <span class="color-label">#00FF00 = Green</span>
-        </div>
-
-        <div class="color-row">
-          <div class="color-demo" style="background: #0000FF;"></div>
-          <span class="color-label">#0000FF = Blue</span>
-        </div>
-
-        <div class="color-row">
-          <div class="color-demo" style="background: #FFD700;"></div>
-          <span class="color-label">#FFD700 = Gold</span>
-        </div>
-
-        <pre class="code-example"><span class="comment">// Both of these are the same color!</span>
-<span class="keyword">const</span> color1 = <span class="string">'rgb(255, 0, 0)'</span>;  <span class="comment">// Red using RGB</span>
-<span class="keyword">const</span> color2 = <span class="string">'#FF0000'</span>;        <span class="comment">// Red using Hex</span>
-
-<span class="comment">// In our game, you can use either:</span>
-spawnParticles(coin.x, coin.y, <span class="string">'rgb(255, 215, 0)'</span>, <span class="number">20</span>);  <span class="comment">// Gold particles</span>
-spawnParticles(coin.x, coin.y, <span class="string">'#FFD700'</span>, <span class="number">20</span>);         <span class="comment">// Same gold particles!</span></pre>
-
-        <p><strong>Try it!</strong> In the game code, change particle colors to make rainbow effects when you collect coins!</p>
-      </section>
-
-      <!-- Functions -->
-      <section class="concept-section">
-        <h2>🎯 Functions: Instructions to the Computer</h2>
-
-        <h3>What is a Function?</h3>
-        <p>A function is like a <strong>recipe</strong> or a <strong>set of instructions</strong> that you give to the computer. You give the recipe a name, and whenever you "call" that name, the computer follows those instructions.</p>
-
-        <p>Think of it like teaching a robot a dance move:</p>
-        <ul>
-          <li><strong>Define the function:</strong> You teach the robot: "When I say 'spin', do a 360° turn"</li>
-          <li><strong>Call the function:</strong> Later you shout "spin!" and the robot does it</li>
-          <li><strong>Reuse it:</strong> You can say "spin" as many times as you want, and the robot remembers what to do</li>
-        </ul>
-
-        <h3>Writing a Function</h3>
-        <p>Here's how you create a function in JavaScript:</p>
-
-        <pre class="code-example"><span class="comment">// Define a function called "sayHello"</span>
-<span class="keyword">function</span> sayHello() {
-  console.log(<span class="string">'Hello, world!'</span>);
-  console.log(<span class="string">'Welcome to coding!'</span>);
-}
-
-<span class="comment">// Now you can "call" the function - run those instructions</span>
-sayHello();  <span class="comment">// This will print both messages</span>
-
-<span class="comment">// Call it again!</span>
-sayHello();  <span class="comment">// Prints the messages again</span></pre>
-
-        <h3>Functions Can Accept Information</h3>
-        <p>Functions can receive <strong>parameters</strong> (inputs) to work with:</p>
-
-        <pre class="code-example"><span class="comment">// Function that takes a name as input</span>
-<span class="keyword">function</span> greet(name) {
-  console.log(<span class="string">'Hello, '</span> + name + <span class="string">'!'</span>);
-}
-
-<span class="comment">// Call it with different names</span>
-greet(<span class="string">'Alice'</span>);   <span class="comment">// Prints: Hello, Alice!</span>
-greet(<span class="string">'Bob'</span>);     <span class="comment">// Prints: Hello, Bob!</span>
-
-<span class="comment">// Functions can take multiple parameters</span>
-<span class="keyword">function</span> addNumbers(a, b) {
-  <span class="keyword">const</span> sum = a + b;
-  console.log(sum);
-}
-
-addNumbers(<span class="number">5</span>, <span class="number">3</span>);   <span class="comment">// Prints: 8</span>
-addNumbers(<span class="number">10</span>, <span class="number">20</span>); <span class="comment">// Prints: 30</span></pre>
-
-        <h3>Functions in Our Game</h3>
-        <p>Our platformer game is built from many functions that work together:</p>
-
-        <pre class="code-example"><span class="comment">// A function that spawns particles</span>
-<span class="keyword">function</span> spawnParticles(x, y, color, count) {
-  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < count; i++) {
-    <span class="comment">// Create particles at position (x, y) with the given color</span>
-    particles.push({
-      x: x,
-      y: y,
-      color: color,
-      velocityX: Math.random() * <span class="number">6</span> - <span class="number">3</span>,
-      velocityY: Math.random() * <span class="number">-8</span>
-    });
-  }
-}
-
-<span class="comment">// A function that responds to the player jumping (effects only!)</span>
-<span class="keyword">function</span> onJump() {
-  screenShake(<span class="number">3</span>);                   <span class="comment">// Call another function!</span>
-  beep(<span class="number">440</span>, <span class="number">100</span>, <span class="number">0.2</span>);             <span class="comment">// Call another function!</span>
-  spawnParticles(player.x, player.y, PLAYER_COLOR, <span class="number">5</span>);  <span class="comment">// Add particles!</span>
-}
-
-<span class="comment">// Later in the code, we can call these functions:</span>
-<span class="keyword">if</span> (keys.Space && player.isOnGround) {
-  player.velocityY = -JUMP_POWER;  <span class="comment">// System handles physics</span>
-  onJump();  <span class="comment">// Then call the effects function</span>
-}
-
-<span class="comment">// When a coin is collected, spawn particles at the coin's position:</span>
-spawnParticles(coin.x, coin.y, <span class="string">'#FFD700'</span>, <span class="number">15</span>);  <span class="comment">// Gold particles!</span></pre>
-
-        <h3>Chain Reactions: Functions Calling Functions</h3>
-        <p>This is where it gets really cool! One function can call other functions, creating <strong>chain reactions</strong>:</p>
-
-        <pre class="code-example"><span class="comment">// When a coin is collected, this function runs:</span>
-<span class="keyword">function</span> onCoinCollected(coin) {
-  <span class="comment">// This ONE function calls multiple other functions!</span>
-  spawnParticles(coin.x, coin.y, <span class="string">'#FFD700'</span>, <span class="number">20</span>);  <span class="comment">// Makes particles</span>
-  screenShake(<span class="number">5</span>);                              <span class="comment">// Shakes screen</span>
-  beep(<span class="number">660</span>, <span class="number">100</span>, <span class="number">0.3</span>);                       <span class="comment">// Makes sound</span>
-}
-
-<span class="comment">// The game loop checks for coin collision and calls this:</span>
-<span class="keyword">if</span> (playerTouchingCoin) {
-  collectCoin(coin);  <span class="comment">// This system function...</span>
-}
-
-<span class="keyword">function</span> collectCoin(coin) {
-  score += POINTS_PER_COIN;            <span class="comment">// Update score</span>
-  coins.splice(coins.indexOf(coin), <span class="number">1</span>); <span class="comment">// Remove coin</span>
-  onCoinCollected(coin);               <span class="comment">// ...calls YOUR effects function!</span>
-}
-
-<span class="comment">// ONE coin collection triggers a CHAIN REACTION:
-// 1. Player touches coin (collision detected)
-// 2. collectCoin runs (system handles score & removal)
-// 3. onCoinCollected runs (YOUR effects!)
-// 4. spawnParticles runs
-// 5. screenShake runs
-// 6. beep runs
-// All from one event!</span></pre>
-
-        <h3>Why Functions Are Amazing</h3>
-        <ul>
-          <li><strong>Reusable:</strong> Write the code once, use it many times</li>
-          <li><strong>Organized:</strong> Each function has a clear purpose (jump, draw, shake, etc.)</li>
-          <li><strong>Easier to read:</strong> <code>onJump()</code> is clearer than copy-pasting 10 lines of code</li>
-          <li><strong>Easy to change:</strong> Update one function and it changes everywhere it's used</li>
-          <li><strong>Chain reactions:</strong> Create complex effects by combining simple functions</li>
-        </ul>
-
-        <h3>Try This!</h3>
-        <p>In the game code, find these student-friendly functions and experiment:</p>
-        <ul>
-          <li><strong>onJump():</strong> Add effects when the player jumps</li>
-          <li><strong>onLand():</strong> Add effects when the player lands on a platform</li>
-          <li><strong>onCoinCollected():</strong> Make coin collection more exciting</li>
-          <li><strong>onAllCoinsCollected():</strong> Create an epic victory celebration</li>
-        </ul>
-
-        <p><strong>Pro Tip:</strong> Look for the <code>TODO</code> comments in these functions - they suggest which other functions you can call to add juice!</p>
-      </section>
-
-          
-      <!-- Game Loop -->
-      <section class="concept-section">
-        <h2>🔄 The Game Loop: How Games Work</h2>
-
-        <p>Games don't just sit still - they're constantly updating and redrawing, usually <strong>60 times per second</strong>!</p>
-
-        <h3>The Magic Loop</h3>
-        <p>Think of it like a flipbook animation. Each "page" is one frame:</p>
-
-        <div class="game-loop-diagram">
-          <div class="loop-step">
-            <strong>1. UPDATE</strong> - Change positions, check for collisions, handle input
-          </div>
-          <div class="loop-arrow">↓</div>
-          <div class="loop-step">
-            <strong>2. DRAW</strong> - Clear the screen and draw everything in new positions
-          </div>
-          <div class="loop-arrow">↓</div>
-          <div class="loop-step">
-            <strong>3. REPEAT</strong> - Do it all again! (60 times per second)
-          </div>
-        </div>
-
-        <h3>Position and Speed: The Core Concept</h3>
-        <p>Everything moving in a game uses these two ideas:</p>
-
-        <ul>
-          <li><strong>Position (x, y):</strong> Where something IS right now</li>
-          <li><strong>Velocity (speedX, speedY):</strong> How fast it's MOVING</li>
-        </ul>
-
-        <div class="interactive-demo">
-          <h3>Interactive Demo: Position & Speed</h3>
-          <p>Watch how position and velocity work together:</p>
-
-          <div class="position-demo" id="positionDemo">
-            <div class="demo-player" id="demoPlayer"></div>
-          </div>
-
-          <div class="demo-controls">
-            <button class="copy-btn" onclick="moveRight()">Move Right →</button>
-            <button class="copy-btn" onclick="moveLeft()">← Move Left</button>
-            <button class="copy-btn" onclick="resetDemo()">Reset</button>
-          </div>
-
-          <div class="demo-info" id="demoInfo">
-            Position X: 0 | Velocity X: 0
-          </div>
-        </div>
-
-        <h3>How It Works in Code</h3>
-
-        <pre class="code-example"><span class="comment">// Game state - keeping track of where things are</span>
-<span class="keyword">const</span> player = {
-  x: <span class="number">100</span>,           <span class="comment">// Position (where the player is)</span>
-  y: <span class="number">300</span>,
-  velocityX: <span class="number">0</span>,     <span class="comment">// Speed (how fast they're moving)</span>
-  velocityY: <span class="number">0</span>
-};
-
-<span class="comment">// Every frame (60 times per second):</span>
-<span class="keyword">function</span> gameLoop() {
-  <span class="comment">// 1. UPDATE - Add velocity to position</span>
-  player.x += player.velocityX;  <span class="comment">// Move horizontally</span>
-  player.y += player.velocityY;  <span class="comment">// Move vertically</span>
-
-  <span class="comment">// 2. Apply gravity (makes velocity increase)</span>
-  player.velocityY += GRAVITY;   <span class="comment">// Speed up falling</span>
-
-  <span class="comment">// 3. DRAW - Show everything in new positions</span>
-  drawPlayer(player.x, player.y);
-
-  <span class="comment">// 4. REPEAT - Call this function again next frame</span>
-  requestAnimationFrame(gameLoop);
-}</pre>
-
-        <h3>Real Example: Jumping</h3>
-        <p>When you jump, here's what happens frame-by-frame:</p>
-
-        <pre class="code-example"><span class="comment">// Frame 0: Player presses space</span>
-player.velocityY = -<span class="number">12</span>;  <span class="comment">// Negative = up! Start moving upward fast</span>
-onJump();                <span class="comment">// Trigger effects (particles, sound, shake)</span>
-
-<span class="comment">// Frame 1: (1/60th second later)</span>
-player.y += player.velocityY;     <span class="comment">// y = 300 + (-12) = 288 (moved up!)</span>
-player.velocityY += GRAVITY;      <span class="comment">// velocityY = -12 + 0.5 = -11.5 (slowing down)</span>
-
-<span class="comment">// Frame 2:</span>
-player.y += player.velocityY;     <span class="comment">// y = 288 + (-11.5) = 276.5 (still going up)</span>
-player.velocityY += GRAVITY;      <span class="comment">// velocityY = -11.5 + 0.5 = -11 (slower)</span>
-
-<span class="comment">// ... many frames later ...</span>
-
-<span class="comment">// Eventually velocityY becomes positive and player falls!</span>
-player.velocityY += GRAVITY;      <span class="comment">// velocityY = 0.5 (now falling)</span>
-player.y += player.velocityY;     <span class="comment">// Moving down now!</span>
-
-<span class="comment">// When player hits platform:</span>
-player.velocityY = <span class="number">0</span>;            <span class="comment">// Stop falling</span>
-onLand();                        <span class="comment">// Trigger landing effects!</span></pre>
-
-        <h3>Why This Matters</h3>
-        <p>Understanding position + velocity lets you:</p>
-        <ul>
-          <li>Change <code>GRAVITY</code> to make the game feel floaty or heavy</li>
-          <li>Change <code>JUMP_POWER</code> to jump higher or lower</li>
-          <li>Add particles that fly out and fall down (they use the same system!)</li>
-          <li>Make screen shake by changing the camera position quickly</li>
-        </ul>
-
-        <p><strong>Try it!</strong> In the game code, find the <code>onJump()</code>, <code>onLand()</code>, and <code>onBump()</code> functions. These are called when events happen, and you can add effects to make them juicier!</p>
-      </section>
-
-      <!-- Canvas Drawing -->
-      <section class="concept-section">
-        <h2>🎨 Drawing Shapes: Using Helper Functions</h2>
-
-        <p>Our game includes helpful drawing functions that make it easy to draw different shapes! Instead of writing complex canvas code, you can use simple functions like <code>drawCircle()</code>, <code>drawRect()</code>, <code>drawTriangle()</code>, and <code>drawText()</code>.</p>
-
-        <h3>The Drawing Functions</h3>
-        <p>These functions are available in the game and make drawing super easy:</p>
-
-        <h4>drawRect(x, y, width, height, color)</h4>
-        <p>Draw a rectangle at any position with any color!</p>
-
-        <pre class="code-example"><span class="comment">// Draw a blue rectangle for the player body</span>
-drawRect(player.x, player.y, player.width, player.height, PLAYER_COLOR);
-
-<span class="comment">// Draw a red rectangle for decoration</span>
-drawRect(<span class="number">100</span>, <span class="number">200</span>, <span class="number">50</span>, <span class="number">30</span>, <span class="string">'rgb(255, 0, 0)'</span>);
-
-<span class="comment">// Try this: Draw a hat on the player!</span>
-drawRect(player.x, player.y - <span class="number">10</span>, player.width, <span class="number">5</span>, <span class="string">'red'</span>);</pre>
-
-        <h4>drawCircle(x, y, size, color)</h4>
-        <p>Draw a circle - perfect for eyes, buttons, or round decorations!</p>
-
-        <pre class="code-example"><span class="comment">// Draw a white circle for an eye</span>
-drawCircle(player.x + <span class="number">10</span>, player.y + <span class="number">10</span>, <span class="number">8</span>, <span class="string">'white'</span>);
-
-<span class="comment">// Draw a yellow circle for a coin</span>
-drawCircle(coin.x, coin.y, COIN_SIZE, <span class="string">'rgb(255, 215, 0)'</span>);
-
-<span class="comment">// Try this: Draw both eyes on the player!</span>
-drawCircle(player.x + <span class="number">10</span>, player.y + <span class="number">10</span>, <span class="number">6</span>, <span class="string">'white'</span>);  <span class="comment">// Left eye</span>
-drawCircle(player.x + <span class="number">20</span>, player.y + <span class="number">10</span>, <span class="number">6</span>, <span class="string">'white'</span>);  <span class="comment">// Right eye</span></pre>
-
-        <h4>drawTriangle(x, y, size, direction, color)</h4>
-        <p>Draw a triangle pointing in any direction - great for arrows, hats, or spikes!</p>
-
-        <pre class="code-example"><span class="comment">// Draw a red triangle pointing up (like a hat)</span>
-drawTriangle(player.x + player.width / <span class="number">2</span>, player.y - <span class="number">10</span>, <span class="number">20</span>, <span class="string">'up'</span>, <span class="string">'red'</span>);
-
-<span class="comment">// Draw a green triangle pointing right (like an arrow)</span>
-drawTriangle(<span class="number">100</span>, <span class="number">200</span>, <span class="number">30</span>, <span class="string">'right'</span>, <span class="string">'rgb(0, 255, 0)'</span>);
-
-<span class="comment">// Try this: Draw spikes pointing down on platforms!</span>
-drawTriangle(platform.x + <span class="number">50</span>, platform.y, <span class="number">15</span>, <span class="string">'down'</span>, <span class="string">'red'</span>);
-
-<span class="comment">// Directions you can use: 'up', 'down', 'left', 'right'</span></pre>
-
-        <h4>drawText(x, y, text, size, color)</h4>
-        <p>Draw text or emojis at any position - perfect for messages or emoji characters!</p>
-
-        <pre class="code-example"><span class="comment">// Draw an emoji as the player character</span>
-drawText(player.x + player.width / <span class="number">2</span>, player.y + player.height / <span class="number">2</span>, <span class="string">'😀'</span>, <span class="number">30</span>, <span class="string">'white'</span>);
-
-<span class="comment">// Draw a star emoji for coins</span>
-drawText(coin.x, coin.y, <span class="string">'⭐'</span>, COIN_SIZE, <span class="string">'white'</span>);
-
-<span class="comment">// Draw a victory message</span>
-drawText(canvas.width / <span class="number">2</span>, <span class="number">100</span>, <span class="string">'YOU WIN! 🎉'</span>, <span class="number">48</span>, <span class="string">'rgb(255, 255, 0)'</span>);
-
-<span class="comment">// Try this: Draw floating "+10" text when you collect coins!</span>
-drawText(coin.x, coin.y - <span class="number">20</span>, <span class="string">'+10'</span>, <span class="number">24</span>, <span class="string">'yellow'</span>);</pre>
-
-        <h3>Combining Shapes for Cool Effects</h3>
-        <p>Layer multiple shapes to create interesting characters or decorations!</p>
-
-        <pre class="code-example"><span class="comment">// Draw a smiley face character using helper functions!</span>
-<span class="keyword">function</span> drawPlayer() {
-  <span class="keyword">const</span> centerX = player.x + player.width / <span class="number">2</span>;
-  <span class="keyword">const</span> centerY = player.y + player.height / <span class="number">2</span>;
-
-  <span class="comment">// Body (blue circle)</span>
-  drawCircle(centerX, centerY, player.width, PLAYER_COLOR);
-
-  <span class="comment">// Left eye (white circle)</span>
-  drawCircle(centerX - <span class="number">8</span>, centerY - <span class="number">5</span>, <span class="number">6</span>, <span class="string">'white'</span>);
-
-  <span class="comment">// Right eye (white circle)</span>
-  drawCircle(centerX + <span class="number">8</span>, centerY - <span class="number">5</span>, <span class="number">6</span>, <span class="string">'white'</span>);
-
-  <span class="comment">// Pupils (black circles)</span>
-  drawCircle(centerX - <span class="number">8</span>, centerY - <span class="number">5</span>, <span class="number">3</span>, <span class="string">'black'</span>);
-  drawCircle(centerX + <span class="number">8</span>, centerY - <span class="number">5</span>, <span class="number">3</span>, <span class="string">'black'</span>);
-
-  <span class="comment">// Hat (red triangle pointing up)</span>
-  drawTriangle(centerX, centerY - player.width / <span class="number">2</span> - <span class="number">10</span>, <span class="number">20</span>, <span class="string">'up'</span>, <span class="string">'red'</span>);
-}
-
-<span class="comment">// Or use emojis for instant characters!</span>
-<span class="keyword">function</span> drawPlayer() {
-  <span class="keyword">const</span> centerX = player.x + player.width / <span class="number">2</span>;
-  <span class="keyword">const</span> centerY = player.y + player.height / <span class="number">2</span>;
-
-  <span class="comment">// Draw different emojis based on what's happening</span>
-  <span class="keyword">if</span> (player.isOnGround) {
-    drawText(centerX, centerY, <span class="string">'😊'</span>, player.width, <span class="string">'white'</span>);
-  } <span class="keyword">else</span> {
-    drawText(centerX, centerY, <span class="string">'😲'</span>, player.width, <span class="string">'white'</span>);  <span class="comment">// Surprised face when jumping!</span>
-  }
-}</pre>
-
-        <h3>Using This in Our Game</h3>
-        <p>Here are some ideas to modify the platformer using these helper functions:</p>
-
-        <div class="activity" style="margin-top: 20px;">
-          <h4>Try These Experiments:</h4>
-          <ul>
-            <li><strong>Add eyes to the player:</strong> In <code>drawPlayer()</code>, use <code>drawCircle()</code> to add two white circles for eyes</li>
-            <li><strong>Make emoji character:</strong> Use <code>drawText()</code> to draw an emoji face (😀, 🤖, 👾, 🐱) as your player</li>
-            <li><strong>Add a hat:</strong> Use <code>drawTriangle()</code> to draw a party hat on top of the player</li>
-            <li><strong>Decorate platforms:</strong> Add triangles for spikes or circles for decorations on platforms</li>
-            <li><strong>Change coin appearance:</strong> In <code>drawCoins()</code>, try different emojis like ⭐, 💎, 🍀, or 🪙</li>
-            <li><strong>Victory message:</strong> Use <code>drawText()</code> to show a big celebration message when you collect all coins</li>
+      <a href="concepts-basics.html" style="text-decoration: none;">
+        <div class="concept-card basics">
+          <h2>📚 The Basics</h2>
+          <p><strong>Start here!</strong> Learn the fundamental concepts you need to understand the game.</p>
+          <ul class="concept-list">
+            <li>💬 <strong>Comments</strong> - Notes to yourself and turning code on/off</li>
+            <li>⚙️ <strong>Configuration</strong> - Setting up values that control your game</li>
+            <li>📍 <strong>X,Y Coordinates</strong> - How positions work on the screen</li>
+            <li>🎨 <strong>Colors</strong> - Understanding RGB and hex colors</li>
           </ul>
+          <p><em>Perfect for beginners! Start here if you're new to coding.</em></p>
         </div>
+      </a>
 
-        <h3>Quick Reference: Helper Functions</h3>
-        <pre class="code-example"><span class="comment">// Rectangle</span>
-drawRect(x, y, width, height, color);
-<span class="comment">// Example:</span> drawRect(<span class="number">100</span>, <span class="number">200</span>, <span class="number">50</span>, <span class="number">30</span>, <span class="string">'red'</span>);
-
-<span class="comment">// Circle</span>
-drawCircle(x, y, size, color);
-<span class="comment">// Example:</span> drawCircle(<span class="number">150</span>, <span class="number">150</span>, <span class="number">20</span>, <span class="string">'blue'</span>);
-
-<span class="comment">// Triangle</span>
-drawTriangle(x, y, size, direction, color);
-<span class="comment">// Example:</span> drawTriangle(<span class="number">200</span>, <span class="number">100</span>, <span class="number">25</span>, <span class="string">'up'</span>, <span class="string">'green'</span>);
-
-<span class="comment">// Text or Emoji</span>
-drawText(x, y, text, size, color);
-<span class="comment">// Example:</span> drawText(<span class="number">300</span>, <span class="number">200</span>, <span class="string">'😀'</span>, <span class="number">40</span>, <span class="string">'white'</span>);</pre>
-
-        <p><strong>Pro Tip:</strong> These helper functions handle all the canvas complexity for you - just tell them what to draw and where! Mix and match them to create unique characters and effects.</p>
-      </section>
-
-      <!-- Drawing Text and Emojis -->
-      <section class="concept-section">
-        <h2>✍️ Drawing Text and Emojis (Advanced)</h2>
-
-        <p>The game includes a <code>drawText()</code> helper function (see the Drawing Shapes section above), but if you want to customize text further, you can use the canvas directly! This section shows advanced text techniques.</p>
-
-        <h3>Using drawText() - The Easy Way</h3>
-        <p>Most of the time, you'll want to use the helper function:</p>
-
-        <pre class="code-example"><span class="comment">// Draw text or emoji using the helper function</span>
-drawText(player.x, player.y, <span class="string">'Hello!'</span>, <span class="number">24</span>, <span class="string">'white'</span>);
-
-<span class="comment">// Draw emojis as game elements</span>
-drawText(coin.x, coin.y, <span class="string">'⭐'</span>, COIN_SIZE, <span class="string">'yellow'</span>);     <span class="comment">// Star coin</span>
-drawText(coin.x, coin.y, <span class="string">'💎'</span>, COIN_SIZE, <span class="string">'cyan'</span>);       <span class="comment">// Diamond coin</span>
-drawText(player.x, player.y, <span class="string">'🏆'</span>, player.width, <span class="string">'gold'</span>); <span class="comment">// Trophy for player</span></pre>
-
-        <h3>Direct Canvas Text (Advanced)</h3>
-        <p>If you need more control, you can draw text directly on the canvas:</p>
-
-        <pre class="code-example"><span class="comment">// Draw text directly on the canvas</span>
-ctx.fillStyle = <span class="string">'#ffffff'</span>;           <span class="comment">// Set the color</span>
-ctx.font = <span class="string">'bold 20px Arial'</span>;       <span class="comment">// Set font size and style</span>
-ctx.textAlign = <span class="string">'center'</span>;           <span class="comment">// Center the text horizontally</span>
-ctx.textBaseline = <span class="string">'middle'</span>;        <span class="comment">// Center the text vertically</span>
-ctx.fillText(<span class="string">'Hello!'</span>, player.x, player.y);  <span class="comment">// Draw text at player position</span>
-
-<span class="comment">// Example: Draw score text in the corner</span>
-ctx.fillStyle = <span class="string">'#ecf0f1'</span>;
-ctx.font = <span class="string">'24px Arial'</span>;
-ctx.textAlign = <span class="string">'left'</span>;
-ctx.fillText(<span class="string">'Score: '</span> + score, <span class="number">20</span>, <span class="number">30</span>);</pre>
-
-        <h3>Text with Outlines</h3>
-        <p>Create bold, easy-to-read text by adding an outline:</p>
-
-        <pre class="code-example"><span class="comment">// Draw text with a black outline</span>
-<span class="keyword">const</span> centerX = canvas.width / <span class="number">2</span>;
-<span class="keyword">const</span> centerY = <span class="number">100</span>;
-
-<span class="comment">// First draw the outline (stroke)</span>
-ctx.strokeStyle = <span class="string">'black'</span>;
-ctx.lineWidth = <span class="number">4</span>;
-ctx.font = <span class="string">'bold 48px Arial'</span>;
-ctx.textAlign = <span class="string">'center'</span>;
-ctx.textBaseline = <span class="string">'middle'</span>;
-ctx.strokeText(<span class="string">'YOU WIN!'</span>, centerX, centerY);
-
-<span class="comment">// Then draw the fill on top</span>
-ctx.fillStyle = <span class="string">'yellow'</span>;
-ctx.fillText(<span class="string">'YOU WIN!'</span>, centerX, centerY);</pre>
-
-        <h3>Dynamic Emoji Characters</h3>
-        <p>Change emojis based on what's happening in the game:</p>
-
-        <pre class="code-example"><span class="comment">// In drawPlayer(), draw different emojis based on game state</span>
-<span class="keyword">function</span> drawPlayer() {
-  <span class="keyword">const</span> centerX = player.x + player.width / <span class="number">2</span>;
-  <span class="keyword">const</span> centerY = player.y + player.height / <span class="number">2</span>;
-
-  <span class="keyword">let</span> emoji = <span class="string">'😊'</span>;  <span class="comment">// Default: happy face</span>
-
-  <span class="keyword">if</span> (!player.isOnGround) {
-    emoji = <span class="string">'😲'</span>;  <span class="comment">// Surprised face when jumping!</span>
-  }
-
-  <span class="keyword">if</span> (player.velocityY < -<span class="number">5</span>) {
-    emoji = <span class="string">'🚀'</span>;  <span class="comment">// Rocket when jumping fast!</span>
-  }
-
-  <span class="keyword">if</span> (score >= <span class="number">100</span>) {
-    emoji = <span class="string">'😎'</span>;  <span class="comment">// Cool sunglasses when you've collected lots of coins!</span>
-  }
-
-  drawText(centerX, centerY, emoji, player.width, <span class="string">'white'</span>);
-}</pre>
-
-        <h3>Floating Text Effects</h3>
-        <p>Create floating "+10" text that appears when collecting coins:</p>
-
-        <pre class="code-example"><span class="comment">// Add to your coin collection code</span>
-<span class="keyword">function</span> onCoinCollected(coin) {
-  <span class="comment">// Spawn floating text particle</span>
-  particles.push({
-    x: coin.x,
-    y: coin.y,
-    text: <span class="string">'+10'</span>,          <span class="comment">// Display points earned</span>
-    velocityX: <span class="number">0</span>,
-    velocityY: -<span class="number">2</span>,        <span class="comment">// Float upward slowly</span>
-    life: <span class="number">60</span>,             <span class="comment">// Last for 60 frames (1 second)</span>
-    isText: <span class="keyword">true</span>          <span class="comment">// Flag to know it's text</span>
-  });
-}
-
-<span class="comment">// In your particle drawing code, handle text particles</span>
-<span class="keyword">function</span> drawParticles() {
-  particles.forEach(p => {
-    <span class="keyword">if</span> (p.isText) {
-      <span class="comment">// Draw text particle</span>
-      drawText(p.x, p.y, p.text, <span class="number">24</span>, <span class="string">'yellow'</span>);
-    } <span class="keyword">else</span> {
-      <span class="comment">// Draw regular circle particle</span>
-      drawCircle(p.x, p.y, <span class="number">5</span>, p.color);
-    }
-  });
-}</pre>
-
-        <h3>Using This in Our Game</h3>
-        <p>Here are some ideas to add text and emojis to the platformer:</p>
-
-        <div class="activity" style="margin-top: 20px;">
-          <h4>Try These Experiments:</h4>
-          <ul>
-            <li><strong>Change coin emojis:</strong> In <code>drawCoins()</code>, use <code>drawText()</code> to try different emojis like ⭐ 💎 🪙 🍀</li>
-            <li><strong>Dynamic player expressions:</strong> Change the player emoji based on velocity or score</li>
-            <li><strong>Victory message:</strong> In <code>onAllCoinsCollected()</code>, draw a big "YOU WIN! 🎉" message with outline</li>
-            <li><strong>Floating text:</strong> Create "+10" particles that float up when collecting coins</li>
-            <li><strong>Platform decorations:</strong> Use <code>drawText()</code> to add emoji decorations on platforms (🌸 🔥 ❄️)</li>
-            <li><strong>Countdown timer:</strong> Display a countdown using <code>drawText()</code> in the corner</li>
+      <a href="concepts-juice.html" style="text-decoration: none;">
+        <div class="concept-card juice">
+          <h2>✨ Adding Juice</h2>
+          <p><strong>Make it awesome!</strong> Learn how to add effects that make your game feel satisfying.</p>
+          <ul class="concept-list">
+            <li>🎯 <strong>Functions</strong> - Instructions and chain reactions</li>
+            <li>🎮 <strong>The onXYZ Functions</strong> - Where YOU add effects (onJump, onLand, onCoinCollected)</li>
+            <li>🎨 <strong>The drawXYZ Functions</strong> - Simple drawing tools (drawCircle, drawRect, drawText)</li>
+            <li>💥 <strong>Effect Functions</strong> - Particles, screen shake, and sounds</li>
           </ul>
+          <p><em>This is where the fun happens! Learn to make your game pop!</em></p>
         </div>
+      </a>
 
-        <h3>Quick Reference: Text Drawing</h3>
-        <pre class="code-example"><span class="comment">// Easy way - use helper function</span>
-drawText(x, y, <span class="string">'Text here'</span>, size, color);
-<span class="comment">// Example:</span> drawText(<span class="number">100</span>, <span class="number">200</span>, <span class="string">'Hello!'</span>, <span class="number">24</span>, <span class="string">'white'</span>);
+      <a href="concepts-advanced.html" style="text-decoration: none;">
+        <div class="concept-card advanced">
+          <h2>🔬 Advanced Concepts</h2>
+          <p><strong>For the curious!</strong> Understand how the game really works behind the scenes.</p>
+          <ul class="concept-list">
+            <li>🔄 <strong>The Game Loop</strong> - How games update 60 times per second</li>
+            <li>⚛️ <strong>Physics & Collisions</strong> - Position, velocity, and collision detection</li>
+            <li>✨ <strong>Particles System</strong> - How particle effects work</li>
+            <li>📳 <strong>Screen Shake</strong> - Moving the camera for impact</li>
+            <li>🔊 <strong>Web Audio API</strong> - Creating sounds programmatically</li>
+          </ul>
+          <p><em>You don't need this to customize the game, but it's fascinating!</em></p>
+        </div>
+      </a>
 
-<span class="comment">// Advanced - direct canvas control</span>
-ctx.fillStyle = <span class="string">'#ffffff'</span>;
-ctx.font = <span class="string">'20px Arial'</span>;
-ctx.textAlign = <span class="string">'center'</span>;
-ctx.textBaseline = <span class="string">'middle'</span>;
-ctx.fillText(<span class="string">'Text here'</span>, x, y);
-
-<span class="comment">// Text with outline</span>
-ctx.strokeStyle = <span class="string">'black'</span>;
-ctx.lineWidth = <span class="number">3</span>;
-ctx.strokeText(<span class="string">'Outlined'</span>, x, y);
-ctx.fillStyle = <span class="string">'yellow'</span>;
-ctx.fillText(<span class="string">'Outlined'</span>, x, y);
-
-<span class="comment">// Emoji examples</span>
-drawText(x, y, <span class="string">'😀'</span>, <span class="number">30</span>, <span class="string">'white'</span>);  <span class="comment">// Smiley</span>
-drawText(x, y, <span class="string">'⭐'</span>, <span class="number">25</span>, <span class="string">'yellow'</span>); <span class="comment">// Star</span>
-drawText(x, y, <span class="string">'🚀'</span>, <span class="number">35</span>, <span class="string">'white'</span>);  <span class="comment">// Rocket</span></pre>
-
-        <p><strong>Pro Tip:</strong> For most cases, use the <code>drawText()</code> helper function - it's simpler and automatically centers text! Use direct canvas control only when you need special effects like outlines or custom alignment.</p>
-      </section>
-
-      <section class="resources">
-        <h2>🚀 Ready to Experiment?</h2>
-        <p>Now that you understand these concepts, head back to the game and try:</p>
-        <ul>
-          <li>Changing particle colors to make rainbow effects</li>
-          <li>Uncommenting TODO lines to see what they do</li>
-          <li>Adjusting GRAVITY and JUMP_POWER to change how the game feels</li>
-          <li>Adding your own comments to explain what you've changed</li>
-        </ul>
+      <section class="resources" style="margin-top: 40px;">
+        <h2>📖 Recommended Learning Order</h2>
+        <ol style="font-size: 1.1em; line-height: 1.8;">
+          <li><strong>The Basics</strong> - Understand comments, configuration, and colors (5-10 minutes)</li>
+          <li><strong>Adding Juice</strong> - Learn the functions you'll actually use (10-15 minutes)</li>
+          <li><strong>Experiment!</strong> - Open the game and try adding effects</li>
+          <li><strong>Advanced Concepts</strong> (optional) - Learn how it all works when you're curious</li>
+        </ol>
         <p style="text-align: center; margin-top: 30px;">
-          <a href="index.html" class="copy-btn" style="display: inline-block; text-decoration: none;">← Back to Home</a>
+          <a href="concepts-basics.html" class="copy-btn" style="display: inline-block; text-decoration: none;">Get Started with Basics →</a>
         </p>
       </section>
     </main>
 
     <footer>
-      <p>Understanding these concepts will help you create amazing games! 🎮</p>
+      <p>Happy coding! Remember: start with basics, add juice, then explore advanced! 🎮</p>
     </footer>
   </div>
-
-  <script>
-    // Interactive demo for position and velocity
-    let demoX = 0;
-    let demoVelocityX = 0;
-    let animationRunning = false;
-
-    function updateDemo() {
-      const player = document.getElementById('demoPlayer');
-      const info = document.getElementById('demoInfo');
-
-      // Update position based on velocity
-      demoX += demoVelocityX;
-
-      // Keep within bounds
-      const maxX = document.getElementById('positionDemo').clientWidth - 30;
-      if (demoX < 0) {
-        demoX = 0;
-        demoVelocityX = 0;
-      }
-      if (demoX > maxX) {
-        demoX = maxX;
-        demoVelocityX = 0;
-      }
-
-      // Apply friction (slow down)
-      demoVelocityX *= 0.95;
-
-      // Stop if moving very slowly
-      if (Math.abs(demoVelocityX) < 0.1) {
-        demoVelocityX = 0;
-        animationRunning = false;
-      }
-
-      // Update display
-      player.style.left = demoX + 'px';
-      player.style.top = '85px'; // Center vertically
-      info.textContent = `Position X: ${Math.round(demoX)} | Velocity X: ${demoVelocityX.toFixed(1)}`;
-
-      // Continue animation if moving
-      if (animationRunning) {
-        requestAnimationFrame(updateDemo);
-      }
-    }
-
-    function moveRight() {
-      demoVelocityX = 5; // Add speed to the right
-      if (!animationRunning) {
-        animationRunning = true;
-        updateDemo();
-      }
-    }
-
-    function moveLeft() {
-      demoVelocityX = -5; // Add speed to the left
-      if (!animationRunning) {
-        animationRunning = true;
-        updateDemo();
-      }
-    }
-
-    function resetDemo() {
-      demoX = 0;
-      demoVelocityX = 0;
-      animationRunning = false;
-      updateDemo();
-    }
-
-    // Initialize
-    resetDemo();
-  </script>
 </body>
 </html>

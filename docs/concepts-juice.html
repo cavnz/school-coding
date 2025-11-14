@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adding Juice - Coding Concepts</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Extra styles specific to concepts page */
+    .concept-section {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      border-left: 5px solid #3498db;
+    }
+
+    .code-example {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+    }
+
+    .comment {
+      color: #95a5a6;
+    }
+
+    .keyword {
+      color: #e74c3c;
+    }
+
+    .string {
+      color: #2ecc71;
+    }
+
+    .number {
+      color: #f39c12;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      font-size: 1.1em;
+    }
+
+    .function-card {
+      background: #e8f4f8;
+      border: 2px solid #3498db;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+
+    .function-card h4 {
+      margin-top: 0;
+      color: #2c3e50;
+      font-size: 1.3em;
+    }
+
+    .function-signature {
+      background: #2c3e50;
+      color: #3498db;
+      padding: 10px;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>✨ Adding Juice</h1>
+      <p class="subtitle">Making Your Game Feel Awesome!</p>
+    </header>
+
+    <main>
+      <a href="concepts.html" class="back-link">← Back to Concepts</a>
+
+      <section class="intro">
+        <h2>What is "Juice"?</h2>
+        <p>"Juice" is the term game developers use for all the visual and audio effects that make a game feel satisfying and fun. It's the particles, screen shake, sound effects, and animations that happen when you do something!</p>
+        <p><strong>This section teaches you how to add juice by using functions!</strong></p>
+      </section>
+
+      <!-- Functions -->
+      <section class="concept-section">
+        <h2>🎯 Functions: Instructions to the Computer</h2>
+
+        <h3>What is a Function?</h3>
+        <p>A function is like a <strong>recipe</strong> or a <strong>set of instructions</strong> that you give to the computer. You give the recipe a name, and whenever you "call" that name, the computer follows those instructions.</p>
+
+        <p>Think of it like teaching a robot a dance move:</p>
+        <ul>
+          <li><strong>Define the function:</strong> You teach the robot: "When I say 'spin', do a 360° turn"</li>
+          <li><strong>Call the function:</strong> Later you shout "spin!" and the robot does it</li>
+          <li><strong>Reuse it:</strong> You can say "spin" as many times as you want, and the robot remembers what to do</li>
+        </ul>
+
+        <h3>Writing a Function</h3>
+        <p>Here's how you create a function in JavaScript:</p>
+
+        <pre class="code-example"><span class="comment">// Define a function called "sayHello"</span>
+<span class="keyword">function</span> sayHello() {
+  console.log(<span class="string">'Hello, world!'</span>);
+  console.log(<span class="string">'Welcome to coding!'</span>);
+}
+
+<span class="comment">// Now you can "call" the function - run those instructions</span>
+sayHello();  <span class="comment">// This will print both messages</span>
+
+<span class="comment">// Call it again!</span>
+sayHello();  <span class="comment">// Prints the messages again</span></pre>
+
+        <h3>Functions Can Accept Information</h3>
+        <p>Functions can receive <strong>parameters</strong> (inputs) to work with:</p>
+
+        <pre class="code-example"><span class="comment">// Function that takes a name as input</span>
+<span class="keyword">function</span> greet(name) {
+  console.log(<span class="string">'Hello, '</span> + name + <span class="string">'!'</span>);
+}
+
+<span class="comment">// Call it with different names</span>
+greet(<span class="string">'Alice'</span>);   <span class="comment">// Prints: Hello, Alice!</span>
+greet(<span class="string">'Bob'</span>);     <span class="comment">// Prints: Hello, Bob!</span>
+
+<span class="comment">// Functions can take multiple parameters</span>
+<span class="keyword">function</span> addNumbers(a, b) {
+  <span class="keyword">const</span> sum = a + b;
+  console.log(sum);
+}
+
+addNumbers(<span class="number">5</span>, <span class="number">3</span>);   <span class="comment">// Prints: 8</span>
+addNumbers(<span class="number">10</span>, <span class="number">20</span>); <span class="comment">// Prints: 30</span></pre>
+
+        <h3>Chain Reactions: Functions Calling Functions</h3>
+        <p>This is where it gets really cool! One function can call other functions, creating <strong>chain reactions</strong>:</p>
+
+        <pre class="code-example"><span class="comment">// When a coin is collected, this function runs:</span>
+<span class="keyword">function</span> onCoinCollected(coin) {
+  <span class="comment">// This ONE function calls multiple other functions!</span>
+  spawnParticles(coin.x, coin.y, <span class="string">'#FFD700'</span>, <span class="number">20</span>);  <span class="comment">// Makes particles</span>
+  screenShake(<span class="number">5</span>);                              <span class="comment">// Shakes screen</span>
+  beep(<span class="number">660</span>, <span class="number">100</span>, <span class="number">0.3</span>);                       <span class="comment">// Makes sound</span>
+}
+
+<span class="comment">// The game system checks for coin collision and calls this:</span>
+<span class="keyword">if</span> (playerTouchingCoin) {
+  collectCoin(coin);  <span class="comment">// This system function...</span>
+}
+
+<span class="keyword">function</span> collectCoin(coin) {
+  score += POINTS_PER_COIN;            <span class="comment">// Update score</span>
+  coins.splice(coins.indexOf(coin), <span class="number">1</span>); <span class="comment">// Remove coin</span>
+  onCoinCollected(coin);               <span class="comment">// ...calls YOUR effects function!</span>
+}
+
+<span class="comment">// ONE coin collection triggers a CHAIN REACTION:
+// 1. Player touches coin (collision detected)
+// 2. collectCoin runs (system handles score & removal)
+// 3. onCoinCollected runs (YOUR effects!)
+// 4. spawnParticles runs
+// 5. screenShake runs
+// 6. beep runs
+// All from one event!</span></pre>
+
+        <h3>Why Functions Are Amazing</h3>
+        <ul>
+          <li><strong>Reusable:</strong> Write the code once, use it many times</li>
+          <li><strong>Organized:</strong> Each function has a clear purpose (jump, draw, shake, etc.)</li>
+          <li><strong>Easier to read:</strong> <code>onJump()</code> is clearer than copy-pasting 10 lines of code</li>
+          <li><strong>Easy to change:</strong> Update one function and it changes everywhere it's used</li>
+          <li><strong>Chain reactions:</strong> Create complex effects by combining simple functions</li>
+        </ul>
+      </section>
+
+      <!-- onXYZ Functions -->
+      <section class="concept-section">
+        <h2>🎮 The onXYZ Functions: Where YOU Add Juice!</h2>
+
+        <p>The game has special <code>onXYZ()</code> functions that are called when specific events happen. These are the functions <strong>you should edit</strong> to add juice to your game!</p>
+
+        <h3>The Event Functions</h3>
+
+        <div class="function-card">
+          <h4>onJump()</h4>
+          <div class="function-signature">function onJump()</div>
+          <p><strong>When it's called:</strong> When the player presses space and jumps off the ground</p>
+          <p><strong>What you can add:</strong></p>
+          <ul>
+            <li>Screen shake: <code>screenShake(3)</code></li>
+            <li>Jump sound: <code>beep(440, 100, 0.2)</code></li>
+            <li>Dust particles: <code>spawnParticles(player.x, player.y, PLAYER_COLOR, 5)</code></li>
+          </ul>
+          <pre class="code-example"><span class="keyword">function</span> onJump() {
+  <span class="comment">// TODO: Add juice here! What should happen when you jump?</span>
+  screenShake(<span class="number">3</span>);
+  beep(<span class="number">440</span>, <span class="number">100</span>, <span class="number">0.2</span>);
+  spawnParticles(player.x, player.y + player.height, PLAYER_COLOR, <span class="number">5</span>);
+}</pre>
+        </div>
+
+        <div class="function-card">
+          <h4>onLand()</h4>
+          <div class="function-signature">function onLand()</div>
+          <p><strong>When it's called:</strong> When the player lands on a platform after falling</p>
+          <p><strong>What you can add:</strong></p>
+          <ul>
+            <li>Landing shake: <code>screenShake(5)</code></li>
+            <li>Thud sound: <code>beep(220, 80, 0.3)</code></li>
+            <li>Impact particles: <code>spawnParticles(player.x, player.y + player.height, '#95a5a6', 8)</code></li>
+          </ul>
+          <pre class="code-example"><span class="keyword">function</span> onLand() {
+  <span class="comment">// TODO: Add landing effects!</span>
+  screenShake(<span class="number">5</span>);
+  beep(<span class="number">220</span>, <span class="number">80</span>, <span class="number">0.3</span>);
+  spawnParticles(player.x + player.width / <span class="number">2</span>, player.y + player.height, <span class="string">'#95a5a6'</span>, <span class="number">8</span>);
+}</pre>
+        </div>
+
+        <div class="function-card">
+          <h4>onCoinCollected(coin)</h4>
+          <div class="function-signature">function onCoinCollected(coin)</div>
+          <p><strong>When it's called:</strong> When the player collects a coin</p>
+          <p><strong>Parameters:</strong> <code>coin</code> - the coin object that was collected (has x, y position)</p>
+          <p><strong>What you can add:</strong></p>
+          <ul>
+            <li>Gold explosion: <code>spawnParticles(coin.x, coin.y, '#FFD700', 20)</code></li>
+            <li>Collection sound: <code>beep(660, 100, 0.3)</code></li>
+            <li>Screen shake: <code>screenShake(3)</code></li>
+          </ul>
+          <pre class="code-example"><span class="keyword">function</span> onCoinCollected(coin) {
+  <span class="comment">// TODO: Make coin collection feel awesome!</span>
+  spawnParticles(coin.x, coin.y, <span class="string">'#FFD700'</span>, <span class="number">20</span>);
+  screenShake(<span class="number">3</span>);
+  beep(<span class="number">660</span>, <span class="number">100</span>, <span class="number">0.3</span>);
+}</pre>
+        </div>
+
+        <div class="function-card">
+          <h4>onAllCoinsCollected()</h4>
+          <div class="function-signature">function onAllCoinsCollected()</div>
+          <p><strong>When it's called:</strong> When the player collects the last coin (all coins collected!)</p>
+          <p><strong>What you can add:</strong></p>
+          <ul>
+            <li>Victory explosion: <code>spawnParticles(player.x, player.y, '#FFD700', 50)</code></li>
+            <li>Victory sound: <code>beep(880, 200, 0.4)</code></li>
+            <li>Big shake: <code>screenShake(10)</code></li>
+            <li>Victory message (see drawing section)</li>
+          </ul>
+          <pre class="code-example"><span class="keyword">function</span> onAllCoinsCollected() {
+  <span class="comment">// TODO: Epic victory celebration!</span>
+  spawnParticles(player.x, player.y, <span class="string">'#FFD700'</span>, <span class="number">50</span>);
+  screenShake(<span class="number">10</span>);
+  beep(<span class="number">880</span>, <span class="number">200</span>, <span class="number">0.4</span>);
+  console.log(<span class="string">'YOU WIN! 🎉'</span>);
+}</pre>
+        </div>
+
+        <p><strong>Pro Tip:</strong> Look for the <code>TODO</code> comments in these functions - they suggest which other functions you can call to add juice!</p>
+      </section>
+
+      <!-- Drawing Functions -->
+      <section class="concept-section">
+        <h2>🎨 The drawXYZ Functions: Simple Drawing Tools</h2>
+
+        <p>The game includes helpful drawing functions that make it easy to draw different shapes! You can use these in the <code>drawPlayer()</code>, <code>drawCoins()</code>, or other drawing functions to customize how things look.</p>
+
+        <h3>The Drawing Functions</h3>
+
+        <div class="function-card">
+          <h4>drawRect(x, y, width, height, color)</h4>
+          <div class="function-signature">drawRect(x, y, width, height, color)</div>
+          <p><strong>What it does:</strong> Draws a rectangle</p>
+          <p><strong>Parameters:</strong></p>
+          <ul>
+            <li><code>x, y</code> - Top-left corner position</li>
+            <li><code>width, height</code> - Size of the rectangle</li>
+            <li><code>color</code> - Color (try 'red', 'rgb(255, 0, 0)', or '#FF0000')</li>
+          </ul>
+          <pre class="code-example"><span class="comment">// Draw a blue rectangle for the player</span>
+drawRect(player.x, player.y, player.width, player.height, PLAYER_COLOR);
+
+<span class="comment">// Draw a red hat on the player</span>
+drawRect(player.x, player.y - <span class="number">10</span>, player.width, <span class="number">5</span>, <span class="string">'red'</span>);</pre>
+        </div>
+
+        <div class="function-card">
+          <h4>drawCircle(x, y, size, color)</h4>
+          <div class="function-signature">drawCircle(x, y, size, color)</div>
+          <p><strong>What it does:</strong> Draws a circle</p>
+          <p><strong>Parameters:</strong></p>
+          <ul>
+            <li><code>x, y</code> - Center position of the circle</li>
+            <li><code>size</code> - Diameter of the circle</li>
+            <li><code>color</code> - Color of the circle</li>
+          </ul>
+          <pre class="code-example"><span class="comment">// Draw white eyes on the player</span>
+drawCircle(player.x + <span class="number">10</span>, player.y + <span class="number">10</span>, <span class="number">8</span>, <span class="string">'white'</span>);  <span class="comment">// Left eye</span>
+drawCircle(player.x + <span class="number">20</span>, player.y + <span class="number">10</span>, <span class="number">8</span>, <span class="string">'white'</span>);  <span class="comment">// Right eye</span>
+
+<span class="comment">// Draw circular particles</span>
+drawCircle(particle.x, particle.y, <span class="number">5</span>, particle.color);</pre>
+        </div>
+
+        <div class="function-card">
+          <h4>drawTriangle(x, y, size, direction, color)</h4>
+          <div class="function-signature">drawTriangle(x, y, size, direction, color)</div>
+          <p><strong>What it does:</strong> Draws a triangle pointing in any direction</p>
+          <p><strong>Parameters:</strong></p>
+          <ul>
+            <li><code>x, y</code> - Center position of the triangle</li>
+            <li><code>size</code> - How big the triangle is</li>
+            <li><code>direction</code> - Which way it points: 'up', 'down', 'left', or 'right'</li>
+            <li><code>color</code> - Color of the triangle</li>
+          </ul>
+          <pre class="code-example"><span class="comment">// Draw a party hat on the player</span>
+drawTriangle(player.x + player.width / <span class="number">2</span>, player.y - <span class="number">10</span>, <span class="number">20</span>, <span class="string">'up'</span>, <span class="string">'red'</span>);
+
+<span class="comment">// Draw spikes pointing down on platforms</span>
+drawTriangle(platform.x + <span class="number">50</span>, platform.y, <span class="number">15</span>, <span class="string">'down'</span>, <span class="string">'red'</span>);</pre>
+        </div>
+
+        <div class="function-card">
+          <h4>drawText(x, y, text, size, color)</h4>
+          <div class="function-signature">drawText(x, y, text, size, color)</div>
+          <p><strong>What it does:</strong> Draws text or emojis (automatically centered)</p>
+          <p><strong>Parameters:</strong></p>
+          <ul>
+            <li><code>x, y</code> - Center position of the text</li>
+            <li><code>text</code> - What to draw (can be text or emojis!)</li>
+            <li><code>size</code> - Font size in pixels</li>
+            <li><code>color</code> - Color of the text</li>
+          </ul>
+          <pre class="code-example"><span class="comment">// Draw an emoji character as the player</span>
+drawText(player.x + player.width / <span class="number">2</span>, player.y + player.height / <span class="number">2</span>, <span class="string">'😀'</span>, <span class="number">30</span>, <span class="string">'white'</span>);
+
+<span class="comment">// Draw star emojis as coins</span>
+drawText(coin.x, coin.y, <span class="string">'⭐'</span>, COIN_SIZE, <span class="string">'yellow'</span>);
+
+<span class="comment">// Draw a victory message</span>
+drawText(canvas.width / <span class="number">2</span>, <span class="number">100</span>, <span class="string">'YOU WIN! 🎉'</span>, <span class="number">48</span>, <span class="string">'yellow'</span>);</pre>
+        </div>
+
+        <h3>Example: Custom Player Character</h3>
+        <p>Here's how you could customize the <code>drawPlayer()</code> function:</p>
+
+        <pre class="code-example"><span class="keyword">function</span> drawPlayer() {
+  <span class="keyword">const</span> centerX = player.x + player.width / <span class="number">2</span>;
+  <span class="keyword">const</span> centerY = player.y + player.height / <span class="number">2</span>;
+
+  <span class="comment">// Option 1: Simple emoji character</span>
+  drawText(centerX, centerY, <span class="string">'😊'</span>, player.width, <span class="string">'white'</span>);
+
+  <span class="comment">// Option 2: Build a character with shapes</span>
+  drawCircle(centerX, centerY, player.width, PLAYER_COLOR);  <span class="comment">// Body</span>
+  drawCircle(centerX - <span class="number">8</span>, centerY - <span class="number">5</span>, <span class="number">6</span>, <span class="string">'white'</span>);     <span class="comment">// Left eye</span>
+  drawCircle(centerX + <span class="number">8</span>, centerY - <span class="number">5</span>, <span class="number">6</span>, <span class="string">'white'</span>);     <span class="comment">// Right eye</span>
+  drawTriangle(centerX, centerY - player.width / <span class="number">2</span> - <span class="number">10</span>, <span class="number">20</span>, <span class="string">'up'</span>, <span class="string">'red'</span>);  <span class="comment">// Hat</span>
+}</pre>
+
+        <h3>Try These Experiments!</h3>
+        <ul>
+          <li><strong>Add eyes to the player:</strong> Use <code>drawCircle()</code> to add two white circles</li>
+          <li><strong>Make emoji character:</strong> Use <code>drawText()</code> with emojis like 😀, 🤖, 👾, 🐱</li>
+          <li><strong>Add a hat:</strong> Use <code>drawTriangle()</code> to draw a party hat</li>
+          <li><strong>Change coins:</strong> In <code>drawCoins()</code>, try different emojis like ⭐, 💎, 🍀, 🪙</li>
+          <li><strong>Victory message:</strong> In <code>onAllCoinsCollected()</code>, use <code>drawText()</code> to show "YOU WIN! 🎉"</li>
+        </ul>
+      </section>
+
+      <!-- Effect Functions -->
+      <section class="concept-section">
+        <h2>💥 Effect Functions: The Juice Makers</h2>
+
+        <p>These are helper functions you can call from the <code>onXYZ()</code> functions to add effects to your game!</p>
+
+        <div class="function-card">
+          <h4>spawnParticles(x, y, color, count)</h4>
+          <div class="function-signature">spawnParticles(x, y, color, count)</div>
+          <p><strong>What it does:</strong> Creates colorful particles that shoot out and fall down</p>
+          <p><strong>Parameters:</strong></p>
+          <ul>
+            <li><code>x, y</code> - Where to spawn the particles</li>
+            <li><code>color</code> - Color of the particles</li>
+            <li><code>count</code> - How many particles to spawn</li>
+          </ul>
+          <pre class="code-example"><span class="comment">// Gold explosion when collecting a coin</span>
+spawnParticles(coin.x, coin.y, <span class="string">'#FFD700'</span>, <span class="number">20</span>);
+
+<span class="comment">// Rainbow particles</span>
+spawnParticles(player.x, player.y, <span class="string">'rgb(255, 0, 255)'</span>, <span class="number">10</span>);</pre>
+        </div>
+
+        <div class="function-card">
+          <h4>screenShake(intensity)</h4>
+          <div class="function-signature">screenShake(intensity)</div>
+          <p><strong>What it does:</strong> Makes the screen shake briefly</p>
+          <p><strong>Parameters:</strong></p>
+          <ul>
+            <li><code>intensity</code> - How hard to shake (try 3 for small, 10 for big)</li>
+          </ul>
+          <pre class="code-example"><span class="comment">// Small shake when jumping</span>
+screenShake(<span class="number">3</span>);
+
+<span class="comment">// Big shake when landing</span>
+screenShake(<span class="number">10</span>);</pre>
+        </div>
+
+        <div class="function-card">
+          <h4>beep(frequency, duration, volume)</h4>
+          <div class="function-signature">beep(frequency, duration, volume)</div>
+          <p><strong>What it does:</strong> Plays a simple beep sound</p>
+          <p><strong>Parameters:</strong></p>
+          <ul>
+            <li><code>frequency</code> - How high/low the sound is (220-880 works well)</li>
+            <li><code>duration</code> - How long in milliseconds (100 = short, 500 = long)</li>
+            <li><code>volume</code> - How loud (0.1 = quiet, 0.5 = loud)</li>
+          </ul>
+          <pre class="code-example"><span class="comment">// Jump sound (mid pitch, short, quiet)</span>
+beep(<span class="number">440</span>, <span class="number">100</span>, <span class="number">0.2</span>);
+
+<span class="comment">// Coin collection (high pitch, short, medium volume)</span>
+beep(<span class="number">660</span>, <span class="number">100</span>, <span class="number">0.3</span>);
+
+<span class="comment">// Landing thud (low pitch, short, medium volume)</span>
+beep(<span class="number">220</span>, <span class="number">80</span>, <span class="number">0.3</span>);</pre>
+        </div>
+
+        <h3>Combining Effects</h3>
+        <p>The magic happens when you combine multiple effects together!</p>
+
+        <pre class="code-example"><span class="keyword">function</span> onCoinCollected(coin) {
+  <span class="comment">// Create an epic coin collection with all three effects!</span>
+  spawnParticles(coin.x, coin.y, <span class="string">'#FFD700'</span>, <span class="number">20</span>);  <span class="comment">// Gold explosion</span>
+  screenShake(<span class="number">5</span>);                               <span class="comment">// Screen shake</span>
+  beep(<span class="number">660</span>, <span class="number">100</span>, <span class="number">0.3</span>);                        <span class="comment">// "Ding!" sound</span>
+}</pre>
+      </section>
+
+      <section class="resources">
+        <h2>🎯 Next Steps</h2>
+        <p>Now you know how to add juice! For more advanced concepts like how the game loop works, check out the advanced section.</p>
+        <p style="text-align: center; margin-top: 30px;">
+          <a href="concepts-advanced.html" class="copy-btn" style="display: inline-block; text-decoration: none;">Next: Advanced Concepts →</a>
+          <a href="concepts.html" class="copy-btn" style="display: inline-block; text-decoration: none; margin-left: 10px;">← Back to Concepts</a>
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Add juice to make your game feel amazing! ✨</p>
+    </footer>
+  </div>
+</body>
+</html>
